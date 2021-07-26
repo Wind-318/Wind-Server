@@ -39,7 +39,7 @@ func SendStock(ctx *gin.Context) {
 
 		rand.Seed(time.Now().UnixNano())
 		picNum := strconv.Itoa(rand.Intn(248) + 1)
-		users.Send(time.Now().String()[:19]+" "+time.Now().Weekday().String()+"：每日要闻", Text.SelectFirst10WithPicture(picNum), gomail.NewMessage(), ".\\picture\\"+picNum+".png")
+		users.Send(time.Now().String()[:19]+" "+time.Now().Weekday().String()+"：每日要闻", Text.SelectFirst10WithPicture(picNum), gomail.NewMessage(), ".\\picture\\"+picNum+".jpg")
 	}()
 
 	ctx.String(http.StatusOK, "已发送，如果没有收到请检查垃圾箱。")
