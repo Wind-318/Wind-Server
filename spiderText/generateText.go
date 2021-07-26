@@ -166,7 +166,7 @@ func SelectFirst10WithPicture(picNum string) string {
 		<h2><br>`
 	}
 
-	text += `<br><img src="` + picNum + `.jpg" alt="My image" />`
+	text += `<br><img src="` + picNum + `.png" alt="My image" />`
 
 	return text
 }

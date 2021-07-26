@@ -111,8 +111,8 @@ func sendEveryUser() {
 			waitToSend := Mail.GetNewMail(user)
 			rand.Seed(time.Now().UnixNano())
 			// 发送带图片的邮件
-			picNum := strconv.Itoa(rand.Intn(248) + 1)
-			waitToSend.Send(time.Now().String()[:19]+" "+time.Now().Weekday().String()+"：每日要闻", Text.SelectFirst10WithPicture(picNum), gomail.NewMessage(), ".\\picture\\"+picNum+".jpg")
+			picNum := strconv.Itoa(rand.Intn(18) + 1)
+			waitToSend.Send(time.Now().String()[:19]+" "+time.Now().Weekday().String()+"：每日要闻", Text.SelectFirst10WithPicture(picNum), gomail.NewMessage(), ".\\pic\\"+picNum+".png")
 		}
 	}
 }
