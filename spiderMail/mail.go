@@ -30,7 +30,7 @@ func GetNewMail(userMailAccount string) *mail {
 		SenderPassword: "",
 		Receiver:       userMailAccount,
 		ServerAddr:     "",
-		ServerPort:     1,
+		ServerPort:     ,
 	}
 }
 
