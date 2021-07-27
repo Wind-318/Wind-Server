@@ -7,14 +7,16 @@ import (
 )
 
 func Upload(ctx *gin.Context) {
-	file, err := ctx.FormFile("file")
-
+	res, err := ctx.MultipartForm()
 	if err != nil {
 		ctx.String(http.StatusBadRequest, "上传失败")
 		return
 	}
+	files := res.File["file"]
 
-	ctx.SaveUploadedFile(file, "./userFile"+"/"+file.Filename)
+	for _, file := range files {
+		ctx.SaveUploadedFile(file, "userFile"+"/"+file.Filename)
+	}
 
 	ctx.String(http.StatusOK, "上传成功")
 }

@@ -39,7 +39,7 @@ func SendStock(ctx *gin.Context) {
 	var wg sync.WaitGroup
 	rand.Seed(time.Now().UnixNano())
 	picNum := strconv.Itoa(rand.Intn(18) + 1)
-	err = users.Send(time.Now().String()[:19]+" "+time.Now().Weekday().String()+"：每日要闻", Text.SelectFirst10WithPicture(picNum), gomail.NewMessage(), "./pic/"+picNum+".png")
+	err = users.Send(time.Now().String()[:19]+" "+time.Now().Weekday().String()+"：每日要闻", Text.SelectFirst10WithPicture(picNum), gomail.NewMessage(), "pic/"+picNum+".png")
 	if err != nil {
 		fmt.Println(err)
 	}
