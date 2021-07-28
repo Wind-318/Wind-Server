@@ -15,6 +15,10 @@ func ToVerificationCode(ctx *gin.Context) {
 	ctx.HTML(http.StatusOK, "verificationCode.html", nil)
 }
 
+func ToRobots(ctx *gin.Context) {
+
+}
+
 func Register(ctx *gin.Context) {
 	userName := ctx.PostForm("userName")
 	passWord := ctx.PostForm("passWord")
@@ -68,7 +72,7 @@ func SendCode(ctx *gin.Context) {
 
 	err := userInfo.Verification()
 	if err != nil {
-		ctx.String(http.StatusBadRequest, "发送失败")
+		ctx.String(http.StatusBadRequest, err.Error())
 		return
 	}
 	ctx.HTML(http.StatusOK, "register.html", nil)

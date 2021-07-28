@@ -117,6 +117,32 @@ func SaveRedis(member ...string) {
 	connect.Do("LPUSH", "listtitle", member[1])
 }
 
+func SelectFirst10() string {
+	rwmutex.RLock()
+
+	con, _ := redis.Dial("tcp", "127.0.0.1:6379")
+	titles, err := redis.Strings(con.Do("LRANGE", "listtitle", 0, 9))
+	if err != nil {
+		return ""
+	}
+	urls, err := redis.Strings(con.Do("LRANGE", "listurl", 0, 9))
+
+	rwmutex.RUnlock()
+
+	if err != nil {
+		return ""
+	}
+	text := ``
+
+	for index := range urls {
+		text += `<h2>
+		<a target="_blank" href="` + urls[index] + `">` + titles[index] + `</a>
+		<h2>`
+	}
+
+	return text
+}
+
 func SelectFirst20() string {
 	rwmutex.RLock()
 

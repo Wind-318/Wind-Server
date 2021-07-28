@@ -1,0 +1,30 @@
+[GIN-debug] Loaded HTML Templates (7): 
+	- function.html
+	- login.html
+	- register.html
+	- verificationCode.html
+	- 
+	- changePassword.html
+	- fingPassword.html
+
+[GIN-debug] GET    /TXT/*filepath            --> github.com/gin-gonic/gin.(*RouterGroup).createStaticHandler.func1 (3 handlers)
+[GIN-debug] HEAD   /TXT/*filepath            --> github.com/gin-gonic/gin.(*RouterGroup).createStaticHandler.func1 (3 handlers)
+[GIN-debug] GET    /                         --> project/functions.ToLogin (3 handlers)
+[GIN-debug] GET    /toRegister               --> project/functions.ToRegister (3 handlers)
+[GIN-debug] GET    /toChangePassword         --> project/functions.ToChangePassword (3 handlers)
+[GIN-debug] GET    /toFindPassword           --> project/functions.FindPassword (3 handlers)
+[GIN-debug] GET    /toFunctions              --> project/functions.ToFuntions (3 handlers)
+[GIN-debug] GET    /toverificationCode       --> project/functions.ToVerificationCode (3 handlers)
+[GIN-debug] GET    /robots.txt               --> project/functions.ToRobots (3 handlers)
+[GIN-debug] POST   /register                 --> project/functions.Register (3 handlers)
+[GIN-debug] POST   /login                    --> project/functions.Login (3 handlers)
+[GIN-debug] POST   /changePassword           --> project/functions.ChangePassWord (3 handlers)
+[GIN-debug] POST   /findPassword             --> project/functions.FindPassword (3 handlers)
+[GIN-debug] POST   /sendCode                 --> project/functions.SendCode (3 handlers)
+[GIN-debug] GET    /sendStock                --> project/functions.SendStock (3 handlers)
+[GIN-debug] Environment variable PORT is undefined. Using port :8080 by default
+[GIN-debug] Listening and serving HTTP on :8080
+127.0.0.1 - [Mon, 26 Jul 2021 17:52:06 CST] "GET / HTTP/1.1 200 1.0548ms "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36 Edg/92.0.902.55" "
+127.0.0.1 - [Mon, 26 Jul 2021 17:52:07 CST] "GET /favicon.ico HTTP/1.1 404 0s "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36 Edg/92.0.902.55" "
+127.0.0.1 - [Mon, 26 Jul 2021 17:53:04 CST] "POST /login HTTP/1.1 200 6.0007ms "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36 Edg/92.0.902.55" "
+127.0.0.1 - [Mon, 26 Jul 2021 17:53:09 CST] "GET /sendStock HTTP/1.1 200 2.6329999s "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36 Edg/92.0.902.55" "

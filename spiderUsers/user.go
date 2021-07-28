@@ -10,10 +10,14 @@ import (
 	"crypto/sha512"
 	"encoding/hex"
 <<<<<<< HEAD:spiderUsers/user.go
+<<<<<<< HEAD:spiderUsers/user.go
 	"fmt"
 	"log"
 =======
 >>>>>>> 9e17b98... /:Users/user.go
+=======
+	"errors"
+>>>>>>> 0c71c88... 更新:Users/user.go
 	"math/rand"
 	"strconv"
 	"time"
@@ -37,7 +41,25 @@ type userAcnt struct {
 	Accounts string `db:"account"`
 }
 
+<<<<<<< HEAD:spiderUsers/user.go
 func (user *User) CheckUserExist(registerAccount string) bool {
+=======
+func SelectUsersAccount() []string {
+	db := sqlx.MustConnect("mysql", httpRequest.MySQLInfo)
+	defer db.Close()
+
+	useraccount := make([]userAcnt, 0)
+
+	db.Select(&useraccount, "SELECT account FROM user")
+	ret := make([]string, 0)
+	for _, account := range useraccount {
+		ret = append(ret, account.Accounts)
+	}
+	return ret
+}
+
+func (user *User) CheckUserExist() bool {
+>>>>>>> 0c71c88... 更新:Users/user.go
 	db := sqlx.MustConnect("mysql", httpRequest.MySQLInfo)
 	defer db.Close()
 
@@ -141,8 +163,16 @@ func (user *User) Verification() error {
 	connect, _ := redis.Dial("tcp", "127.0.0.1:6379")
 	defer connect.Close()
 
+<<<<<<< HEAD:spiderUsers/user.go
 	// 验证码持续时间 5 分钟，过期自动失效
 	_, err := connect.Do("SET", ReceiverAccount, verificationCode, "ex", "300")
+=======
+	if user.FindVerificationCode() {
+		return errors.New("验证码已发送，请 1 分钟后再试")
+	}
+	// 验证码持续时间 1 分钟，过期自动失效
+	_, err := connect.Do("SET", user.MailAccount, verificationCode, "ex", "60")
+>>>>>>> 0c71c88... 更新:Users/user.go
 	if err != nil {
 <<<<<<< HEAD:spiderUsers/user.go
 <<<<<<< HEAD:spiderUsers/user.go
