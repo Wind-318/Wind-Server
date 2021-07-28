@@ -63,12 +63,15 @@ func main() {
 	go sendEveryUser()
 
 	router.LoadHTMLGlob("HTML/*")
-	router.StaticFS("/TXT", http.Dir("./TXT"))
 	router.StaticFS("/js", http.Dir("./js"))
 	router.StaticFS("/css", http.Dir("./css"))
 	router.StaticFS("/music", http.Dir("./music"))
 	router.StaticFS("/picture", http.Dir("./picture"))
-	router.GET("/", functions.ToLogin)
+	router.StaticFS("/markdown", http.Dir("./markdown"))
+	router.StaticFile("/robots.txt", "./robots.txt")
+
+	router.GET("/", functions.ToHead)
+	router.GET("/ToLogin", functions.ToLogin)
 	router.GET("/TochangePassword", functions.ToChangePassword)
 	router.GET("/ToFindPassword", functions.ToFindPassword)
 	router.GET("/ToFunction", functions.ToFunction)
@@ -83,7 +86,7 @@ func main() {
 	router.POST("/upload", functions.Upload)
 	router.GET("/sendStock", functions.SendStock)
 
-	router.Run()
+	router.Run(":80")
 }
 
 func countTime() {

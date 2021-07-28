@@ -1,0 +1,1365 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Readme</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="file:///c:\Users\31816\.vscode\extensions\shd101wyy.markdown-preview-enhanced-0.5.22\node_modules\@shd101wyy\mume\dependencies\katex\katex.min.css">
+
+    <script src="../js/sakura.js"></script>
+
+
+
+    <center>
+        <b>
+            <audio autoplay="autoplay" controls="controls" loop="loop" preload="auto" src="../music/1.mp3">
+                你的浏览器版本太低，不支持audio标签
+            </audio>
+        </b>
+    </center>
+
+
+    <style>
+        /**
+ * prism.js Github theme based on GitHub's theme.
+ * @author Sam Clarke
+ */
+        
+        code[class*="language-"],
+        pre[class*="language-"] {
+            color: #333;
+            background: none;
+            font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+            text-align: left;
+            white-space: pre;
+            word-spacing: normal;
+            word-break: normal;
+            word-wrap: normal;
+            line-height: 1.4;
+            -moz-tab-size: 8;
+            -o-tab-size: 8;
+            tab-size: 8;
+            -webkit-hyphens: none;
+            -moz-hyphens: none;
+            -ms-hyphens: none;
+            hyphens: none;
+        }
+        /* Code blocks */
+        
+        pre[class*="language-"] {
+            padding: .8em;
+            overflow: auto;
+            /* border: 1px solid #ddd; */
+            border-radius: 3px;
+            /* background: #fff; */
+            background: #f5f5f5;
+        }
+        /* Inline code */
+        
+         :not(pre)>code[class*="language-"] {
+            padding: .1em;
+            border-radius: .3em;
+            white-space: normal;
+            background: #f5f5f5;
+        }
+        
+        .token.comment,
+        .token.blockquote {
+            color: #969896;
+        }
+        
+        .token.cdata {
+            color: #183691;
+        }
+        
+        .token.doctype,
+        .token.punctuation,
+        .token.variable,
+        .token.macro.property {
+            color: #333;
+        }
+        
+        .token.operator,
+        .token.important,
+        .token.keyword,
+        .token.rule,
+        .token.builtin {
+            color: #a71d5d;
+        }
+        
+        .token.string,
+        .token.url,
+        .token.regex,
+        .token.attr-value {
+            color: #183691;
+        }
+        
+        .token.property,
+        .token.number,
+        .token.boolean,
+        .token.entity,
+        .token.atrule,
+        .token.constant,
+        .token.symbol,
+        .token.command,
+        .token.code {
+            color: #0086b3;
+        }
+        
+        .token.tag,
+        .token.selector,
+        .token.prolog {
+            color: #63a35c;
+        }
+        
+        .token.function,
+        .token.namespace,
+        .token.pseudo-element,
+        .token.class,
+        .token.class-name,
+        .token.pseudo-class,
+        .token.id,
+        .token.url-reference .token.variable,
+        .token.attr-name {
+            color: #795da3;
+        }
+        
+        .token.entity {
+            cursor: help;
+        }
+        
+        .token.title,
+        .token.title .token.punctuation {
+            font-weight: bold;
+            color: #1d3e81;
+        }
+        
+        .token.list {
+            color: #ed6a43;
+        }
+        
+        .token.inserted {
+            background-color: #eaffea;
+            color: #55a532;
+        }
+        
+        .token.deleted {
+            background-color: #ffecec;
+            color: #bd2c00;
+        }
+        
+        .token.bold {
+            font-weight: bold;
+        }
+        
+        .token.italic {
+            font-style: italic;
+        }
+        /* JSON */
+        
+        .language-json .token.property {
+            color: #183691;
+        }
+        
+        .language-markup .token.tag .token.punctuation {
+            color: #333;
+        }
+        /* CSS */
+        
+        code.language-css,
+        .language-css .token.function {
+            color: #0086b3;
+        }
+        /* YAML */
+        
+        .language-yaml .token.atrule {
+            color: #63a35c;
+        }
+        
+        code.language-yaml {
+            color: #183691;
+        }
+        /* Ruby */
+        
+        .language-ruby .token.function {
+            color: #333;
+        }
+        /* Markdown */
+        
+        .language-markdown .token.url {
+            color: #795da3;
+        }
+        /* Makefile */
+        
+        .language-makefile .token.symbol {
+            color: #795da3;
+        }
+        
+        .language-makefile .token.variable {
+            color: #183691;
+        }
+        
+        .language-makefile .token.builtin {
+            color: #0086b3;
+        }
+        /* Bash */
+        
+        .language-bash .token.keyword {
+            color: #0086b3;
+        }
+        /* highlight */
+        
+        pre[data-line] {
+            position: relative;
+            padding: 1em 0 1em 3em;
+        }
+        
+        pre[data-line] .line-highlight-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-color: transparent;
+            display: block;
+            width: 100%;
+        }
+        
+        pre[data-line] .line-highlight {
+            position: absolute;
+            left: 0;
+            right: 0;
+            padding: inherit 0;
+            margin-top: 1em;
+            background: hsla(24, 20%, 50%, .08);
+            background: linear-gradient(to right, hsla(24, 20%, 50%, .1) 70%, hsla(24, 20%, 50%, 0));
+            pointer-events: none;
+            line-height: inherit;
+            white-space: pre;
+        }
+        
+        pre[data-line] .line-highlight:before,
+        pre[data-line] .line-highlight[data-end]:after {
+            content: attr(data-start);
+            position: absolute;
+            top: .4em;
+            left: .6em;
+            min-width: 1em;
+            padding: 0 .5em;
+            background-color: hsla(24, 20%, 50%, .4);
+            color: hsl(24, 20%, 95%);
+            font: bold 65%/1.5 sans-serif;
+            text-align: center;
+            vertical-align: .3em;
+            border-radius: 999px;
+            text-shadow: none;
+            box-shadow: 0 1px white;
+        }
+        
+        pre[data-line] .line-highlight[data-end]:after {
+            content: attr(data-end);
+            top: auto;
+            bottom: .4em;
+        }
+        
+        html body {
+            font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+            color: #333;
+            background-color: #fff;
+            overflow: initial;
+            box-sizing: border-box;
+            word-wrap: break-word
+        }
+        
+        html body>:first-child {
+            margin-top: 0
+        }
+        
+        html body h1,
+        html body h2,
+        html body h3,
+        html body h4,
+        html body h5,
+        html body h6 {
+            line-height: 1.2;
+            margin-top: 1em;
+            margin-bottom: 16px;
+            color: #000
+        }
+        
+        html body h1 {
+            font-size: 2.25em;
+            font-weight: 300;
+            padding-bottom: .3em
+        }
+        
+        html body h2 {
+            font-size: 1.75em;
+            font-weight: 400;
+            padding-bottom: .3em
+        }
+        
+        html body h3 {
+            font-size: 1.5em;
+            font-weight: 500
+        }
+        
+        html body h4 {
+            font-size: 1.25em;
+            font-weight: 600
+        }
+        
+        html body h5 {
+            font-size: 1.1em;
+            font-weight: 600
+        }
+        
+        html body h6 {
+            font-size: 1em;
+            font-weight: 600
+        }
+        
+        html body h1,
+        html body h2,
+        html body h3,
+        html body h4,
+        html body h5 {
+            font-weight: 600
+        }
+        
+        html body h5 {
+            font-size: 1em
+        }
+        
+        html body h6 {
+            color: #5c5c5c
+        }
+        
+        html body strong {
+            color: #000
+        }
+        
+        html body del {
+            color: #5c5c5c
+        }
+        
+        html body a:not([href]) {
+            color: inherit;
+            text-decoration: none
+        }
+        
+        html body a {
+            color: #08c;
+            text-decoration: none
+        }
+        
+        html body a:hover {
+            color: #00a3f5;
+            text-decoration: none
+        }
+        
+        html body img {
+            max-width: 100%
+        }
+        
+        html body>p {
+            margin-top: 0;
+            margin-bottom: 16px;
+            word-wrap: break-word
+        }
+        
+        html body>ul,
+        html body>ol {
+            margin-bottom: 16px
+        }
+        
+        html body ul,
+        html body ol {
+            padding-left: 2em
+        }
+        
+        html body ul.no-list,
+        html body ol.no-list {
+            padding: 0;
+            list-style-type: none
+        }
+        
+        html body ul ul,
+        html body ul ol,
+        html body ol ol,
+        html body ol ul {
+            margin-top: 0;
+            margin-bottom: 0
+        }
+        
+        html body li {
+            margin-bottom: 0
+        }
+        
+        html body li.task-list-item {
+            list-style: none
+        }
+        
+        html body li>p {
+            margin-top: 0;
+            margin-bottom: 0
+        }
+        
+        html body .task-list-item-checkbox {
+            margin: 0 .2em .25em -1.8em;
+            vertical-align: middle
+        }
+        
+        html body .task-list-item-checkbox:hover {
+            cursor: pointer
+        }
+        
+        html body blockquote {
+            margin: 16px 0;
+            font-size: inherit;
+            padding: 0 15px;
+            color: #5c5c5c;
+            background-color: #f0f0f0;
+            border-left: 4px solid #d6d6d6
+        }
+        
+        html body blockquote>:first-child {
+            margin-top: 0
+        }
+        
+        html body blockquote>:last-child {
+            margin-bottom: 0
+        }
+        
+        html body hr {
+            height: 4px;
+            margin: 32px 0;
+            background-color: #d6d6d6;
+            border: 0 none
+        }
+        
+        html body table {
+            margin: 10px 0 15px 0;
+            border-collapse: collapse;
+            border-spacing: 0;
+            display: block;
+            width: 100%;
+            overflow: auto;
+            word-break: normal;
+            word-break: keep-all
+        }
+        
+        html body table th {
+            font-weight: bold;
+            color: #000
+        }
+        
+        html body table td,
+        html body table th {
+            border: 1px solid #d6d6d6;
+            padding: 6px 13px
+        }
+        
+        html body dl {
+            padding: 0
+        }
+        
+        html body dl dt {
+            padding: 0;
+            margin-top: 16px;
+            font-size: 1em;
+            font-style: italic;
+            font-weight: bold
+        }
+        
+        html body dl dd {
+            padding: 0 16px;
+            margin-bottom: 16px
+        }
+        
+        html body code {
+            font-family: Menlo, Monaco, Consolas, 'Courier New', monospace;
+            font-size: .85em !important;
+            color: #000;
+            background-color: #f0f0f0;
+            border-radius: 3px;
+            padding: .2em 0
+        }
+        
+        html body code::before,
+        html body code::after {
+            letter-spacing: -0.2em;
+            content: "\00a0"
+        }
+        
+        html body pre>code {
+            padding: 0;
+            margin: 0;
+            font-size: .85em !important;
+            word-break: normal;
+            white-space: pre;
+            background: transparent;
+            border: 0
+        }
+        
+        html body .highlight {
+            margin-bottom: 16px
+        }
+        
+        html body .highlight pre,
+        html body pre {
+            padding: 1em;
+            overflow: auto;
+            font-size: .85em !important;
+            line-height: 1.45;
+            border: #d6d6d6;
+            border-radius: 3px
+        }
+        
+        html body .highlight pre {
+            margin-bottom: 0;
+            word-break: normal
+        }
+        
+        html body pre code,
+        html body pre tt {
+            display: inline;
+            max-width: initial;
+            padding: 0;
+            margin: 0;
+            overflow: initial;
+            line-height: inherit;
+            word-wrap: normal;
+            background-color: transparent;
+            border: 0
+        }
+        
+        html body pre code:before,
+        html body pre tt:before,
+        html body pre code:after,
+        html body pre tt:after {
+            content: normal
+        }
+        
+        html body p,
+        html body blockquote,
+        html body ul,
+        html body ol,
+        html body dl,
+        html body pre {
+            margin-top: 0;
+            margin-bottom: 16px
+        }
+        
+        html body kbd {
+            color: #000;
+            border: 1px solid #d6d6d6;
+            border-bottom: 2px solid #c7c7c7;
+            padding: 2px 4px;
+            background-color: #f0f0f0;
+            border-radius: 3px
+        }
+        
+        @media print {
+            html body {
+                background-color: #fff
+            }
+            html body h1,
+            html body h2,
+            html body h3,
+            html body h4,
+            html body h5,
+            html body h6 {
+                color: #000;
+                page-break-after: avoid
+            }
+            html body blockquote {
+                color: #5c5c5c
+            }
+            html body pre {
+                page-break-inside: avoid
+            }
+            html body table {
+                display: table
+            }
+            html body img {
+                display: block;
+                max-width: 100%;
+                max-height: 100%
+            }
+            html body pre,
+            html body code {
+                word-wrap: break-word;
+                white-space: pre
+            }
+        }
+        
+        .markdown-preview {
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box
+        }
+        
+        .markdown-preview .pagebreak,
+        .markdown-preview .newpage {
+            page-break-before: always
+        }
+        
+        .markdown-preview pre.line-numbers {
+            position: relative;
+            padding-left: 3.8em;
+            counter-reset: linenumber
+        }
+        
+        .markdown-preview pre.line-numbers>code {
+            position: relative
+        }
+        
+        .markdown-preview pre.line-numbers .line-numbers-rows {
+            position: absolute;
+            pointer-events: none;
+            top: 1em;
+            font-size: 100%;
+            left: 0;
+            width: 3em;
+            letter-spacing: -1px;
+            border-right: 1px solid #999;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none
+        }
+        
+        .markdown-preview pre.line-numbers .line-numbers-rows>span {
+            pointer-events: none;
+            display: block;
+            counter-increment: linenumber
+        }
+        
+        .markdown-preview pre.line-numbers .line-numbers-rows>span:before {
+            content: counter(linenumber);
+            color: #999;
+            display: block;
+            padding-right: .8em;
+            text-align: right
+        }
+        
+        .markdown-preview .mathjax-exps .MathJax_Display {
+            text-align: center !important
+        }
+        
+        .markdown-preview:not([for="preview"]) .code-chunk .btn-group {
+            display: none
+        }
+        
+        .markdown-preview:not([for="preview"]) .code-chunk .status {
+            display: none
+        }
+        
+        .markdown-preview:not([for="preview"]) .code-chunk .output-div {
+            margin-bottom: 16px
+        }
+        
+        .scrollbar-style::-webkit-scrollbar {
+            width: 8px
+        }
+        
+        .scrollbar-style::-webkit-scrollbar-track {
+            border-radius: 10px;
+            background-color: transparent
+        }
+        
+        .scrollbar-style::-webkit-scrollbar-thumb {
+            border-radius: 5px;
+            background-color: rgba(150, 150, 150, 0.66);
+            border: 4px solid rgba(150, 150, 150, 0.66);
+            background-clip: content-box
+        }
+        
+        html body[for="html-export"]:not([data-presentation-mode]) {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            margin: 0;
+            padding: 0;
+            overflow: auto
+        }
+        
+        html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview {
+            position: relative;
+            top: 0
+        }
+        
+        @media screen and (min-width:914px) {
+            html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview {
+                padding: 2em calc(50% - 457px + 2em)
+            }
+        }
+        
+        @media screen and (max-width:914px) {
+            html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview {
+                padding: 2em
+            }
+        }
+        
+        @media screen and (max-width:450px) {
+            html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview {
+                font-size: 14px !important;
+                padding: 1em
+            }
+        }
+        
+        @media print {
+            html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn {
+                display: none
+            }
+        }
+        
+        html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn {
+            position: fixed;
+            bottom: 8px;
+            left: 8px;
+            font-size: 28px;
+            cursor: pointer;
+            color: inherit;
+            z-index: 99;
+            width: 32px;
+            text-align: center;
+            opacity: .4
+        }
+        
+        html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn {
+            opacity: 1
+        }
+        
+        html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 300px;
+            height: 100%;
+            padding: 32px 0 48px 0;
+            font-size: 14px;
+            box-shadow: 0 0 4px rgba(150, 150, 150, 0.33);
+            box-sizing: border-box;
+            overflow: auto;
+            background-color: inherit
+        }
+        
+        html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar {
+            width: 8px
+        }
+        
+        html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track {
+            border-radius: 10px;
+            background-color: transparent
+        }
+        
+        html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb {
+            border-radius: 5px;
+            background-color: rgba(150, 150, 150, 0.66);
+            border: 4px solid rgba(150, 150, 150, 0.66);
+            background-clip: content-box
+        }
+        
+        html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a {
+            text-decoration: none
+        }
+        
+        html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul {
+            padding: 0 1.6em;
+            margin-top: .8em
+        }
+        
+        html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc li {
+            margin-bottom: .8em
+        }
+        
+        html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul {
+            list-style-type: none
+        }
+        
+        html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview {
+            left: 300px;
+            width: calc(100% - 300px);
+            padding: 2em calc(50% - 457px - 150px);
+            margin: 0;
+            box-sizing: border-box
+        }
+        
+        @media screen and (max-width:1274px) {
+            html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview {
+                padding: 2em
+            }
+        }
+        
+        @media screen and (max-width:450px) {
+            html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview {
+                width: 100%
+            }
+        }
+        
+        html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview {
+            left: 50%;
+            transform: translateX(-50%)
+        }
+        
+        html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc {
+            display: none
+        }
+        /* Please visit the URL below for more information: */
+        /*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+    </style>
+</head>
+
+<body for="html-export">
+    <div class="mume markdown-preview  ">
+        <h1 class="mume-header" id="%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E6%94%BB%E7%95%A5%E7%AC%94%E8%AE%B0">&#x540E;&#x7AEF;&#x5F00;&#x53D1;&#x653B;&#x7565;(&#x7B14;&#x8BB0;)</h1>
+
+        <hr>
+        <h2 class="mume-header" id="%E4%B8%AD%E6%96%87%E6%96%87%E6%A1%88%E6%8E%92%E7%89%88%E6%8C%87%E5%8C%97httpsgithubcomsparanoidchinese-copywriting-guidelinesblobmasterreadmezh-cnmd"><a href="https://github.com/sparanoid/chinese-copywriting-guidelines/blob/master/README.zh-CN.md">&#x4E2D;&#x6587;&#x6587;&#x6848;&#x6392;&#x7248;&#x6307;&#x5317;</a></h2>
+
+        <hr>
+        <h2 class="mume-header" id="markdown-%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95httpsgithubcomyounghzmarkdown"><a href="https://github.com/younghz/Markdown">Markdown &#x57FA;&#x672C;&#x8BED;&#x6CD5;</a></h2>
+
+        <hr>
+        <h1 class="mume-header" id="golang-%E6%94%BB%E7%95%A5">Golang &#x653B;&#x7565;</h1>
+
+        <ul>
+            <li>
+                <h2><a href="GO/%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B.html">&#x57FA;&#x672C;&#x6570;&#x636E;&#x7C7B;&#x578B;</a></h2>
+            </li>
+            <li>
+                <h2><a href="GO/%E6%9D%A1%E4%BB%B6%E8%AF%AD%E5%8F%A5%E4%B8%8E%E5%BE%AA%E7%8E%AF.html">&#x6761;&#x4EF6;&#x8BED;&#x53E5;&#x548C;&#x5FAA;&#x73AF;</a></h2>
+            </li>
+            <li>
+                <h2>&#x53CD;&#x5C04;&#x4E0E;&#x7C7B;&#x578B;&#x65AD;&#x8A00;</h2>
+            </li>
+            <li>
+                <h2><a href="GO/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C.html">&#x6587;&#x4EF6;&#x64CD;&#x4F5C;</a></h2>
+            </li>
+            <li>
+                <h2><a href="GO/%E5%B9%B6%E5%8F%91.html">&#x5E76;&#x53D1;</a></h2>
+                <ul>
+                    <li>
+                        <h4>&#x8BFB;&#x5199;&#x9501;</h4>
+                    </li>
+                    <li>
+                        <h4>&#x4E92;&#x65A5;&#x9501;</h4>
+                    </li>
+                    <li>
+                        <h4>&#x539F;&#x5B50;&#x64CD;&#x4F5C;</h4>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <h2><a href="GO/%E7%BB%83%E4%B9%A0.html">&#x7EC3;&#x4E60;&#xFF1A;</a></h2>
+                <ul>
+                    <li>
+                        <h3><a href="GO/%E7%94%9F%E4%BA%A7%E8%80%85%E6%B6%88%E8%B4%B9%E8%80%85.go">&#x5B9E;&#x73B0;&#x751F;&#x4EA7;&#x8005;&#x6D88;&#x8D39;&#x8005;&#x6A21;&#x578B;</a></h3>
+                    </li>
+                    <li>
+                        <h3><a href="GO/%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84%E9%98%9F%E5%88%97.go">&#x5B9E;&#x73B0;&#x4E00;&#x4E2A;&#x7EBF;&#x7A0B;&#x5B89;&#x5168;&#x7684;&#x961F;&#x5217;</a></h3>
+                    </li>
+                    <li>
+                        <h3><a href="GO/%E6%97%A0%E9%94%81%E9%98%9F%E5%88%97.go">&#x5B9E;&#x73B0;&#x4E00;&#x4E2A;&#x65E0;&#x9501;&#x961F;&#x5217;</a></h3>
+                    </li>
+                    <li>
+                        <h3>&#x5B9E;&#x73B0;&#x4E00;&#x4E2A;&#x7EBF;&#x7A0B;&#x6C60;</h3>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <h2><a href="GO/GMP%E8%B0%83%E5%BA%A6%E6%A8%A1%E5%9E%8B.html">GMP &#x8C03;&#x5EA6;&#x6A21;&#x578B;</a></h2>
+            </li>
+            <li>
+                <h2><a href="GO/database.html">&#x8FDE;&#x63A5;&#x6570;&#x636E;&#x5E93;</a></h2>
+            </li>
+            <li>
+                <h2>Web &#x5F00;&#x53D1;</h2>
+                <ul>
+                    <li>
+                        <h3><a href="GO/Go%20Web%E5%BC%80%E5%8F%91/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B.html">Go &#x7F51;&#x7EDC;&#x7F16;&#x7A0B;</a></h3>
+                    </li>
+                    <li>
+                        <h3><a href="GO/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F.html">&#x6B63;&#x5219;&#x8868;&#x8FBE;&#x5F0F;</a></h3>
+                    </li>
+                    <li>
+                        <h3>GraphQL</h3>
+                    </li>
+                    <li>
+                        <h3>Web &#x6846;&#x67B6;</h3>
+                        <ul>
+                            <li>
+                                <h4>Gin &#x6846;&#x67B6;</h4>
+                            </li>
+                            <li>
+                                <h4>Beego &#x6846;&#x67B6;</h4>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <h2>Echarts</h2>
+            </li>
+            <li>
+                <h2>logrus</h2>
+            </li>
+            <li>
+                <h2><a href="GO/%E4%B8%89%E6%96%B9%E5%BA%93/gomail.html">gomail</a></h2>
+            </li>
+            <li>
+                <h2><a href="GO/%E4%B8%89%E6%96%B9%E5%BA%93/walk.html">Gui &#x7F16;&#x7A0B;(walk)</a></h2>
+            </li>
+            <li>
+                <h2><a href="GO/%E4%B8%89%E6%96%B9%E5%BA%93/robotgo.html">&#x6A21;&#x62DF;&#x952E;&#x9F20;&#x64CD;&#x4F5C;</a></h2>
+            </li>
+        </ul>
+        <hr>
+        <h1 class="mume-header" id="c-%E6%94%BB%E7%95%A5">C++ &#x653B;&#x7565;</h1>
+
+        <ul>
+            <li>
+                <h2>STL</h2>
+                <ul>
+                    <li>
+                        <h3><a href="C++/STL/vector/vector%E5%88%9B%E5%BB%BA%E5%92%8C%E4%BD%BF%E7%94%A8.html">vector</a></h3>
+                    </li>
+                    <li>
+                        <h3>list</h3>
+                    </li>
+                    <li>
+                        <h3>stack</h3>
+                    </li>
+                    <li>
+                        <h3>queue</h3>
+                    </li>
+                    <li>
+                        <h3><a href="C++/STL/Set/set.html">set</a></h3>
+                    </li>
+                    <li>
+                        <h3><a href="C++/STL/map/map.html">map</a></h3>
+                    </li>
+                    <li>
+                        <h3>algorithm</h3>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <h2>&#x5E76;&#x53D1;</h2>
+            </li>
+            <li>
+                <h2>&#x5176;&#x5B83;</h2>
+                <ul>
+                    <li>
+                        <h3><a href="C++/%E5%85%B6%E5%AE%83/%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%92%E5%BA%8F%E8%A7%84%E5%88%99.cpp">&#x5B9E;&#x73B0;&#x81EA;&#x5B9A;&#x4E49;&#x6392;&#x5E8F;&#x89C4;&#x5219;</a></h3>
+                    </li>
+                    <li>
+                        <h3><a href="C++/%E5%85%B6%E5%AE%83/%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%95%B4%E6%95%B0%E8%BD%AC%E6%8D%A2.html">&#x5B57;&#x7B26;&#x4E32;&#x4E0E;&#x6574;&#x6570;&#x8F6C;&#x6362;</a></h3>
+                    </li>
+                    <li>
+                        <h3><a href="C++/%E5%85%B6%E5%AE%83/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98.html">&#x5E38;&#x89C1;&#x95EE;&#x9898;</a></h3>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <hr>
+        <h1 class="mume-header" id="python-%E6%94%BB%E7%95%A5">Python &#x653B;&#x7565;</h1>
+
+        <ul>
+            <li>
+                <h2><a href="Python/%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B.html">&#x57FA;&#x672C;&#x6570;&#x636E;&#x7C7B;&#x578B;</a></h2>
+            </li>
+            <li>
+                <h2><a href="Python/%E7%94%9F%E6%88%90%E5%99%A8.html">&#x751F;&#x6210;&#x5668;</a></h2>
+            </li>
+            <li>
+                <h2><a href="Python/Turtle%E5%BA%93.html">Turtle &#x5E93;</a></h2>
+            </li>
+            <li>
+                <h2><a href="Python/%E5%B9%B6%E5%8F%91.html">&#x5E76;&#x53D1;</a></h2>
+            </li>
+            <li>
+                <h2>&#x4E09;&#x65B9;&#x5E93;</h2>
+                <ul>
+                    <li>
+                        <h3><a href="https://github.com/fxsjy/jieba">jieba</a></h3>
+                    </li>
+                    <li>
+                        <h3><a href="Python/%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%93/wordcloud.html">wordcloud</a></h3>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <h2>&#x8FDE;&#x63A5;&#x6570;&#x636E;&#x5E93;</h2>
+            </li>
+            <li>
+                <h2>Web &#x5F00;&#x53D1;</h2>
+            </li>
+            <li>
+                <h2>&#x722C;&#x866B;</h2>
+                <ul>
+                    <li>
+                        <h3><a href="Python/requests.html">requests &#x5E93;</a></h3>
+                    </li>
+                    <li>
+                        <h3><a href="Python/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F.html">&#x6B63;&#x5219;&#x8868;&#x8FBE;&#x5F0F;</a></h3>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <h2>Web &#x6846;&#x67B6;</h2>
+                <ul>
+                    <li>
+                        <h3>Django</h3>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <h2>&#x722C;&#x866B;&#x6846;&#x67B6;</h2>
+                <ul>
+                    <li>
+                        <h3>Scrapy</h3>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <hr>
+        <h1 class="mume-header" id="java-%E6%94%BB%E7%95%A5">Java &#x653B;&#x7565;</h1>
+
+        <ul>
+            <li>TODO</li>
+        </ul>
+        <hr>
+        <h1 class="mume-header" id="%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95">&#x6570;&#x636E;&#x7ED3;&#x6784;&#x4E0E;&#x7B97;&#x6CD5;</h1>
+
+        <ul>
+            <li>
+                <h2>&#x57FA;&#x672C;&#x6570;&#x636E;&#x7ED3;&#x6784;</h2>
+                <ul>
+                    <li><a href="%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%93%BE%E8%A1%A8/%E9%93%BE%E8%A1%A8.html">&#x94FE;&#x8868;</a></li>
+                    <li><a href="%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%A0%88/%E6%A0%88.html">&#x6808;</a></li>
+                    <li>&#x961F;&#x5217;</li>
+                    <li><a href="%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97.html">&#x4F18;&#x5148;&#x961F;&#x5217;</a></li>
+                    <li><a href="%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%A0%91/%E6%A0%91.html">&#x6811;</a></li>
+                    <li>&#x56FE;</li>
+                    <li><a href="%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%93%88%E5%B8%8C%E8%A1%A8/%E5%93%88%E5%B8%8C%E8%A1%A8.html">&#x54C8;&#x5E0C;&#x8868;</a></li>
+                    <li><a href="%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%B9%B6%E6%9F%A5%E9%9B%86/%E5%B9%B6%E6%9F%A5%E9%9B%86.html">&#x5E76;&#x67E5;&#x96C6;</a></li>
+                    <li><a href="%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E8%AE%BE%E8%AE%A1/%E8%AE%BE%E8%AE%A1.html">&#x8BBE;&#x8BA1;</a></li>
+                    <li>Trie &#x6811;</li>
+                    <li>Bitmap</li>
+                </ul>
+            </li>
+            <li>
+                <h2>&#x7B97;&#x6CD5;</h2>
+                <ul>
+                    <li><a href="%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%89%8D%E7%BC%80%E5%92%8C/%E5%89%8D%E7%BC%80%E5%92%8C.html">&#x524D;&#x7F00;&#x548C;</a></li>
+                    <li><a href="%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/%E6%8E%92%E5%BA%8F.html">&#x6392;&#x5E8F;</a></li>
+                    <li><a href="%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92.html">&#x52A8;&#x6001;&#x89C4;&#x5212;</a></li>
+                    <li><a href="%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2.html">&#x6DF1;&#x5EA6;&#x4F18;&#x5148;&#x641C;&#x7D22;(DFS)</a></li>
+                    <li><a href="%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2/%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2.html">&#x5E7F;&#x5EA6;&#x4F18;&#x5148;&#x641C;&#x7D22;(BFS)</a></li>
+                    <li><a href="%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E8%B4%AA%E5%BF%83/%E8%B4%AA%E5%BF%83.html">&#x8D2A;&#x5FC3;&#x7B97;&#x6CD5;</a></li>
+                    <li><a href="%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE.html">&#x4E8C;&#x5206;&#x67E5;&#x627E;</a></li>
+                    <li><a href="%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%8F%8C%E6%8C%87%E9%92%88/%E5%8F%8C%E6%8C%87%E9%92%88.html">&#x53CC;&#x6307;&#x9488;</a></li>
+                    <li><a href="%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95.html">&#x56DE;&#x6EAF;&#x7B97;&#x6CD5;</a></li>
+                    <li><a href="%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%BD%8D%E8%BF%90%E7%AE%97/%E4%BD%8D%E8%BF%90%E7%AE%97.html">&#x4F4D;&#x8FD0;&#x7B97;</a></li>
+                    <li><a href="%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3.html">&#x6ED1;&#x52A8;&#x7A97;&#x53E3;</a></li>
+                    <li><a href="%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%88%86%E6%B2%BB/%E5%88%86%E6%B2%BB.html">&#x5206;&#x6CBB;</a></li>
+                </ul>
+            </li>
+            <li>
+                <h2><a href="%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%88%86%E6%B2%BB/%E5%88%86%E6%B2%BB.html">&#x5176;&#x5B83;</a></h2>
+            </li>
+            <li>
+                <h2>&#x53C2;&#x8003;</h2>
+                <ul>
+                    <li>
+                        <h4><a href="https://leetcode-cn.com/problemset/all/">Leetcode</a></h4>
+                    </li>
+                    <li>
+                        <h4><a href="https://mp.weixin.qq.com/s/uA2suoVykENmCQcKFMOSuQ">&#x4E8C;&#x5206;&#x67E5;&#x627E;&#x7B97;&#x6CD5;&#x8BE6;&#x89E3;</a></h4>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <hr>
+        <h1 class="mume-header" id="linux-%E6%94%BB%E7%95%A5">Linux &#x653B;&#x7565;</h1>
+
+        <ul>
+            <li>TODO</li>
+        </ul>
+        <hr>
+        <h1 class="mume-header" id="%E6%95%B0%E6%8D%AE%E5%BA%93">&#x6570;&#x636E;&#x5E93;</h1>
+
+        <ul>
+            <li>
+                <h2><a href="%E6%95%B0%E6%8D%AE%E5%BA%93/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86.html">&#x6570;&#x636E;&#x5E93;&#x57FA;&#x672C;&#x539F;&#x7406;</a></h2>
+                <ul>
+                    <li>
+                        <h3>SQL &#x57FA;&#x672C;&#x8BED;&#x6CD5;</h3>
+                    </li>
+                    <li>
+                        <h3>&#x4E8B;&#x52A1;&#x548C; ACID</h3>
+                    </li>
+                    <li>
+                        <h3>&#x5E76;&#x53D1;</h3>
+                    </li>
+                    <li>
+                        <h3>&#x5C01;&#x9501;&#x534F;&#x8BAE;</h3>
+                    </li>
+                    <li>
+                        <h3>&#x9694;&#x79BB;&#x7EA7;&#x522B;</h3>
+                    </li>
+                    <li>
+                        <h3>&#x591A;&#x7248;&#x672C;&#x5E76;&#x53D1;&#x63A7;&#x5236;</h3>
+                    </li>
+                    <li>
+                        <h3>SQL &#x6CE8;&#x5165;</h3>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <h2><a href="%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/MySQL.html">MySQL</a></h2>
+                <ul>
+                    <li>
+                        <h3>&#x6570;&#x636E;&#x7C7B;&#x578B;</h3>
+                    </li>
+                    <li>
+                        <h3>&#x7D22;&#x5F15;</h3>
+                        <ul>
+                            <li><strong>B &#x6811;&#x548C; B+ &#x6811;</strong></li>
+                            <li><strong>MySQL &#x7D22;&#x5F15;</strong></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <h3>&#x67E5;&#x8BE2;&#x4F18;&#x5316;</h3>
+                    </li>
+                    <li>
+                        <h3>&#x5B58;&#x50A8;&#x5F15;&#x64CE;</h3>
+                        <ul>
+                            <li><strong>InnoDB</strong></li>
+                            <li><strong>MyISAM</strong></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <h3>&#x4E3B;&#x4ECE;&#x590D;&#x5236;</h3>
+                    </li>
+                    <li>
+                        <h3>&#x8BFB;&#x5199;&#x5206;&#x79BB;</h3>
+                    </li>
+                    <li>
+                        <h3>&#x7D22;&#x5F15;&#x5931;&#x6548;</h3>
+                        <ul>
+                            <li>
+                                <h3>&#x6700;&#x5DE6;&#x524D;&#x7F00;&#x539F;&#x5219;</h3>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <hr>
+        <h1 class="mume-header" id="%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F">&#x64CD;&#x4F5C;&#x7CFB;&#x7EDF;</h1>
+
+        <ul>
+            <li>
+                <h2><a href="%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%A6%82%E8%BF%B0.html">&#x6982;&#x8FF0;</a></h2>
+                <ul>
+                    <li>
+                        <h3>&#x5E76;&#x53D1;&#x4E0E;&#x5E76;&#x884C;</h3>
+                    </li>
+                    <li>
+                        <h3>&#x5F02;&#x6B65;</h3>
+                    </li>
+                    <li>
+                        <h3>&#x7528;&#x6237;&#x6001;&#x548C;&#x5185;&#x6838;&#x6001;</h3>
+                    </li>
+                    <li>
+                        <h3>&#x4E2D;&#x65AD;</h3>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <h2><a href="%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B.html">&#x8FDB;&#x7A0B;&#x4E0E;&#x7EBF;&#x7A0B;</a></h2>
+                <ul>
+                    <li>
+                        <h3>&#x8FDB;&#x7A0B;&#x95F4;&#x901A;&#x4FE1;</h3>
+                    </li>
+                    <li>
+                        <h3>&#x8C03;&#x5EA6;</h3>
+                    </li>
+                    <li>
+                        <h3>&#x7ECF;&#x5178; IPC &#x95EE;&#x9898;</h3>
+                        <ul>
+                            <li>
+                                <h4>&#x54F2;&#x5B66;&#x5BB6;&#x8FDB;&#x9910;&#x95EE;&#x9898;</h4>
+                            </li>
+                            <li>
+                                <h4>&#x8BFB;-&#x5199;&#x8005;&#x95EE;&#x9898;</h4>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <h2><a href="%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86.html">&#x5185;&#x5B58;&#x7BA1;&#x7406;</a></h2>
+                <ul>
+                    <li>
+                        <h3>&#x7269;&#x7406;&#x5185;&#x5B58;&#x548C;&#x865A;&#x62DF;&#x5185;&#x5B58;</h3>
+                    </li>
+                    <li>
+                        <h3>&#x5206;&#x9875;&#x548C;&#x5206;&#x6BB5;&#x673A;&#x5236;</h3>
+                    </li>
+                    <li>
+                        <h3>&#x9875;&#x9762;&#x7F6E;&#x6362;&#x7B97;&#x6CD5;</h3>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <h2><a href="%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%AD%BB%E9%94%81.html">&#x6B7B;&#x9501;</a></h2>
+                <ul>
+                    <li>
+                        <h3>&#x6B7B;&#x9501;&#x53D1;&#x751F;&#x6761;&#x4EF6;</h3>
+                    </li>
+                    <li>
+                        <h3>&#x89E3;&#x51B3;&#x65B9;&#x6CD5;</h3>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <h2>&#x53C2;&#x8003;</h2>
+                <ul>
+                    <li>
+                        <h4>&#x73B0;&#x4EE3;&#x64CD;&#x4F5C;&#x7CFB;&#x7EDF;&#xFF08;&#x539F;&#x4E66;&#x7B2C; 4 &#x7248;&#xFF09;/&#xFF08;&#x8377;&#xFF09;Andrew S. Tanenbaum&#xFF0C;&#xFF08;&#x8377;&#xFF09;Herbert Bos &#x8457;&#xFF1B;&#x9648;&#x5411;&#x7FA4;&#x7B49;&#x8BD1;.
+                            &#x4E00;&#x5317;&#x4EAC;&#xFF1A;&#x673A;&#x68B0;&#x5DE5;&#x4E1A;&#x51FA;&#x7248;&#x793E;&#xFF0C;2017.7
+                        </h4>
+                    </li>
+                    <li>
+                        <h4><a href="https://github.com/CyC2018/CS-Notes/blob/master/notes/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%20-%20%E7%9B%AE%E5%BD%95.md">&#x8BA1;&#x7B97;&#x673A;&#x64CD;&#x4F5C;&#x7CFB;&#x7EDF;</a></h4>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <h2 class="mume-header" id></h2>
+
+        <hr>
+        <h1 class="mume-header" id="%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C">&#x8BA1;&#x7B97;&#x673A;&#x7F51;&#x7EDC;</h1>
+
+        <ul>
+            <li>
+                <h2><a href="%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E6%A6%82%E8%BF%B0.html">&#x6982;&#x8FF0;</a></h2>
+            </li>
+            <li>
+                <h2><a href="%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E9%93%BE%E8%B7%AF%E5%B1%82.html">&#x94FE;&#x8DEF;&#x5C42;</a></h2>
+            </li>
+            <li>
+                <h2><a href="%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%B1%82.html">&#x7F51;&#x7EDC;&#x5C42;</a></h2>
+            </li>
+            <li>
+                <h2><a href="%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E4%BC%A0%E8%BE%93%E5%B1%82.html">&#x4F20;&#x8F93;&#x5C42;</a></h2>
+            </li>
+            <li>
+                <h2><a href="%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E5%BA%94%E7%94%A8%E5%B1%82.html">&#x5E94;&#x7528;&#x5C42;</a></h2>
+            </li>
+            <li>
+                <h2><a href="%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/HTTP.html">HTTP &#x4E0E; I/O</a></h2>
+            </li>
+            <li>
+                <h2>&#x53C2;&#x8003;</h2>
+                <ul>
+                    <li>
+                        <h4>JamesF.Kurose, KeithW.Ross, &#x5E93;&#x7F57;&#x65AF;, &#x7B49;. &#x8BA1;&#x7B97;&#x673A;&#x7F51;&#x7EDC;: &#x81EA;&#x9876;&#x5411;&#x4E0B;&#x65B9;&#x6CD5; [M]. &#x673A;&#x68B0;&#x5DE5;&#x4E1A;&#x51FA;&#x7248;&#x793E;, 2014.</h4>
+                    </li>
+                    <li>
+                        <h4>W.RichardStevens. TCP/IP &#x8BE6;&#x89E3;. &#x5377; 1, &#x534F;&#x8BAE; [M]. &#x673A;&#x68B0;&#x5DE5;&#x4E1A;&#x51FA;&#x7248;&#x793E;, 2006.</h4>
+                    </li>
+                    <li>
+                        <h4><a href="https://github.com/CyC2018/CS-Notes/blob/master/notes/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20-%20%E7%9B%AE%E5%BD%95.md">&#x8BA1;&#x7B97;&#x673A;&#x7F51;&#x7EDC;</a></h4>
+                    </li>
+                    <li>
+                        <h4><a href="https://www.nowcoder.com/discuss/468385?source_id=profile_create_nctrack&amp;channel=-1">&#x9762;&#x8BD5;&#x9898;&#x4E4B;&#x8BA1;&#x7B97;&#x673A;&#x7F51;&#x7EDC;</a></h4>
+                    </li>
+                    <li>
+                        <h4><a href="https://leetcode-cn.com/circle/discuss/UrcaDQ/">&#x7F51;&#x5740;&#x8BBF;&#x95EE;&#x8FC7;&#x7A0B;&#x8BE6;&#x89E3;</a></h4>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <hr>
+        <h1 class="mume-header" id="%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80">&#x6C47;&#x7F16;&#x8BED;&#x8A00;</h1>
+
+        <ul>
+            <li>TODO</li>
+        </ul>
+        <hr>
+        <h1 class="mume-header" id="%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86">&#x7F16;&#x8BD1;&#x539F;&#x7406;</h1>
+
+        <ul>
+            <li>TODO</li>
+        </ul>
+        <hr>
+        <h1 class="mume-header" id="%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%8E%E9%9B%86%E7%BE%A4%E9%9B%86%E7%BE%A4html"><a href="%E9%9B%86%E7%BE%A4.html">&#x5206;&#x5E03;&#x5F0F;&#x4E0E;&#x96C6;&#x7FA4;</a></h1>
+
+        <hr>
+        <h1 class="mume-header" id="%E4%B8%AD%E9%97%B4%E4%BB%B6">&#x4E2D;&#x95F4;&#x4EF6;</h1>
+
+        <ul>
+            <li>
+                <h2>&#x6D88;&#x606F;&#x961F;&#x5217;</h2>
+            </li>
+            <li>
+                <h2>&#x7F13;&#x5B58;</h2>
+                <ul>
+                    <li>
+                        <h3><a href="%E7%BC%93%E5%AD%98/Redis/Redis.html">Redis</a></h3>
+                        <ul>
+                            <li>
+                                <h4>&#x6570;&#x636E;&#x7C7B;&#x578B;</h4>
+                            </li>
+                            <li>
+                                <h4>&#x8BED;&#x6CD5;</h4>
+                            </li>
+                            <li>
+                                <h4>&#x6301;&#x4E45;&#x5316;</h4>
+                            </li>
+                            <li>
+                                <h4>&#x7F13;&#x5B58;&#x95EE;&#x9898;</h4>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <h2>Memcached</h2>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <hr>
+        <h1 class="mume-header" id="%E5%AE%B9%E5%99%A8%E6%8A%80%E6%9C%AF">&#x5BB9;&#x5668;&#x6280;&#x672F;</h1>
+
+        <ul>
+            <li>
+                <h2>Docker</h2>
+                <ul>
+                    <li>TODO</li>
+                </ul>
+            </li>
+        </ul>
+
+    </div>
+
+
+    <script language="javascript">
+        var pic = "../picture/6.jpg"
+        document.write('<style>body{background:url(' + pic + '); background-size: 100% 100%;background-repeat: no-repeat;background-attachment: fixed;}</style>');
+    </script>
+
+
+
+</body>
+
+</html>

@@ -7,10 +7,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func ToFindPassword(ctx *gin.Context) {
-	ctx.HTML(http.StatusOK, "findPassword.html", nil)
-}
-
 func FindPassword(ctx *gin.Context) {
 	userName := ctx.PostForm("userName")
 	userInfo := &Users.User{

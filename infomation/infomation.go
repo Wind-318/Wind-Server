@@ -43,14 +43,13 @@ var MySQLInfo string = ""
 var SystemUserAccount = ""
 
 // 图片数量
-var PicMaxNum = 18
+var PicMaxNum = 248
 
 // 图片文件夹路径
-var PicDir = "pic/"
+var PicDir = "picture/"
 
-var PicFormat = ".png"
-
-var MusicDir = ""
+// 图片后缀
+var PicFormat = ".jpg"
 
 var SenderAccount = ""
 

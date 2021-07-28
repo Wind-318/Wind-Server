@@ -7,14 +7,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func ToRegister(ctx *gin.Context) {
-	ctx.HTML(http.StatusOK, "register.html", nil)
-}
-
-func ToVerificationCode(ctx *gin.Context) {
-	ctx.HTML(http.StatusOK, "verificationCode.html", nil)
-}
-
 func Register(ctx *gin.Context) {
 	userName := ctx.PostForm("userName")
 	passWord := ctx.PostForm("passWord")

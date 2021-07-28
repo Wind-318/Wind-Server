@@ -7,10 +7,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func ToChangePassword(ctx *gin.Context) {
-	ctx.HTML(http.StatusOK, "changePassword.html", nil)
-}
-
 func ChangePassWord(ctx *gin.Context) {
 	userName := ctx.PostForm("userName")
 	newPassword := ctx.PostForm("newPassword")
