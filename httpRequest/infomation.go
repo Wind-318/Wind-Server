@@ -1,7 +1,10 @@
 package httpRequest
 
 import (
+<<<<<<< HEAD
 	"GoProject/spider/spiderMail"
+=======
+>>>>>>> 589e205... 简易web版
 	"crypto/rand"
 	"log"
 	"math/big"
@@ -23,12 +26,16 @@ var userAgents []string = []string{
 	"Mozilla/5.0 (Windows NT 6.1; rv:2.0.1) Gecko/20100101 Firefox/4.0.1"}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 var MySQLInfo string = 数据库账号密码
 
 var CliConnect string = 服务器 IP 
 =======
 var MySQLInfo string = "root:密码@tcp(localhost:3306)/数据库名称"
 >>>>>>> 995f18e... 更新
+=======
+var MySQLInfo string = "root:密码@tcp(localhost:3306)/表名"
+>>>>>>> 589e205... 简易web版
 
 func GetRandomUserAgent() string {
 	n, err := rand.Int(rand.Reader, big.NewInt(int64(len(userAgents))))
@@ -37,6 +44,7 @@ func GetRandomUserAgent() string {
 	}
 	return userAgents[n.Int64()]
 }
+<<<<<<< HEAD
 
 func GetNewMail(userMailAccount string) *spiderMail.Mail {
 	return &spiderMail.Mail{
@@ -47,3 +55,5 @@ func GetNewMail(userMailAccount string) *spiderMail.Mail {
 		ServerPort:     587,
 	}
 }
+=======
+>>>>>>> 589e205... 简易web版

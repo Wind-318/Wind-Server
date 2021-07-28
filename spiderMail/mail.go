@@ -6,7 +6,7 @@ import (
 	"github.com/go-gomail/gomail"
 )
 
-type Mail struct {
+type mail struct {
 	// 发送者邮箱
 	SenderAccount string
 
@@ -26,8 +26,18 @@ type Mail struct {
 	Attchs []string
 }
 
+func GetNewMail(userMailAccount string) *mail {
+	return &mail{
+		SenderAccount:  "发送",
+		SenderPassword: "发送",
+		Receiver:       userMailAccount,
+		ServerAddr:     "smtp.office365.com",
+		ServerPort:     587,
+	}
+}
+
 // 发送邮件，需要标题和正文
-func (mail *Mail) Send(title, text string, mess *gomail.Message) {
+func (mail *mail) Send(title, text string, mess *gomail.Message) {
 	// 设置发送方
 	mess.SetHeader("From", mail.SenderAccount)
 	// 设置接收方

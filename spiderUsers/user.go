@@ -1,7 +1,12 @@
 package spiderUsers
 
 import (
+<<<<<<< HEAD:spiderUsers/user.go
 	"GoProject/spider/httpRequest"
+=======
+	"1/Mail"
+	"1/httpRequest"
+>>>>>>> 589e205... 简易web版:Users/user.go
 	"crypto/sha512"
 	"encoding/hex"
 	"fmt"
@@ -122,7 +127,11 @@ func (user *User) ChangePassword(newPassword string) string {
 // 发送验证码
 func (user *User) Verification(ReceiverAccount string) {
 	// 接收者邮箱
+<<<<<<< HEAD:spiderUsers/user.go
 	mail := httpRequest.GetNewMail(ReceiverAccount)
+=======
+	mail := Mail.GetNewMail(user.MailAccount)
+>>>>>>> 589e205... 简易web版:Users/user.go
 
 	verificationCode := user.sendCode()
 
