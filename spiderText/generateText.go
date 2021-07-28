@@ -137,8 +137,36 @@ func SelectFirst10() string {
 	for index := range urls {
 		text += `<h2>
 		<a target="_blank" href="` + urls[index] + `">` + titles[index] + `</a>
-		<h2>`
+		<h2><br>`
 	}
+
+	return text
+}
+
+func SelectFirst10WithPicture(picNum string) string {
+	rwmutex.RLock()
+
+	con, _ := redis.Dial("tcp", "127.0.0.1:6379")
+	titles, err := redis.Strings(con.Do("LRANGE", "listtitle", 0, 9))
+	if err != nil {
+		return ""
+	}
+	urls, err := redis.Strings(con.Do("LRANGE", "listurl", 0, 9))
+
+	rwmutex.RUnlock()
+
+	if err != nil {
+		return ""
+	}
+	text := ``
+
+	for index := range urls {
+		text += `<h2>
+		<a target="_blank" href="` + urls[index] + `">` + titles[index] + `</a>
+		<h2><br>`
+	}
+
+	text += `<br><img src="` + picNum + `.png" alt="My image" />`
 
 	return text
 }
