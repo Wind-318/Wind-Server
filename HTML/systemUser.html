@@ -7,28 +7,66 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>主菜单</title>
+    <script src="../js/sakura.js"></script>
+
 </head>
 
 <body>
+    <br><br><br><br><br><br><br>
+    <center>
+        <h1>功能</h1>
+    </center>
     <form action="/sendStock" method="get">
-        <input type="submit" value="订阅一次股票信息">
+        <center>
+            <b>
+                <input type="submit" value="订阅一次股票信息">
+            </b>
+        </center>
     </form>
+    <br>
 
     <form action="/upload" method="post" enctype="multipart/form-data">
-        <input type="file" name="file" multiple="multiple"><br>
-        <input type="submit" value="提交">
+        <center>
+            <b>
+                <input type="file" name="file" multiple="multiple">
+            </b>
+        </center>
+        <br>
+        <center>
+            <b>
+                <input type="submit" value="提交">
+            </b>
+        </center>
+    </form>
+    <form action="/" method="get">
+        <center>
+            <b>
+                <input type="submit" value="退出登录">
+            </b>
+        </center>
+    </form>
+    <form action="/TochangePassword" method="get">
+        <center>
+            <b>
+                <input type="submit" value="修改密码">
+            </b>
+        </center>
     </form>
 
-    <a href="\" target="_self">退出账号</a>
-    <br>
-    <a href="/toChangePassword" target="_self">
-        修改密码
-    </a>
+    <script language="javascript">
+        var id = Math.floor(Math.random() * (248) + 1);
+        var pic = "../picture/" + id.toString() + ".jpg";
+        document.write('<style>body{background:url(' + pic + '); background-size: 100% 100%;background-repeat: no-repeat;background-attachment: fixed;}</style>');
+    </script>
 
-    <br><br><br><br>
-    <audio autoplay="true" controls="controls" loop="loop" preload="auto" src=""> 
-        你的浏览器版本太低，不支持audio标签 
-    </audio>
+    <center>
+        <b>
+            <audio autoplay="autoplay" controls="controls" loop="loop" preload="auto" src="../music/1.mp3">
+                你的浏览器版本太低，不支持audio标签
+            </audio>
+        </b>
+    </center>
+
 </body>
 
 </html>

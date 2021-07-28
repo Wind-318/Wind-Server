@@ -1,4 +1,4 @@
-<!-- 登录页面（默认进入的页面） -->
+﻿<!-- 登录页面（默认进入的页面） -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,25 +7,67 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>信息订阅平台</title>
+    <link rel="stylesheet" type="text/css" href="../css/a.css">
+    <link rel="stylesheet" type="text/css" href="../css/b.css">
+    <link rel="stylesheet" type="text/css" href="../css/c.css">
+
+    <script src="../js/sakura.js"></script>
 </head>
 
-<body>
-    <h1>信息订阅平台</h1>
-    <br>
-    <br>
-    <form action="/login" method="post">
-        邮箱：<input type="text" name="userName">
-        <br>&nbsp&nbsp 密码：
-        <input type="password" name="passWord">
-        <br>
-        <input type="checkbox">记住我
-        <br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
 
-        <input type="submit" value="登录"> &nbsp&nbsp&nbsp&nbsp
-        <a href="/toverificationCode" target="_self">
-            <input type="button" value="注册">
-        </a>
+
+<body class="class1">
+
+    <br><br><br><br><br><br><br>
+    <center>
+        <h1>信息订阅平台</h1>
+    </center>
+
+    <br><br>
+    <form action="/login" method="post">
+        <center>
+            <b>
+                邮箱：<input type="text" name="userName">
+            </b>
+        </center>
+        <br>
+        <center>
+            <b>
+                密码：<input type="password" name="passWord">
+            </b>
+        </center>
+        <br>
+
+        <center>
+            <c>
+                <input type="checkbox">记住我
+            </c>
+        </center>
+
+        <center>
+            <input type="submit" value="登录">
+        </center>
     </form>
+
+    <form action="/ToVerificationCode" method="get">
+        <center>
+            <b>
+                <input type="submit" value="注册">
+            </b>
+        </center>
+    </form>
+    <script language="javascript">
+        var id = Math.floor(Math.random() * (248) + 1);
+        var pic = "../picture/" + id.toString() + ".jpg";
+        document.write('<style>body{background:url(' + pic + '); background-size: 100% 100%;background-repeat: no-repeat;background-attachment: fixed;}</style>');
+    </script>
+    <center>
+        <b>
+            <audio autoplay="autoplay" controls="controls" loop="loop" preload="auto" src="../music/1.mp3">
+                你的浏览器版本太低，不支持audio标签
+            </audio>
+        </b>
+    </center>
 </body>
 
 </html>

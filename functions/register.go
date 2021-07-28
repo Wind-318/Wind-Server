@@ -15,10 +15,6 @@ func ToVerificationCode(ctx *gin.Context) {
 	ctx.HTML(http.StatusOK, "verificationCode.html", nil)
 }
 
-func ToRobots(ctx *gin.Context) {
-
-}
-
 func Register(ctx *gin.Context) {
 	userName := ctx.PostForm("userName")
 	passWord := ctx.PostForm("passWord")

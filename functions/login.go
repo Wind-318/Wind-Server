@@ -16,6 +16,10 @@ func ToLogin(ctx *gin.Context) {
 	ctx.HTML(http.StatusOK, "login.html", nil)
 }
 
+func ToFunction(ctx *gin.Context) {
+	ctx.HTML(http.StatusOK, "function.html", nil)
+}
+
 func Login(ctx *gin.Context) {
 	userName := ctx.PostForm("userName")
 	passWord := ctx.PostForm("passWord")

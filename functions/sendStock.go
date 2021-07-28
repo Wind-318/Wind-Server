@@ -25,10 +25,6 @@ import (
 	"github.com/go-gomail/gomail"
 )
 
-func ToFuntions(ctx *gin.Context) {
-	ctx.HTML(http.StatusOK, "function.html", nil)
-}
-
 func SendStock(ctx *gin.Context) {
 	cookie, err := ctx.Cookie("cookie")
 	if err != nil {

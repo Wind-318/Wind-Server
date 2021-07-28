@@ -44,7 +44,11 @@ func Search() [][]string {
 		if FindFromCache("seturl", arr[index][1]) {
 			continue
 		}
-		arr[index] = append(arr[index], httpRequest.RegexpHtml(arr[index][1], `<title>([\s\S]+?)</title>`)[0])
+		temp := httpRequest.RegexpHtml(arr[index][1], `<title>([\s\S]+?)</title>`)
+		if len(temp) == 0 {
+			continue
+		}
+		arr[index] = append(arr[index], temp[0])
 		SaveRedis(arr[index][1], arr[index][2])
 		time.Sleep(time.Second * time.Duration(rand.Intn(10)))
 	}
