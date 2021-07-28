@@ -125,7 +125,11 @@ func (user *User) ChangePassword(newPassword string) string {
 }
 
 // 发送验证码
+<<<<<<< HEAD:spiderUsers/user.go
 func (user *User) Verification(ReceiverAccount string) {
+=======
+func (user *User) Verification() error {
+>>>>>>> 30f28d9... /:Users/user.go
 	// 接收者邮箱
 <<<<<<< HEAD:spiderUsers/user.go
 	mail := httpRequest.GetNewMail(ReceiverAccount)
@@ -143,8 +147,14 @@ func (user *User) Verification(ReceiverAccount string) {
 	// 验证码持续时间 5 分钟，过期自动失效
 	_, err := connect.Do("SET", ReceiverAccount, verificationCode, "ex", "300")
 	if err != nil {
+<<<<<<< HEAD:spiderUsers/user.go
 		fmt.Println(err)
+=======
+		log.Println(err)
+		return err
+>>>>>>> 30f28d9... /:Users/user.go
 	}
+	return nil
 }
 
 // 获取验证码

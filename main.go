@@ -34,6 +34,7 @@ func main() {
 func countTime() {
 	Text.GenerateText()
 	for {
+		// 两小时更新一次
 		<-time.After(time.Hour * 2)
 		Text.GenerateText()
 	}

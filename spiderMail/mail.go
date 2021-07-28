@@ -37,7 +37,7 @@ func GetNewMail(userMailAccount string) *mail {
 }
 
 // 发送邮件，需要标题和正文
-func (mail *mail) Send(title, text string, mess *gomail.Message) {
+func (mail *mail) Send(title, text string, mess *gomail.Message) error {
 	// 设置发送方
 	mess.SetHeader("From", mail.SenderAccount)
 	// 设置接收方
@@ -58,6 +58,7 @@ func (mail *mail) Send(title, text string, mess *gomail.Message) {
 	err := dial.DialAndSend(mess)
 	if err != nil {
 		log.Println(err)
-		return
+		return err
 	}
+	return nil
 }
