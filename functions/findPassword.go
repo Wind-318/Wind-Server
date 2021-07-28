@@ -1,7 +1,7 @@
 package functions
 
 import (
-	"1/Users"
+	"Project/Users"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

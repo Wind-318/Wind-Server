@@ -1,9 +1,9 @@
 package httpRequest
 
 import (
+	"Project/infomation"
 	"io/ioutil"
 	"net/http"
-	"project/infomation"
 	"time"
 )
 

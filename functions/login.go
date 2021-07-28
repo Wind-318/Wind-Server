@@ -1,13 +1,9 @@
 package functions
 
 import (
-	"1/Users"
+	"Project/Users"
+	"Project/infomation"
 	"net/http"
-<<<<<<< HEAD
-=======
-	"project/Users"
-	"project/infomation"
->>>>>>> d19263e... 更新
 
 	"github.com/gin-gonic/gin"
 )

@@ -1,7 +1,7 @@
-package spiderMail
+package Mail
 
 import (
-	"project/infomation"
+	"Project/infomation"
 
 	"github.com/go-gomail/gomail"
 )

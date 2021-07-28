@@ -1,10 +1,6 @@
 package infomation
 
 import (
-<<<<<<< HEAD
-	"GoProject/spider/spiderMail"
-=======
->>>>>>> 589e205... 简易web版
 	"crypto/rand"
 	"math/big"
 )
@@ -24,21 +20,7 @@ var userAgents []string = []string{
 	"Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0",
 	"Mozilla/5.0 (Windows NT 6.1; rv:2.0.1) Gecko/20100101 Firefox/4.0.1"}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-var MySQLInfo string = 数据库账号密码
-
-var CliConnect string = 服务器 IP 
-=======
-var MySQLInfo string = "root:密码@tcp(localhost:3306)/数据库名称"
->>>>>>> 995f18e... 更新
-=======
-var MySQLInfo string = "root:密码@tcp(localhost:3306)/表名"
->>>>>>> 589e205... 简易web版
-=======
 var MySQLInfo string = ""
->>>>>>> 9e17b98... /
 
 var SystemUserAccount = ""
 
@@ -66,16 +48,3 @@ func GetRandomUserAgent() string {
 	}
 	return userAgents[n.Int64()]
 }
-<<<<<<< HEAD
-
-func GetNewMail(userMailAccount string) *spiderMail.Mail {
-	return &spiderMail.Mail{
-		SenderAccount:  发送账号,
-		SenderPassword: 发送密码,
-		Receiver:       userMailAccount,
-		ServerAddr:     "smtp.office365.com",
-		ServerPort:     587,
-	}
-}
-=======
->>>>>>> 589e205... 简易web版

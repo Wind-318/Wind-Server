@@ -1,36 +1,17 @@
 package main
 
 import (
-<<<<<<< HEAD
-<<<<<<< HEAD
-	"1/Text"
-	"1/functions"
-=======
-	"crypto/rand"
-=======
->>>>>>> e13850d... 更新图片发送
+	"Project/Mail"
+	"Project/Text"
+	"Project/Users"
+	"Project/functions"
+	"Project/infomation"
 	"fmt"
 	"io"
 	"math/rand"
 	"net/http"
 	"os"
-	"project/Mail"
-	"project/Text"
-	"project/Users"
-	"project/functions"
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> 9e17b98... /
-=======
-	"project/httpRequest"
-<<<<<<< HEAD
->>>>>>> 0c71c88... 更新
-=======
-=======
-	"project/infomation"
->>>>>>> d19263e... 更新
 	"strconv"
->>>>>>> e13850d... 更新图片发送
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -123,7 +104,7 @@ func sendEveryUser() {
 			rand.Seed(time.Now().UnixNano())
 			// 发送带图片的邮件
 			picNum := strconv.Itoa(rand.Intn(infomation.PicMaxNum) + 1)
-			waitToSend.Send(time.Now().String()[:19]+" "+time.Now().Weekday().String()+"：每日要闻", Text.SelectFirst10WithPicture(picNum), gomail.NewMessage(), infomation.PicDir+picNum+".png")
+			waitToSend.Send(time.Now().String()[:19]+" "+time.Now().Weekday().String()+"：每日要闻", Text.SelectFirst10WithPicture(picNum), gomail.NewMessage(), infomation.PicDir+picNum+infomation.PicFormat)
 		}
 	}
 }

@@ -1,17 +1,9 @@
-package spiderText
+package Text
 
 import (
-<<<<<<< HEAD:spiderText/generateText.go
-	"GoProject/spider/httpRequest"
-	"log"
-=======
+	"Project/httpRequest"
+	"Project/infomation"
 	"math/rand"
-	"project/httpRequest"
-<<<<<<< HEAD:spiderText/generateText.go
->>>>>>> 9e17b98... /:Text/generateText.go
-=======
-	"project/infomation"
->>>>>>> d19263e... 更新:Text/generateText.go
 	"regexp"
 	"sync"
 	"time"
