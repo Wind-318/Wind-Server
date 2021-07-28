@@ -3,6 +3,7 @@ package httpRequest
 import (
 	"io/ioutil"
 	"net/http"
+	"project/infomation"
 	"time"
 )
 
@@ -21,7 +22,7 @@ func GetRequestByte(url string) []byte {
 	}
 
 	// 随即设置一个 useragent
-	req.Header.Set("User-Agent", GetRandomUserAgent())
+	req.Header.Set("User-Agent", infomation.GetRandomUserAgent())
 
 	res, err := getHtmlClient.Do(req)
 	if err != nil {

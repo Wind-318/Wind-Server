@@ -7,7 +7,11 @@ import (
 =======
 	"math/rand"
 	"project/httpRequest"
+<<<<<<< HEAD:spiderText/generateText.go
 >>>>>>> 9e17b98... /:Text/generateText.go
+=======
+	"project/infomation"
+>>>>>>> d19263e... 更新:Text/generateText.go
 	"regexp"
 	"sync"
 	"time"
@@ -22,7 +26,7 @@ var rwmutex *sync.RWMutex = &sync.RWMutex{}
 // 返回文章链接和标题
 func Search() [][]string {
 	rand.Seed(time.Now().UnixNano())
-	db, _ := sqlx.Open("mysql", httpRequest.MySQLInfo)
+	db, _ := sqlx.Open("mysql", infomation.MySQLInfo)
 	defer db.Close()
 
 	connect, _ := redis.Dial("tcp", "127.0.0.1:6379")
@@ -51,7 +55,7 @@ func Search() [][]string {
 // 生成正文
 func GenerateText() string {
 	arr := Search()
-	db, _ := sqlx.Open("mysql", httpRequest.MySQLInfo)
+	db, _ := sqlx.Open("mysql", infomation.MySQLInfo)
 	defer db.Close()
 	text := ``
 
@@ -166,7 +170,7 @@ func SelectFirst10WithPicture(picNum string) string {
 		<h2><br>`
 	}
 
-	text += `<br><img src="` + picNum + `.png" alt="My image" />`
+	text += `<br><img src="` + picNum + infomation.PicFormat + `" alt="My image" />`
 
 	return text
 }

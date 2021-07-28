@@ -1,0 +1,34 @@
+<!-- 主要功能区页面 -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>主菜单</title>
+</head>
+
+<body>
+    <form action="/sendStock" method="get">
+        <input type="submit" value="订阅一次股票信息">
+    </form>
+
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" multiple="multiple"><br>
+        <input type="submit" value="提交">
+    </form>
+
+    <a href="\" target="_self">退出账号</a>
+    <br>
+    <a href="/toChangePassword" target="_self">
+        修改密码
+    </a>
+
+    <br><br><br><br>
+    <audio autoplay="true" controls="controls" loop="loop" preload="auto" src=""> 
+        你的浏览器版本太低，不支持audio标签 
+    </audio>
+</body>
+
+</html>

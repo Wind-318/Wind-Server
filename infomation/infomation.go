@@ -1,4 +1,4 @@
-package httpRequest
+package infomation
 
 import (
 <<<<<<< HEAD
@@ -39,6 +39,26 @@ var MySQLInfo string = "root:密码@tcp(localhost:3306)/表名"
 =======
 var MySQLInfo string = ""
 >>>>>>> 9e17b98... /
+
+var SystemUserAccount = ""
+
+// 图片数量
+var PicMaxNum = 18
+
+// 图片文件夹路径
+var PicDir = "pic/"
+
+var PicFormat = ".png"
+
+var MusicDir = ""
+
+var SenderAccount = ""
+
+var SenderPassword = ""
+
+var ServerAddr = ""
+
+var ServerPort = 
 
 func GetRandomUserAgent() string {
 	n, err := rand.Int(rand.Reader, big.NewInt(int64(len(userAgents))))

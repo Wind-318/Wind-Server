@@ -2,9 +2,13 @@ package functions
 
 import (
 <<<<<<< HEAD
+<<<<<<< HEAD
 	"1/Mail"
 	"1/Text"
 =======
+=======
+	"fmt"
+>>>>>>> d19263e... 更新
 	"math/rand"
 >>>>>>> e13850d... 更新图片发送
 	"net/http"
@@ -33,14 +37,12 @@ func SendStock(ctx *gin.Context) {
 	}
 	users := Mail.GetNewMail(cookie)
 	var wg sync.WaitGroup
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-
-		rand.Seed(time.Now().UnixNano())
-		picNum := strconv.Itoa(rand.Intn(18) + 1)
-		users.Send(time.Now().String()[:19]+" "+time.Now().Weekday().String()+"：每日要闻", Text.SelectFirst10WithPicture(picNum), gomail.NewMessage(), ".\\pic\\"+picNum+".png")
-	}()
+	rand.Seed(time.Now().UnixNano())
+	picNum := strconv.Itoa(rand.Intn(18) + 1)
+	err = users.Send(time.Now().String()[:19]+" "+time.Now().Weekday().String()+"：每日要闻", Text.SelectFirst10WithPicture(picNum), gomail.NewMessage(), "./pic/"+picNum+".png")
+	if err != nil {
+		fmt.Println(err)
+	}
 
 	ctx.String(http.StatusOK, "已发送，如果没有收到请检查垃圾箱。")
 	wg.Wait()

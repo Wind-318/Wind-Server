@@ -1,6 +1,8 @@
 package spiderMail
 
 import (
+	"project/infomation"
+
 	"github.com/go-gomail/gomail"
 )
 
@@ -26,11 +28,11 @@ type mail struct {
 
 func GetNewMail(userMailAccount string) *mail {
 	return &mail{
-		SenderAccount:  "",
-		SenderPassword: "",
+		SenderAccount:  infomation.SenderAccount,
+		SenderPassword: infomation.SenderPassword,
 		Receiver:       userMailAccount,
-		ServerAddr:     "",
-		ServerPort:     ,
+		ServerAddr:     infomation.ServerAddr,
+		ServerPort:     infomation.ServerPort,
 	}
 }
 

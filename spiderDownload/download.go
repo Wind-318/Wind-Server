@@ -16,7 +16,7 @@ func DownloadGet(url string, position ...string) {
 		panic("too many args")
 	}
 	// 如果没有传入参数，则设置一个默认位置下载文件
-	pos := ".\\files\\" + strconv.Itoa(rand.Intn(100000))
+	pos := "./files/" + strconv.Itoa(rand.Intn(100000))
 	if len(position) == 1 {
 		// 有传入位置则使用传入的位置
 		pos = position[0]
@@ -48,7 +48,7 @@ func DownloadHtmlSource(url, rule string, position ...string) {
 		panic("too many args")
 	}
 
-	pos := ".\\files\\" + strconv.Itoa(rand.Intn(100000))
+	pos := "./files/" + strconv.Itoa(rand.Intn(100000))
 	if len(position) == 1 {
 		pos = position[0]
 	}

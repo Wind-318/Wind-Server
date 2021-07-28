@@ -19,6 +19,11 @@ import (
 	"errors"
 >>>>>>> 0c71c88... 更新:Users/user.go
 	"math/rand"
+<<<<<<< HEAD:spiderUsers/user.go
+=======
+	"project/Mail"
+	"project/infomation"
+>>>>>>> d19263e... 更新:Users/user.go
 	"strconv"
 	"time"
 
@@ -45,7 +50,7 @@ type userAcnt struct {
 func (user *User) CheckUserExist(registerAccount string) bool {
 =======
 func SelectUsersAccount() []string {
-	db := sqlx.MustConnect("mysql", httpRequest.MySQLInfo)
+	db := sqlx.MustConnect("mysql", infomation.MySQLInfo)
 	defer db.Close()
 
 	useraccount := make([]userAcnt, 0)
@@ -59,8 +64,12 @@ func SelectUsersAccount() []string {
 }
 
 func (user *User) CheckUserExist() bool {
+<<<<<<< HEAD:spiderUsers/user.go
 >>>>>>> 0c71c88... 更新:Users/user.go
 	db := sqlx.MustConnect("mysql", httpRequest.MySQLInfo)
+=======
+	db := sqlx.MustConnect("mysql", infomation.MySQLInfo)
+>>>>>>> d19263e... 更新:Users/user.go
 	defer db.Close()
 
 	useraccount := userAcnt{}
@@ -71,8 +80,13 @@ func (user *User) CheckUserExist() bool {
 }
 
 // 注册功能
+<<<<<<< HEAD:spiderUsers/user.go
 func (user *User) Register(registerAccount, registerPassword string) string {
 	db := sqlx.MustConnect("mysql", httpRequest.MySQLInfo)
+=======
+func (user *User) Register() string {
+	db := sqlx.MustConnect("mysql", infomation.MySQLInfo)
+>>>>>>> d19263e... 更新:Users/user.go
 	defer db.Close()
 
 	passwd := make([]byte, 0)
@@ -101,7 +115,7 @@ func (user *User) Register(registerAccount, registerPassword string) string {
 // 登录功能
 func (user *User) Login() string {
 	userpasswd := userData{}
-	db := sqlx.MustConnect("mysql", httpRequest.MySQLInfo)
+	db := sqlx.MustConnect("mysql", infomation.MySQLInfo)
 	defer db.Close()
 
 	code := sha512.Sum512([]byte(user.MailPassword))
@@ -119,7 +133,7 @@ func (user *User) Login() string {
 
 // 修改密码
 func (user *User) ChangePassword(newPassword string) string {
-	db := sqlx.MustConnect("mysql", httpRequest.MySQLInfo)
+	db := sqlx.MustConnect("mysql", infomation.MySQLInfo)
 	defer db.Close()
 
 	tx, err := db.Begin()
