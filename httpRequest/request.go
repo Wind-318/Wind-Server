@@ -2,7 +2,6 @@ package httpRequest
 
 import (
 	"io/ioutil"
-	"log"
 	"net/http"
 	"time"
 )
@@ -18,7 +17,6 @@ func GetRequestByte(url string) []byte {
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
-		log.Println(err)
 		return nil
 	}
 
@@ -27,21 +25,17 @@ func GetRequestByte(url string) []byte {
 
 	res, err := getHtmlClient.Do(req)
 	if err != nil {
-		log.Println(err)
 		return nil
 	}
 
 	defer res.Body.Close()
 	if err != nil {
-		log.Println(err)
 		return nil
 	} else if res.StatusCode == 404 {
-		log.Println("404 请求的页面不存在")
 		return nil
 	}
 	html, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		log.Println(err)
 		return nil
 	}
 	return html

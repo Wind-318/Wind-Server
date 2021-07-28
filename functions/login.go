@@ -26,7 +26,7 @@ func Login(ctx *gin.Context) {
 	conn, _ := redis.Dial("tcp", "127.0.0.1:6379")
 	defer conn.Close()
 	if statu != "success" {
-		ctx.String(http.StatusOK, "登陆失败")
+		ctx.String(http.StatusBadRequest, "登陆失败")
 		return
 	}
 

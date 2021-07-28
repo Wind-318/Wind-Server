@@ -3,7 +3,6 @@ package spiderDownload
 import (
 	"GoProject/spider/httpRequest"
 	"io/ioutil"
-	"log"
 	"math/rand"
 	"os"
 	"regexp"
@@ -38,7 +37,6 @@ func DownloadGet(url string, position ...string) {
 
 	err := ioutil.WriteFile(pos, data, 0644)
 	if err != nil {
-		log.Println(err)
 		return
 	}
 }

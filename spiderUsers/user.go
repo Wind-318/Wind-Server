@@ -9,8 +9,11 @@ import (
 >>>>>>> 589e205... 简易web版:Users/user.go
 	"crypto/sha512"
 	"encoding/hex"
+<<<<<<< HEAD:spiderUsers/user.go
 	"fmt"
 	"log"
+=======
+>>>>>>> 9e17b98... /:Users/user.go
 	"math/rand"
 	"strconv"
 	"time"
@@ -58,18 +61,15 @@ func (user *User) Register(registerAccount, registerPassword string) string {
 	// 将 16 进制转为字符串存储
 	tx, err := db.Begin()
 	if err != nil {
-		log.Println(err)
 		return ""
 	}
 
 	_, err = tx.Exec("INSERT INTO user VALUES(?,?,?)", 0, registerAccount, hex.EncodeToString(passwd))
 	if err != nil {
-		log.Println(err)
 		return ""
 	}
 	err = tx.Commit()
 	if err != nil {
-		log.Println(err)
 		return ""
 	}
 
@@ -103,7 +103,6 @@ func (user *User) ChangePassword(newPassword string) string {
 	tx, err := db.Begin()
 
 	if err != nil {
-		log.Println(err)
 		return "fail"
 	}
 
@@ -113,12 +112,10 @@ func (user *User) ChangePassword(newPassword string) string {
 
 	_, err = tx.Exec("UPDATE user SET password = ? WHERE account = ?", hex.EncodeToString(passwd), user.MailAccount)
 	if err != nil {
-		log.Println(err)
 		return "fail"
 	}
 	err = tx.Commit()
 	if err != nil {
-		log.Println(err)
 		return "fail"
 	}
 	return "success"
@@ -148,9 +145,12 @@ func (user *User) Verification() error {
 	_, err := connect.Do("SET", ReceiverAccount, verificationCode, "ex", "300")
 	if err != nil {
 <<<<<<< HEAD:spiderUsers/user.go
+<<<<<<< HEAD:spiderUsers/user.go
 		fmt.Println(err)
 =======
 		log.Println(err)
+=======
+>>>>>>> 9e17b98... /:Users/user.go
 		return err
 >>>>>>> 30f28d9... /:Users/user.go
 	}

@@ -61,6 +61,11 @@ func SendCode(ctx *gin.Context) {
 		MailAccount: userName,
 	}
 
+	if userInfo.CheckUserExist() {
+		ctx.String(http.StatusBadRequest, "用户已存在")
+		return
+	}
+
 	err := userInfo.Verification()
 	if err != nil {
 		ctx.String(http.StatusBadRequest, "发送失败")

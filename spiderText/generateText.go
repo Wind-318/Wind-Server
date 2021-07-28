@@ -1,10 +1,16 @@
 package spiderText
 
 import (
+<<<<<<< HEAD:spiderText/generateText.go
 	"GoProject/spider/httpRequest"
 	"log"
+=======
+	"math/rand"
+	"project/httpRequest"
+>>>>>>> 9e17b98... /:Text/generateText.go
 	"regexp"
 	"sync"
+	"time"
 
 	"github.com/garyburd/redigo/redis"
 	_ "github.com/go-sql-driver/mysql"
@@ -15,6 +21,7 @@ var rwmutex *sync.RWMutex = &sync.RWMutex{}
 
 // 返回文章链接和标题
 func Search() [][]string {
+	rand.Seed(time.Now().UnixNano())
 	db, _ := sqlx.Open("mysql", httpRequest.MySQLInfo)
 	defer db.Close()
 
@@ -35,6 +42,7 @@ func Search() [][]string {
 		}
 		arr[index] = append(arr[index], httpRequest.RegexpHtml(arr[index][1], `<title>([\s\S]+?)</title>`)[0])
 		SaveRedis(arr[index][1], arr[index][2])
+		time.Sleep(time.Second * time.Duration(rand.Intn(10)))
 	}
 
 	return arr
@@ -58,18 +66,15 @@ func GenerateText() string {
 		// 保存到数据库中
 		tx, err := db.Begin()
 		if err != nil {
-			log.Println(err)
 			return ""
 		}
 		_, err = tx.Exec("INSERT INTO urlinfo values(?,?,?,?,?)", 0, "https://finance.sina.com.cn/stock/", data[1], 0, data[2])
 
 		if err != nil {
-			log.Println(err)
 			return ""
 		}
 		err = tx.Commit()
 		if err != nil {
-			log.Println(err)
 			return ""
 		}
 	}
@@ -83,7 +88,7 @@ func FindFromCache(key, member string) bool {
 	defer connect.Close()
 	reply, err := redis.Bool(connect.Do("SISMEMBER", key, member))
 	if err != nil {
-		log.Println(err)
+		return false
 	}
 	return reply
 }
@@ -98,7 +103,7 @@ func SaveRedis(member ...string) {
 
 	llen, err := redis.Int(connect.Do("LLEN", "listurl"))
 	if err != nil {
-		log.Println(err)
+		return
 	}
 
 	// 链表中超过 100 条消息开始淘汰，保留 20 条最新消息
@@ -118,14 +123,14 @@ func SelectFirst20() string {
 	con, _ := redis.Dial("tcp", "127.0.0.1:6379")
 	titles, err := redis.Strings(con.Do("LRANGE", "listtitle", 0, 19))
 	if err != nil {
-		log.Println(err)
+		return ""
 	}
 	urls, err := redis.Strings(con.Do("LRANGE", "listurl", 0, 19))
 
 	rwmutex.RUnlock()
 
 	if err != nil {
-		log.Println(err)
+		return ""
 	}
 	text := ``
 

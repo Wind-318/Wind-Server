@@ -1,8 +1,6 @@
 package spiderMail
 
 import (
-	"log"
-
 	"github.com/go-gomail/gomail"
 )
 
@@ -28,11 +26,11 @@ type mail struct {
 
 func GetNewMail(userMailAccount string) *mail {
 	return &mail{
-		SenderAccount:  "发送",
-		SenderPassword: "发送",
+		SenderAccount:  "",
+		SenderPassword: "",
 		Receiver:       userMailAccount,
-		ServerAddr:     "smtp.office365.com",
-		ServerPort:     587,
+		ServerAddr:     "",
+		ServerPort:     1,
 	}
 }
 
@@ -57,7 +55,6 @@ func (mail *mail) Send(title, text string, mess *gomail.Message) error {
 	dial := gomail.NewDialer(mail.ServerAddr, mail.ServerPort, mail.SenderAccount, mail.SenderPassword)
 	err := dial.DialAndSend(mess)
 	if err != nil {
-		log.Println(err)
 		return err
 	}
 	return nil

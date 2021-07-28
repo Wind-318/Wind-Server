@@ -1,15 +1,49 @@
 package main
 
 import (
+<<<<<<< HEAD
 	"1/Text"
 	"1/functions"
+=======
+	"crypto/rand"
+	"fmt"
+	"io"
+	"math/big"
+	"os"
+	"project/Text"
+	"project/functions"
+>>>>>>> 9e17b98... /
 	"time"
 
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	router := gin.Default()
+	router := gin.New()
+
+	// LoggerWithFormatter middleware will write the logs to gin.DefaultWriter
+	// By default gin.DefaultWriter = os.Stdout
+	gin.DisableConsoleColor()
+
+	// Logging to a file.
+	f, _ := os.Create("gin.log")
+	gin.DefaultWriter = io.MultiWriter(f)
+	router.Use(gin.LoggerWithFormatter(func(param gin.LogFormatterParams) string {
+
+		// your custom format
+		return fmt.Sprintf("%s - [%s] \"%s %s %s %d %s \"%s\" %s\"\n",
+			param.ClientIP,
+			param.TimeStamp.Format(time.RFC1123),
+			param.Method,
+			param.Path,
+			param.Request.Proto,
+			param.StatusCode,
+			param.Latency,
+			param.Request.UserAgent(),
+			param.ErrorMessage,
+		)
+	}))
+	router.Use(gin.Recovery())
 
 	go countTime()
 
@@ -34,8 +68,9 @@ func main() {
 func countTime() {
 	Text.GenerateText()
 	for {
-		// 两小时更新一次
-		<-time.After(time.Hour * 2)
+		// 1.5 小时到 3.5 小时抓取一次
+		result, _ := rand.Int(rand.Reader, big.NewInt(7200))
+		<-time.After(time.Hour * time.Duration(result.Int64()+5400))
 		Text.GenerateText()
 	}
 }

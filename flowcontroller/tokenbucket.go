@@ -2,7 +2,6 @@ package flowcontroller
 
 import (
 	"errors"
-	"log"
 	"sync/atomic"
 	"time"
 )
@@ -21,7 +20,6 @@ type flowControl struct {
 
 func (t *flowControl) PopToken() int64 {
 	<-t.container
-	log.Println("pop")
 	return atomic.AddInt64(&t.remainNum, 1)
 }
 
@@ -33,7 +31,6 @@ func (t *flowControl) GetToken() (int64, error) {
 		return -1, errors.New("time out")
 	}
 
-	log.Println("get")
 	return atomic.AddInt64(&t.remainNum, -1), nil
 }
 
