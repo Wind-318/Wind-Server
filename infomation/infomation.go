@@ -39,7 +39,7 @@ var SenderPassword = ""
 
 var ServerAddr = ""
 
-var ServerPort = 
+var ServerPort =
 
 func GetRandomUserAgent() string {
 	n, err := rand.Int(rand.Reader, big.NewInt(int64(len(userAgents))))
