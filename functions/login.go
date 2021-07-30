@@ -20,7 +20,7 @@ func Login(ctx *gin.Context) {
 	statu := userInfo.Login()
 
 	if statu != "success" {
-		ctx.String(http.StatusBadRequest, "登陆失败")
+		ctx.String(http.StatusOK, "登陆失败")
 		return
 	}
 

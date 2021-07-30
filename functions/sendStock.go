@@ -18,7 +18,7 @@ import (
 func SendStock(ctx *gin.Context) {
 	cookie, err := ctx.Cookie("cookie")
 	if err != nil {
-		ctx.String(http.StatusBadRequest, "请先登录")
+		ctx.String(http.StatusOK, "请先登录")
 		return
 	}
 	users := Mail.GetNewMail(cookie)

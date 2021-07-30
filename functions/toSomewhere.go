@@ -6,6 +6,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func ToNotFound(ctx *gin.Context) {
+	ctx.HTML(http.StatusOK, "notFound.html", nil)
+}
+
 func ToChangePassword(ctx *gin.Context) {
 	ctx.HTML(http.StatusOK, "changePassword.html", nil)
 }

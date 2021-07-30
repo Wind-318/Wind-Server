@@ -54,13 +54,13 @@ func SendCode(ctx *gin.Context) {
 	}
 
 	if userInfo.CheckUserExist() {
-		ctx.String(http.StatusBadRequest, "用户已存在")
+		ctx.String(http.StatusOK, "用户已存在")
 		return
 	}
 
 	err := userInfo.Verification()
 	if err != nil {
-		ctx.String(http.StatusBadRequest, err.Error())
+		ctx.String(http.StatusOK, err.Error())
 		return
 	}
 	ctx.HTML(http.StatusOK, "register.html", nil)

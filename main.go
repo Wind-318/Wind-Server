@@ -51,6 +51,7 @@ func main() {
 	router.StaticFS("/markdown", http.Dir("./markdown"))
 	router.StaticFile("/robots.txt", "./robots.txt")
 
+	router.NoRoute(functions.ToNotFound)
 	router.GET("/", functions.ToHead)
 	router.GET("/ToLogin", functions.ToLogin)
 	router.GET("/TochangePassword", functions.ToChangePassword)

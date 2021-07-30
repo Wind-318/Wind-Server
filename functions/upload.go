@@ -9,7 +9,7 @@ import (
 func Upload(ctx *gin.Context) {
 	res, err := ctx.MultipartForm()
 	if err != nil {
-		ctx.String(http.StatusBadRequest, "上传失败")
+		ctx.String(http.StatusOK, "上传失败")
 		return
 	}
 	files := res.File["file"]
