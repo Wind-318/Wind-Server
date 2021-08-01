@@ -8,20 +8,15 @@ import (
 )
 
 func ChangePassWord(ctx *gin.Context) {
-	userName := ctx.PostForm("userName")
-	newPassword := ctx.PostForm("newPassword")
-	newPasswordConfirm := ctx.PostForm("newPasswordConfirm")
-
-	if newPasswordConfirm != newPassword {
-		ctx.String(http.StatusOK, "两次密码输入不一致！")
-		return
-	} else if userName == "" {
-		ctx.String(http.StatusOK, "请输入用户名")
+	userEmail, err := ctx.Cookie("cookie")
+	if err != nil {
+		ctx.HTML(http.StatusNotAcceptable, "serverError.html", nil)
 		return
 	}
+	newPassword := ctx.PostForm("newPassword")
 
 	userInfo := &Users.User{
-		MailAccount: userName,
+		MailAccount: userEmail,
 	}
 	userInfo.ChangePassword(newPassword)
 	ctx.HTML(http.StatusOK, "login.html", nil)

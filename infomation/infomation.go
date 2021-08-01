@@ -2,6 +2,8 @@ package infomation
 
 import (
 	"crypto/rand"
+	"crypto/sha512"
+	"encoding/hex"
 	"math/big"
 )
 
@@ -40,6 +42,11 @@ var SenderPassword = ""
 var ServerAddr = ""
 
 var ServerPort = 
+
+// 自定义加密方式
+func Encryption(password string) string {
+	
+}
 
 func GetRandomUserAgent() string {
 	n, err := rand.Int(rand.Reader, big.NewInt(int64(len(userAgents))))

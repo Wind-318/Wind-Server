@@ -5,22 +5,30 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/bar.css">
     <title>页面不存在</title>
 </head>
 
 <body>
-    <br><br><br><br><br><br>
-    <br><br><br><br><br><br>
-    <center>
+    <div class="navbar">
+        <input type="checkbox" />
+        <span></span>
+        <span></span>
+        <ul>
+            <li><a href="http://windserver">Home</a></li>
+            <li><a href="../markdown/Readme.html">笔记</a></li>
+            <li><a href="http://windserver/ToLogin">订阅</a></li>
+        </ul>
+    </div>
+    <div class="box">
         <h1>
-            页面不存在
+            404 页面不存在
         </h1>
-    </center>
-    <script language="javascript">
-        var id = Math.floor(Math.random() * (248) + 1);
-        var pic = "../picture/" + id.toString() + ".jpg";
-        document.write('<style>body{background:url(' + pic + '); background-size: 100% 100%;background-repeat: no-repeat;background-attachment: fixed;}</style>');
-    </script>
+        <h1>
+            Page Not Found
+        </h1>
+    </div>
 </body>
 
 </html>

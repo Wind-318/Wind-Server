@@ -1,59 +1,57 @@
-﻿<!-- 登录页面（默认进入的页面） -->
+﻿<!-- 登录 -->
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>信息订阅平台</title>
-    <link rel="stylesheet" type="text/css" href="../css/a.css">
-    <link rel="stylesheet" type="text/css" href="../css/b.css">
-    <link rel="stylesheet" type="text/css" href="../css/c.css">
-
-    <script src="../js/sakura.js"></script>
+    <title>注册登录</title>
+    <link rel="stylesheet" href="../css/loginStyle.css">
 </head>
 
-<body class="class1">
+<body>
+    <div class="container right-panel-active">
+        <!-- 注册 -->
+        <div class="container_form container--signup">
+            <form action="/register" method="post" class="form" id="form1">
+                <h2 class="form_title">注册</h2>
+                <input type="text" placeholder="用户名" class="input" name="userName" maxlength="30" required="required" />
+                <input type="email" placeholder="邮箱" class="input" name="userEmail" maxlength="30" required="required" />
+                <input type="password" placeholder="密码" class="input" name="userPassword" maxlength="30" required="required" />
+                <button class="btn">注册</button>
+            </form>
+        </div>
 
-    <br><br><br><br><br><br><br>
-    <center>
-        <h1>财经新闻推送</h1>
-    </center>
+        <!-- 登录 -->
+        <div class="container_form container--signin">
+            <form action="/login" method="post" class="form" id="form2">
+                <h2 class="form_title">登录</h2>
+                <input type="email" placeholder="邮箱" class="input" maxlength="30" name="userEmail" required="required" />
+                <input type="password" placeholder="密码" class="input" maxlength="30" name="userPassword" required="required" />
+                <a href="http://windserver/ToFindPassword" class="link">忘记密码？</a>
+                <button class="btn">登录</button>
+            </form>
+        </div>
 
-    <br><br>
-    <form action="/login" method="post">
-        <center>
-            <b>
-                邮箱：<input type="text" name="userName">
-            </b>
-        </center>
-        <br>
-        <center>
-            <b>
-                密码：<input type="password" name="passWord">
-            </b>
-        </center>
-        <br>
+        <!-- 浮层 -->
+        <div class="container_overlay">
+            <div class="overlay">
+                <div class="overlay_panel overlay--left">
+                    <button class="btn" id="signIn">还没有账号？点击注册</button>
+                </div>
+                <div class="overlay_panel overlay--right">
+                    <button class="btn" id="signUp">已有账号？直接登录</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        <center>
-            <input type="submit" value="登录">
-        </center>
-    </form>
+    <!-- 背景 -->
+    <div class="slidershow">
+        <img src="../picture/3.jpg" alt="" class="slidershow--image">
+    </div>
 
-    <form action="/ToVerificationCode" method="get">
-        <center>
-            <b>
-                <input type="submit" value="注册">
-            </b>
-        </center>
-    </form>
-
-    <script language="javascript">
-        var id = Math.floor(Math.random() * (248) + 1);
-        var pic = "../picture/" + id.toString() + ".jpg";
-        document.write('<style>body{background:url(' + pic + '); background-size: 100% 100%;background-repeat: no-repeat;background-attachment: fixed;}</style>');
-    </script>
+    <script src="../js/sakura.js"></script>
+    <script src="../js/login.js"></script>
 </body>
 
 </html>

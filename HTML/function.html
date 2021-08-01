@@ -1,4 +1,3 @@
-<!-- 主要功能区页面 -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,54 +5,40 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>主菜单</title>
+    <title>订阅</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/bar.css">
+    <script src="../js/fontawesome.js"></script>
     <script src="../js/sakura.js"></script>
 </head>
 
 <body>
-    <br><br><br><br><br><br><br>
+    <div class="navbar">
+        <input type="checkbox" />
+        <span></span>
+        <span></span>
+        <ul>
+            <li><a href="http://windserver">Home</a></li>
+            <li><a href="../markdown/Readme.html">笔记</a></li>
+            <li><a href="http://windserver/ToLogin">订阅</a></li>
+        </ul>
+    </div>
+    <div class="box">
+        <form action="/sendStock" method="get">
+            <h2><label for="finance" class="label"><input type="checkbox" name="finance" value="finance" class="checkbox" id="finance">财经新闻</label></h2>
+            <h2><label for="military" class="label"><input type="checkbox" name="military" value="military" class="checkbox" id="military">军事新闻</label></h2>
+            <h2><label for="culture" class="label"><input type="checkbox" name="culture" value="culture" class="checkbox" id="culture">文化新闻</label></h2>
+            <h2><label for="technology" class="label"><input type="checkbox" name="technology" value="technology" class="checkbox" id="technology">科技新闻</label></h2>
+            <h2><label for="society" class="label"><input type="checkbox" name="society" value="society" class="checkbox" id="society">社会新闻</label></h2>
+            <h2><label for="physical" class="label"><input type="checkbox" name="physical" value="physical" class="checkbox" id="physical">体育新闻</label></h2>
+            <h2><label for="entertainment" class="label"><input type="checkbox" name="entertainment" value="entertainment" class="checkbox" id="entertainment">娱乐新闻</label></h2>
+            <button class="btn">确认</button>
+        </form>
+        <form action="/Exit" method="get">
+            <button class="btn">退出登录</button>
+        </form>
+    </div>
 
-    <center>
-        <h1>功能</h1>
-    </center>
-
-    <br><br>
-    <form action="/sendStock" method="get">
-        <center>
-            <b>
-                <input type="submit" value="订阅一次股票信息">
-            </b>
-        </center>
-    </form>
-
-    <form action="/ToLogin" method="get">
-        <center>
-            <b>
-                <input type="submit" value="退出登录">
-            </b>
-        </center>
-    </form>
-    <form action="/TochangePassword" method="get">
-        <center>
-            <b>
-                <input type="submit" value="修改密码">
-            </b>
-        </center>
-    </form>
-
-    <script language="javascript">
-        var id = Math.floor(Math.random() * (248) + 1);
-        var pic = "../picture/" + id.toString() + ".jpg";
-        document.write('<style>body{background:url(' + pic + '); background-size: 100% 100%;background-repeat: no-repeat;background-attachment: fixed;}</style>');
-    </script>
-
-    <center>
-        <b>
-            <audio autoplay="autoplay" controls="controls" loop="loop" preload="auto" src="../music/1.mp3">
-                你的浏览器版本太低，不支持audio标签
-            </audio>
-        </b>
-    </center>
 </body>
 
 </html>

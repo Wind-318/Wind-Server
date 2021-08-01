@@ -16,10 +16,10 @@ type mail struct {
 	// 接收者邮箱
 	Receiver string
 
-	// 服务器地址，outlook 为 smtp.office365.com
+	// 服务器地址
 	ServerAddr string
 
-	// 服务器端口，outlook 为 587
+	// 服务器端口
 	ServerPort int
 
 	// 可选附件

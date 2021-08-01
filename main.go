@@ -11,7 +11,6 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
-	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -57,13 +56,15 @@ func main() {
 	router.GET("/TochangePassword", functions.ToChangePassword)
 	router.GET("/ToFindPassword", functions.ToFindPassword)
 	router.GET("/ToFunction", functions.ToFunction)
-	router.GET("/ToRegister", functions.ToRegister)
 	router.GET("/ToVerificationCode", functions.ToVerificationCode)
+	router.GET("/Exit", functions.Exit)
 
+	router.POST("/modifyPassword", functions.ModifyPassword)
+	router.POST("/ConfirmFind", functions.ConfirmFind)
+	router.POST("/verificationFind", functions.VerificationFind)
 	router.POST("/register", functions.Register)
 	router.POST("/login", functions.Login)
 	router.POST("/changePassword", functions.ChangePassWord)
-	router.POST("/findPassword", functions.FindPassword)
 	router.POST("/sendCode", functions.SendCode)
 	router.POST("/upload", functions.Upload)
 	router.GET("/sendStock", functions.SendStock)
@@ -102,10 +103,7 @@ func sendEveryUser() {
 		users := Users.SelectUsersAccount()
 		for _, user := range users {
 			waitToSend := Mail.GetNewMail(user)
-			rand.Seed(time.Now().UnixNano())
-			// 发送带图片的邮件
-			picNum := strconv.Itoa(rand.Intn(infomation.PicMaxNum) + 1)
-			waitToSend.Send(time.Now().String()[:19]+" "+time.Now().Weekday().String()+"：每日要闻", Text.SelectFirst10WithPicture(picNum), gomail.NewMessage(), infomation.PicDir+picNum+infomation.PicFormat)
+			waitToSend.Send(time.Now().String()[:19]+" "+time.Now().Weekday().String()+"：每日要闻", Text.SelectFirst10(), gomail.NewMessage())
 		}
 	}
 }

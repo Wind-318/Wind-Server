@@ -9,59 +9,59 @@ import (
 
 func Register(ctx *gin.Context) {
 	userName := ctx.PostForm("userName")
+	userEmail := ctx.PostForm("userEmail")
 	passWord := ctx.PostForm("passWord")
 
-	if userName == "" {
-		ctx.String(http.StatusOK, "邮箱不能为空")
-		return
-	} else if passWord == "" {
-		ctx.String(http.StatusOK, "密码不能为空")
-		return
-	}
-
 	userInfo := &Users.User{
-		MailAccount:  userName,
+		UserName:     userName,
+		MailAccount:  userEmail,
 		MailPassword: passWord,
 	}
 
 	if userInfo.CheckUserExist() {
-		ctx.String(http.StatusOK, "用户已存在")
+		ctx.HTML(http.StatusNotAcceptable, "serverError.html", nil)
+		return
+	}
+
+	userInfo.Verification()
+
+	// domain 是域名，path 是域名，合起来限制可以被哪些 url 访问
+	ctx.SetCookie("userName", userName, 60, "/", "localhost:80", false, true)
+	ctx.SetCookie("userEmail", userEmail, 60, "/", "localhost:80", false, true)
+	ctx.SetCookie("passWord", passWord, 60, "/", "localhost:80", false, true)
+	ctx.HTML(http.StatusOK, "verificationCode.html", nil)
+}
+
+func SendCode(ctx *gin.Context) {
+	userName, err := ctx.Cookie("userName")
+	if err != nil {
+		ctx.HTML(http.StatusNotAcceptable, "serverError.html", nil)
+		return
+	}
+	userEmail, err := ctx.Cookie("userEmail")
+	if err != nil {
+		ctx.HTML(http.StatusNotAcceptable, "serverError.html", nil)
+		return
+	}
+	passWord, err := ctx.Cookie("passWord")
+	if err != nil {
+		ctx.HTML(http.StatusNotAcceptable, "serverError.html", nil)
 		return
 	}
 
 	code := ctx.PostForm("code")
+	userInfo := &Users.User{
+		UserName:     userName,
+		MailAccount:  userEmail,
+		MailPassword: passWord,
+	}
 
 	if code != userInfo.GetVerificationCode() {
-		ctx.String(http.StatusOK, "验证码错误！")
+		ctx.HTML(http.StatusNotAcceptable, "serverError.html", nil)
 		return
 	}
 
 	userInfo.Register()
 
-	// domain 是域名，path 是域名，合起来限制可以被哪些 url 访问
-	ctx.SetCookie("cookie", userName, 86400, "/", "localhost:8080", false, true)
-	ctx.HTML(http.StatusOK, "function.html", nil)
-}
-
-func SendCode(ctx *gin.Context) {
-	userName := ctx.PostForm("userName")
-	if userName == "" {
-		ctx.String(http.StatusOK, "邮箱不能为空")
-		return
-	}
-	userInfo := &Users.User{
-		MailAccount: userName,
-	}
-
-	if userInfo.CheckUserExist() {
-		ctx.String(http.StatusOK, "用户已存在")
-		return
-	}
-
-	err := userInfo.Verification()
-	if err != nil {
-		ctx.String(http.StatusOK, err.Error())
-		return
-	}
-	ctx.HTML(http.StatusOK, "register.html", nil)
+	ctx.HTML(http.StatusOK, "login.html", nil)
 }

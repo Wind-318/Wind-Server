@@ -9,14 +9,18 @@ import (
 func Upload(ctx *gin.Context) {
 	res, err := ctx.MultipartForm()
 	if err != nil {
-		ctx.String(http.StatusOK, "上传失败")
+		ctx.HTML(http.StatusInternalServerError, "serverError.html", nil)
 		return
 	}
 	files := res.File["file"]
 
 	for _, file := range files {
-		ctx.SaveUploadedFile(file, "userFile"+"/"+file.Filename)
+		err = ctx.SaveUploadedFile(file, "userFile"+"/"+file.Filename)
+		if err != nil {
+			ctx.HTML(http.StatusInternalServerError, "serverError.html", nil)
+			return
+		}
 	}
 
-	ctx.String(http.StatusOK, "上传成功")
+	ctx.HTML(http.StatusOK, "success.html", nil)
 }

@@ -7,31 +7,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>验证</title>
     <script src="../js/sakura.js"></script>
+    <link rel="stylesheet" href="../css/verificationCodeStyle.css">
 </head>
 
 <body>
-    <br><br><br><br><br><br><br>
-    <center>
-        <h1>验证</h1>
-    </center>
-    <form action="/sendCode" method="post">
-        <center>
-            <b>
-                邮箱：<input type="text" name="userName">
-            </b>
-        </center>
-        <br>
-        <center>
-            <b>
-                <input type="submit" value="发送验证码">
-            </b>
-        </center>
+    <form action="/sendCode" method="post" class="form">
+        <input type="text" placeholder="验证码" name="code" class="input" maxlength="30" required="required">
+        <button class="btn">确定</button>
     </form>
-    <script language="javascript">
-        var id = Math.floor(Math.random() * (248) + 1);
-        var pic = "../picture/" + id.toString() + ".jpg";
-        document.write('<style>body{background:url(' + pic + '); background-size: 100% 100%;background-repeat: no-repeat;background-attachment: fixed;}</style>');
-    </script>
 </body>
 
 </html>

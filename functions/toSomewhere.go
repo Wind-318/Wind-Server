@@ -1,25 +1,36 @@
 package functions
 
 import (
+	"Project/WindCount"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
+func Exit(ctx *gin.Context) {
+	ctx.SetCookie("cookie", "", -1, "/", "localhost:80", false, true)
+	ctx.HTML(http.StatusOK, "login.html", nil)
+}
+
 func ToNotFound(ctx *gin.Context) {
-	ctx.HTML(http.StatusOK, "notFound.html", nil)
+	ctx.HTML(http.StatusNotFound, "notFound.html", nil)
 }
 
 func ToChangePassword(ctx *gin.Context) {
-	ctx.HTML(http.StatusOK, "changePassword.html", nil)
-}
-
-func ToFindPassword(ctx *gin.Context) {
 	ctx.HTML(http.StatusOK, "findPassword.html", nil)
 }
 
+func ToFindPassword(ctx *gin.Context) {
+	ctx.HTML(http.StatusOK, "verificationFindPassword.html", nil)
+}
+
 func ToLogin(ctx *gin.Context) {
-	ctx.HTML(http.StatusOK, "login.html", nil)
+	_, err := ctx.Cookie("cookie")
+	if err != nil {
+		ctx.HTML(http.StatusOK, "login.html", nil)
+		return
+	}
+	ctx.HTML(http.StatusOK, "function.html", nil)
 }
 
 func ToFunction(ctx *gin.Context) {
@@ -35,5 +46,6 @@ func ToVerificationCode(ctx *gin.Context) {
 }
 
 func ToHead(ctx *gin.Context) {
+	WindCount.GetCount().AddNum()
 	ctx.HTML(http.StatusOK, "ToSomewhere.html", nil)
 }

@@ -2,32 +2,28 @@ package functions
 
 import (
 	"Project/Users"
-	"Project/infomation"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
 func Login(ctx *gin.Context) {
-	userName := ctx.PostForm("userName")
+	userEmail := ctx.PostForm("userEmail")
 	passWord := ctx.PostForm("passWord")
 
 	userInfo := &Users.User{
-		MailAccount:  userName,
+		MailAccount:  userEmail,
 		MailPassword: passWord,
 	}
 
-	statu := userInfo.Login()
+	status := userInfo.Login()
 
-	if statu != "success" {
-		ctx.String(http.StatusOK, "登陆失败")
+	if status != "success" {
+		ctx.HTML(http.StatusNotAcceptable, "serverError.html", nil)
 		return
 	}
 
-	ctx.SetCookie("cookie", userName, 86400, "/", "localhost:8080", false, true)
-	if userName == infomation.SystemUserAccount {
-		ctx.HTML(http.StatusOK, "systemUser.html", nil)
-		return
-	}
+	ctx.SetCookie("cookie", userEmail, 86400, "/", "localhost:80", false, true)
+
 	ctx.HTML(http.StatusOK, "function.html", nil)
 }

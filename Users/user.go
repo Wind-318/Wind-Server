@@ -3,11 +3,8 @@ package Users
 import (
 	"Project/Mail"
 	"Project/infomation"
-	"crypto/sha512"
-	"encoding/hex"
 	"errors"
 	"math/rand"
-	"strconv"
 	"time"
 
 	"github.com/go-gomail/gomail"
@@ -17,6 +14,7 @@ import (
 )
 
 type User struct {
+	UserName     string
 	MailAccount  string
 	MailPassword string
 }
@@ -59,18 +57,14 @@ func (user *User) Register() string {
 	db := sqlx.MustConnect("mysql", infomation.MySQLInfo)
 	defer db.Close()
 
-	passwd := make([]byte, 0)
-	// sha512 加密
-	code := sha512.Sum512([]byte(user.MailPassword))
-	passwd = append(passwd, code[:]...)
+	code := infomation.Encryption(user.MailPassword)
 
-	// 将 16 进制转为字符串存储
 	tx, err := db.Begin()
 	if err != nil {
 		return ""
 	}
 
-	_, err = tx.Exec("INSERT INTO user VALUES(?,?,?)", 0, user.MailAccount, hex.EncodeToString(passwd))
+	_, err = tx.Exec("INSERT INTO user VALUES(?,?,?,?)", 0, user.MailAccount, code, user.UserName)
 	if err != nil {
 		return ""
 	}
@@ -88,14 +82,12 @@ func (user *User) Login() string {
 	db := sqlx.MustConnect("mysql", infomation.MySQLInfo)
 	defer db.Close()
 
-	code := sha512.Sum512([]byte(user.MailPassword))
-	passwd := make([]byte, 0)
-	passwd = append(passwd, code[:]...)
+	code := infomation.Encryption(user.MailPassword)
 
 	err := db.Get(&userpasswd, "SELECT password FROM user WHERE account = ?", user.MailAccount)
 	if err != nil {
 		return "No userAccount"
-	} else if userpasswd.Passwd != hex.EncodeToString(passwd) {
+	} else if userpasswd.Passwd != code {
 		return "password wrong"
 	}
 	return "success"
@@ -112,11 +104,9 @@ func (user *User) ChangePassword(newPassword string) string {
 		return "fail"
 	}
 
-	code := sha512.Sum512([]byte(newPassword))
-	passwd := make([]byte, 0)
-	passwd = append(passwd, code[:]...)
+	code := infomation.Encryption(newPassword)
 
-	_, err = tx.Exec("UPDATE user SET password = ? WHERE account = ?", hex.EncodeToString(passwd), user.MailAccount)
+	_, err = tx.Exec("UPDATE user SET password = ? WHERE account = ?", code, user.MailAccount)
 	if err != nil {
 		return "fail"
 	}
@@ -173,10 +163,11 @@ func (user *User) FindVerificationCode() bool {
 
 // 生成 6 位数验证码
 func (user *User) sendCode() string {
+	letters := "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	rand.Seed(time.Now().UnixNano())
 	verificationCode := ""
 	for i := 0; i < 6; i++ {
-		verificationCode += strconv.Itoa(rand.Intn(10))
+		verificationCode += string(letters[rand.Intn(len(letters))])
 	}
 	return verificationCode
 }
