@@ -7,9 +7,9 @@ import (
 )
 
 var Controller *flowControl = &flowControl{
-	limit:     10000,
-	remainNum: 10000,
-	container: make(chan int, 10000),
+	limit:     100000,
+	remainNum: 100000,
+	container: make(chan int, 100000),
 }
 
 type flowControl struct {

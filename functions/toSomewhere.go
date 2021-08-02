@@ -4,6 +4,7 @@ import (
 	"Project/WindCount"
 	"net/http"
 
+	"github.com/garyburd/redigo/redis"
 	"github.com/gin-gonic/gin"
 )
 
@@ -13,6 +14,19 @@ func Exit(ctx *gin.Context) {
 }
 
 func ToNotFound(ctx *gin.Context) {
+	conn, _ := redis.Dial("tcp", "127.0.0.1:6379")
+	defer conn.Close()
+
+	if ok, _ := redis.Bool(conn.Do("HEXISTS", "banned", ctx.ClientIP())); ok {
+		return
+	}
+	num, _ := redis.Int64(conn.Do("INCR", ctx.ClientIP()))
+	conn.Do("EXPIRE", ctx.ClientIP(), 5)
+	if num > 20 {
+		conn.Do("HSET", "banned", ctx.ClientIP(), "-1")
+		return
+	}
+
 	ctx.HTML(http.StatusNotFound, "notFound.html", nil)
 }
 
