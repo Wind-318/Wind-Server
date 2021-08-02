@@ -49,6 +49,7 @@ func main() {
 	router.StaticFS("/picture", http.Dir("./picture"))
 	router.StaticFS("/markdown", http.Dir("./markdown"))
 	router.StaticFile("/robots.txt", "./robots.txt")
+	router.StaticFile("/favicon.ico", "./favicon.ico")
 
 	router.NoRoute(functions.ToNotFound)
 	router.GET("/", functions.ToHead)

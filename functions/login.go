@@ -9,7 +9,7 @@ import (
 
 func Login(ctx *gin.Context) {
 	userEmail := ctx.PostForm("userEmail")
-	passWord := ctx.PostForm("passWord")
+	passWord := ctx.PostForm("userPassword")
 
 	userInfo := &Users.User{
 		MailAccount:  userEmail,
@@ -17,13 +17,12 @@ func Login(ctx *gin.Context) {
 	}
 
 	status := userInfo.Login()
-
 	if status != "success" {
 		ctx.HTML(http.StatusNotAcceptable, "serverError.html", nil)
 		return
 	}
 
-	ctx.SetCookie("cookie", userEmail, 86400, "/", "localhost:80", false, true)
+	ctx.SetCookie("cookie", userEmail, 86400, "/", "localhost/", false, true)
 
 	ctx.HTML(http.StatusOK, "function.html", nil)
 }
