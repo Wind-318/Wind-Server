@@ -2,8 +2,6 @@ package infomation
 
 import (
 	"crypto/rand"
-	"crypto/sha512"
-	"encoding/hex"
 	"math/big"
 )
 
@@ -45,7 +43,6 @@ var ServerPort =
 
 // 自定义加密方式
 func Encryption(password string) string {
-	
 }
 
 func GetRandomUserAgent() string {
