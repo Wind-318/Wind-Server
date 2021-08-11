@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// 上传文件
 func Upload(ctx *gin.Context) {
 	res, err := ctx.MultipartForm()
 	if err != nil {

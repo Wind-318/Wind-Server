@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>博客首页</title>
+    <link rel="stylesheet" href="../css/blogStyle.css">
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/sakura.js"></script>
+
+    <script type="text/javascript">
+        window.onload = function() {
+            var divs = document.getElementById("container");
+            var num = document.getElementById("container").children.length;
+            var userStatus = document.getElementById("userStatus")
+            $.ajax({
+                url: "/blogs/InquirePageNums",
+                type: "POST",
+                data: {
+                    "num": num
+                },
+                success: function(data) {
+                    if (data["status"] == 1) {
+                        userStatus.innerText = "文章管理";
+                        userStatus.href = "/blog/" + data["id"] + "/user.html";
+
+                        if (data["isSystem"] == 1) {
+                            var litemp = document.createElement("li");
+                            var temp = document.createElement("a");
+                            var ulcontainer = document.getElementById("ulcontainer");
+                            temp.setAttribute("id", "deletebtn");
+                            temp.innerText = "删除"
+                            litemp.appendChild(temp);
+                            ulcontainer.appendChild(litemp);
+
+                            var jsScript = document.createElement("script");
+                            jsScript.text = `var btn = document.getElementById("deletebtn");
+                            btn.onclick = function(ev) {
+                                var arr = document.getElementById("container").children;
+                                var datas = new Array();
+                                for (var i = 0; i < arr.length; i++) {
+                                    if (document.getElementById(arr[i].id + "checkbox").checked) {
+                                        datas.push(arr[i].id);
+                                    }
+                                }
+                                $.ajax({
+                                    url: "/blogs/DeleteBlog",
+                                    type: "POST",
+                                    data: {
+                                        "checked": JSON.stringify(datas)
+                                    },
+                                    success: function(data) {
+                                        location.href = "/blogs";
+                                    }
+                                })
+                            }`;
+                            document.body.appendChild(jsScript);
+                        }
+
+
+                        var litemp = document.createElement("li");
+                        var temp = document.createElement("a");
+                        var ulcontainer = document.getElementById("ulcontainer");
+                        temp.setAttribute("href", "/user/Exit")
+                        temp.innerText = "退出登录"
+                        litemp.appendChild(temp);
+                        ulcontainer.appendChild(litemp);
+
+
+                    }
+                    if (data["num"] < num) {
+                        retrun;
+                    }
+                    var nums = data["end"] - data["start"] + 1;
+                    if (nums <= 20) {
+                        for (var i = data["start"]; i < data["end"]; i++) {
+                            var temp = document.createElement('a');
+                            temp.setAttribute("href", data["urls"][i - 1]);
+                            temp.setAttribute("target", "_blank");
+                            temp.setAttribute("id", data["id"][i]);
+
+                            // a 标签的子元素
+                            if (data["isSystem"] == 1) {
+                                var att = document.createElement("input");
+                                att.setAttribute("type", "checkbox");
+                                att.setAttribute("id", data["id"][i] + "checkbox");
+                                att.setAttribute("class", "deletebtn");
+                                temp.appendChild(att);
+                            }
+                            var att1 = document.createElement("img");
+                            var att2 = document.createElement("span");
+                            var att3 = document.createElement("p");
+                            var att4 = document.createElement("p");
+                            att1.setAttribute("src", data["picurl"][i - 1]);
+                            att2.setAttribute("id", temp.id + "Span");
+                            att3.setAttribute("id", temp.id + "Spans");
+                            att4.setAttribute("id", temp.id + "Spanss");
+                            att3.setAttribute("class", "Spans");
+                            att4.setAttribute("class", "Spanss");
+                            att4.innerHTML = data["titles"][i - 1];
+                            att2.innerHTML = data["description"][i - 1];
+                            att3.innerHTML = "作者：" + data["author"][i - 1] + "\t\t\t发布时间：" + data["create_time"][i - 1] + "\t\t\t修改于：" + data["update_time"][i - 1];
+                            temp.appendChild(att1);
+                            temp.appendChild(att2);
+                            temp.appendChild(att3);
+                            temp.appendChild(att4);
+
+                            divs.appendChild(temp);
+                        }
+                    } else {
+                        for (var i = data["start"]; i < data["end"]; i++) {
+                            var temp = document.createElement('a');
+                            temp.setAttribute("href", data["urls"][i - 1]);
+                            temp.setAttribute("target", "_blank");
+                            temp.setAttribute("id", data["id"][i]);
+
+                            // a 标签的子元素
+                            if (data["isSystem"] == 1) {
+                                var att = document.createElement("input");
+                                att.setAttribute("type", "checkbox");
+                                att.setAttribute("id", data["id"][i] + "checkbox");
+                                att.setAttribute("class", "deletebtn");
+                                temp.appendChild(att);
+                            }
+
+                            var att1 = document.createElement("img");
+                            var att2 = document.createElement("span");
+                            var att3 = document.createElement("p");
+                            var att4 = document.createElement("p");
+                            att1.setAttribute("src", data["picurl"][i - 1]);
+                            att2.setAttribute("id", temp.id + "Span");
+                            att3.setAttribute("id", temp.id + "Spans");
+                            att4.setAttribute("id", temp.id + "Spanss");
+                            att3.setAttribute("class", "Spans");
+                            att4.setAttribute("class", "Spanss");
+                            att4.innerHTML = data["titles"][i - 1];
+                            att2.innerHTML = data["description"][i - 1];
+                            att3.innerHTML = "作者：" + data["author"][i - 1] + "\t\t\t发布时间：" + data["create_time"][i - 1] + "\t\t\t修改于：" + data["update_time"][i - 1];
+                            temp.appendChild(att1);
+                            temp.appendChild(att2);
+                            temp.appendChild(att3);
+                            temp.appendChild(att4);
+
+                            divs.appendChild(temp);
+                        }
+                    }
+                },
+                fail: function() {
+                    location.href = "/serverError";
+                }
+            })
+        }
+    </script>
+</head>
+
+<body>
+    <div class="navbar">
+        <input type="checkbox" />
+        <span></span>
+        <span></span>
+        <ul id="ulcontainer">
+            <li><a href="/">Home</a></li>
+            <li><a href="/blogs">博客首页</a></li>
+            <li><a href="/collections">收藏网站</a></li>
+            <li><a href="/user/ToLogin" id="userStatus">注册/登录</a></li>
+        </ul>
+    </div>
+
+    <div class="containerss">
+        <div class="showcase" id="container">
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        window.onscroll = function() {
+            var scrollTop = $(this).scrollTop();　　
+            var scrollHeight = $(document).height();　　
+            var windowHeight = $(this).height();　　
+            if (scrollTop + windowHeight == scrollHeight) {
+                var divs = document.getElementById("container");
+                var num = document.getElementById("container").children.length;
+                $.ajax({
+                    url: "/blogs/InquirePageNums",
+                    type: "POST",
+                    data: {
+                        "num": num
+                    },
+                    success: function(data) {
+                        if (data["num"] < num) {
+                            retrun;
+                        }
+                        var nums = data["end"] - data["start"] + 1;
+                        if (nums <= 20) {
+                            for (var i = data["start"]; i < data["end"]; i++) {
+                                var temp = document.createElement('a');
+                                temp.setAttribute("href", data["urls"][i - 1]);
+                                temp.setAttribute("target", "_blank");
+                                temp.setAttribute("id", data["id"][i]);
+
+                                // a 标签的子元素
+                                if (data["isSystem"] == 1) {
+                                    var att = document.createElement("input");
+                                    att.setAttribute("type", "checkbox");
+                                    att.setAttribute("id", data["id"][i] + "checkbox");
+                                    att.setAttribute("class", "deletebtn");
+                                    temp.appendChild(att);
+                                }
+                                var att1 = document.createElement("img");
+                                var att2 = document.createElement("span");
+                                var att3 = document.createElement("p");
+                                var att4 = document.createElement("p");
+                                att1.setAttribute("src", data["picurl"][i - 1]);
+                                att2.setAttribute("id", temp.id + "Span");
+                                att3.setAttribute("id", temp.id + "Spans");
+                                att4.setAttribute("id", temp.id + "Spanss");
+                                att3.setAttribute("class", "Spans");
+                                att4.setAttribute("class", "Spanss");
+                                att4.innerHTML = data["titles"][i - 1];
+                                att2.innerHTML = data["description"][i - 1];
+                                att3.innerHTML = "作者：" + data["author"][i - 1] + "\t\t\t发布时间：" + data["create_time"][i - 1] + "\t\t\t修改于：" + data["update_time"][i - 1];
+                                temp.appendChild(att1);
+                                temp.appendChild(att2);
+                                temp.appendChild(att3);
+                                temp.appendChild(att4);
+
+                                divs.appendChild(temp);
+                            }
+                        } else {
+                            for (var i = data["start"]; i < data["end"]; i++) {
+                                var temp = document.createElement('a');
+                                temp.setAttribute("href", data["urls"][i - 1]);
+                                temp.setAttribute("target", "_blank");
+                                temp.setAttribute("id", data["id"][i]);
+
+                                // a 标签的子元素
+                                if (data["isSystem"] == 1) {
+                                    var att = document.createElement("input");
+                                    att.setAttribute("type", "checkbox");
+                                    att.setAttribute("id", data["id"][i] + "checkbox");
+                                    att.setAttribute("class", "deletebtn");
+                                    temp.appendChild(att);
+                                }
+
+                                var att1 = document.createElement("img");
+                                var att2 = document.createElement("span");
+                                var att3 = document.createElement("p");
+                                var att4 = document.createElement("p");
+                                att1.setAttribute("src", data["picurl"][i - 1]);
+                                att2.setAttribute("id", temp.id + "Span");
+                                att3.setAttribute("id", temp.id + "Spans");
+                                att4.setAttribute("id", temp.id + "Spanss");
+                                att3.setAttribute("class", "Spans");
+                                att4.setAttribute("class", "Spanss");
+                                att4.innerHTML = data["titles"][i - 1];
+                                att2.innerHTML = data["description"][i - 1];
+                                att3.innerHTML = "作者：" + data["author"][i - 1] + "\t\t\t发布时间：" + data["create_time"][i - 1] + "\t\t\t修改于：" + data["update_time"][i - 1];
+                                temp.appendChild(att1);
+                                temp.appendChild(att2);
+                                temp.appendChild(att3);
+                                temp.appendChild(att4);
+
+                                divs.appendChild(temp);
+                            }
+                        }
+                    },
+                    fail: function() {
+                        location.href = "/serverError";
+                    }
+                })
+            }
+        }
+    </script>
+</body>
+
+</html>

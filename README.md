@@ -1,6 +1,64 @@
 # Wind's Server 个人网站服务端代码
+- 需要自行启动 MySQL 和 Redis 服务端
+- MySQL 建表指令如下：
+  - blog 表
+    ```sql
+    CREATE TABLE `blog` (
+    `id` int NOT NULL AUTO_INCREMENT COMMENT 'primary key',
+    `author` varchar(255) NOT NULL COMMENT '作者',
+    `authoremail` varchar(255) NOT NULL,
+    `title` varchar(255) NOT NULL COMMENT '标题',
+    `description` varchar(255) NOT NULL COMMENT '简介',
+    `content` text NOT NULL COMMENT '内容',
+    `types` varchar(255) NOT NULL,
+    `clicknum` int NOT NULL COMMENT '点击数',
+    `great` int NOT NULL COMMENT '点赞数',
+    `authority` int NOT NULL,
+    `create_time` datetime DEFAULT NULL COMMENT 'create time',
+    `update_time` datetime DEFAULT NULL COMMENT 'update time',
+    `authorid` int NOT NULL,
+    `url` varchar(255) NOT NULL,
+    `isdelete` int NOT NULL,
+    `picurl` varchar(255) NOT NULL,
+    PRIMARY KEY (`id`)
+    ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+    ```
+  - collections 表
+    ```sql
+    CREATE TABLE `collections` (
+    `id` int NOT NULL AUTO_INCREMENT COMMENT 'primary key',
+    `url` varchar(255) NOT NULL COMMENT '链接',
+    `description` varchar(255) NOT NULL COMMENT '描述',
+    `picurl` varchar(255) NOT NULL,
+    PRIMARY KEY (`id`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+    ```
+  - urlinfo 表
+    ```sql
+    CREATE TABLE `urlinfo` (
+    `id` int NOT NULL AUTO_INCREMENT COMMENT 'ID',
+    `origin` varchar(255) NOT NULL COMMENT '来源',
+    `url` varchar(255) NOT NULL COMMENT '链接',
+    `isDownload` int NOT NULL DEFAULT '0' COMMENT '资源是否已下载',
+    `title` varchar(255) DEFAULT NULL COMMENT '标题',
+    PRIMARY KEY (`id`),
+    KEY `test` (`origin`,`url`,`title`)
+    ) ENGINE=InnoDB AUTO_INCREMENT=442 DEFAULT CHARSET=utf8
+    ```
+  - user 表
+    ```sql
+    CREATE TABLE `user` (
+    `id` int NOT NULL AUTO_INCREMENT,
+    `account` varchar(255) NOT NULL,
+    `password` varchar(256) DEFAULT NULL,
+    `username` varchar(40) NOT NULL,
+    `level` int NOT NULL DEFAULT '0',
+    `authority` int NOT NULL DEFAULT '0',
+    PRIMARY KEY (`id`)
+    ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+    ```
 ## 0.3 版
-- 更新为个人网站；
+- 更新为个人网站(http://windserver.top/)；
 ## 0.2 版
 - 订阅后自动推送（每天 6 点和 18 点，一次 10 条）；
 - 需要在 infomation.go 中更改配置；

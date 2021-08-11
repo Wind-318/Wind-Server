@@ -2,6 +2,8 @@ package infomation
 
 import (
 	"crypto/rand"
+	"crypto/sha512"
+	"encoding/hex"
 	"math/big"
 )
 
@@ -24,6 +26,11 @@ var MySQLInfo string = ""
 
 var SystemUserAccount = ""
 
+var SystemUserAccount2 = ""
+
+// 域名
+var Addr = ""
+
 // 图片数量
 var PicMaxNum = 248
 
@@ -43,6 +50,7 @@ var ServerPort =
 
 // 自定义加密方式
 func Encryption(password string) string {
+	
 }
 
 func GetRandomUserAgent() string {

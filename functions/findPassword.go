@@ -7,44 +7,38 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// 修改密码
 func VerificationFind(ctx *gin.Context) {
 	userEmail := ctx.PostForm("userEmail")
-	userInfo := &Users.User{
-		MailAccount: userEmail,
-	}
-
-	if !userInfo.CheckUserExist() {
-		ctx.HTML(http.StatusNotAcceptable, "serverError.html", nil)
-		return
-	}
-
-	err := userInfo.Verification()
-	if err != nil {
-		ctx.HTML(http.StatusInternalServerError, "serverError.html", nil)
-		return
-	}
-	ctx.HTML(http.StatusOK, "verificationFindPassword.html", nil)
-}
-
-func ConfirmFind(ctx *gin.Context) {
+	newPassword := ctx.PostForm("userPassword")
 	code := ctx.PostForm("code")
-	userEmail := ctx.PostForm("userEmail")
 	userInfo := &Users.User{
 		MailAccount: userEmail,
 	}
-	if code != userInfo.GetVerificationCode() {
-		ctx.HTML(http.StatusNotAcceptable, "serverError.html", nil)
+	result := map[string]interface{}{
+		"msg": "success",
+	}
+
+	if userEmail == "" || newPassword == "" || code == "" {
+		result["msg"] = "还有字段未填写"
+		ctx.JSON(http.StatusOK, result)
+		return
+	} else if !userInfo.CheckUserExist() {
+		result["msg"] = "用户不存在"
+		ctx.JSON(http.StatusOK, result)
+		return
+	} else if userInfo.GetVerificationCode() != code {
+		result["msg"] = "验证码错误"
+		ctx.JSON(http.StatusOK, result)
 		return
 	}
-	ctx.HTML(http.StatusOK, "findPassword.html", nil)
-}
 
-func ModifyPassword(ctx *gin.Context) {
-	newPassword := ctx.PostForm("newPassword")
-	userEmail := ctx.PostForm("userEmail")
-	userInfo := &Users.User{
-		MailAccount: userEmail,
+	err := userInfo.ChangePassword(newPassword)
+	if err != nil {
+		result["msg"] = err.Error()
+		ctx.JSON(http.StatusOK, result)
+		return
 	}
-	userInfo.ChangePassword(newPassword)
-	ctx.HTML(http.StatusOK, "login.html", nil)
+
+	ctx.JSON(http.StatusOK, result)
 }

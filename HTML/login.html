@@ -6,29 +6,32 @@
     <meta charset="UTF-8">
     <title>注册登录</title>
     <link rel="stylesheet" href="../css/loginStyle.css">
+    <script src="../js/jquery.min.js"></script>
 </head>
 
 <body>
     <div class="container right-panel-active">
         <!-- 注册 -->
         <div class="container_form container--signup">
-            <form action="/register" method="post" class="form" id="form1">
+            <form class="form" id="form1">
                 <h2 class="form_title">注册</h2>
-                <input type="text" placeholder="用户名" class="input" name="userName" maxlength="30" required="required" />
-                <input type="email" placeholder="邮箱" class="input" name="userEmail" maxlength="30" required="required" />
-                <input type="password" placeholder="密码" class="input" name="userPassword" maxlength="30" required="required" />
-                <button class="btn">注册</button>
+                <input type="text" placeholder="用户名" class="input" name="userName" id="userName" maxlength="30" />
+                <input type="email" placeholder="邮箱" class="input" name="userEmail" id="userEmail" maxlength="30" />
+                <input type="text" placeholder="验证码" class="input1" name="code" id="code" maxlength="30">
+                <input type="button" class="btn1" id="send" value="发送验证码">
+                <input type="password" placeholder="密码" class="input" name="userPassword" id="userPassword" maxlength="30" />
+                <input type="button" class="btn" id="btnSignup" value="注册">
             </form>
         </div>
 
         <!-- 登录 -->
         <div class="container_form container--signin">
-            <form action="/login" method="post" class="form" id="form2">
+            <form class="form" id="form2">
                 <h2 class="form_title">登录</h2>
-                <input type="email" placeholder="邮箱" class="input" maxlength="30" name="userEmail" required="required" />
-                <input type="password" placeholder="密码" class="input" maxlength="30" name="userPassword" required="required" />
-                <a href="http://windserver.top/ToFindPassword" target="_blank" class="link">忘记密码？</a>
-                <button class="btn">登录</button>
+                <input type="email" placeholder="邮箱" class="input" name="userEmail" id="userEmailSignin" maxlength="30" />
+                <input type="password" placeholder="密码" class="input" name="userPassword" id="userPasswordSignin" maxlength="30" />
+                <a href="/user/TochangePassword" target="_blank" class="link">忘记密码？</a>
+                <input type="button" class="btn" id="btnSignin" value="登录">
             </form>
         </div>
 
@@ -47,8 +50,84 @@
 
     <!-- 背景 -->
     <div class="slidershow">
-        <img src="../picture/3.jpg" alt="" class="slidershow--image">
+        <img src="/picture/3.jpg" alt="" class="slidershow--image">
     </div>
+
+
+
+    <script>
+        var btn = document.getElementById("send");
+
+        btn.onclick = function(ev) {
+            var userEmail = document.getElementById("userEmail").value;
+            $.ajax({
+                url: "/user/sendCode",
+                type: "POST",
+                data: {
+                    "userEmail": userEmail
+                },
+                success: function(data) {
+                    alert(data["msg"]);
+                },
+                fail: function(data) {
+                    alert(data["msg"]);
+                }
+            })
+        }
+    </script>
+    <script>
+        var btn = document.getElementById("btnSignup");
+        btn.onclick = function(ev) {
+            var userName = document.getElementById("userName").value;
+            var code = document.getElementById("code").value;
+            var userEmail = document.getElementById("userEmail").value;
+            var userPassword = document.getElementById("userPassword").value;
+            $.ajax({
+                url: "/user/register",
+                type: "POST",
+                data: {
+                    "userName": userName,
+                    "code": code,
+                    "userEmail": userEmail,
+                    "userPassword": userPassword
+                },
+                success: function(data) {
+                    alert(data["msg"]);
+                    if (data["msg"] == "注册成功") {
+                        location.href = "/user/ToLogin";
+                    }
+                },
+                fail: function(data) {
+                    alert(data["msg"]);
+                }
+            })
+        }
+    </script>
+    <script>
+        var btn = document.getElementById("btnSignin");
+        btn.onclick = function(ev) {
+            var userEmail = document.getElementById("userEmailSignin").value;
+            var userPassword = document.getElementById("userPasswordSignin").value;
+            $.ajax({
+                url: "/user/login",
+                type: "POST",
+                data: {
+                    "userEmail": userEmail,
+                    "userPassword": userPassword
+                },
+                success: function(data) {
+                    if (data["msg"] == "success") {
+                        location.href = "/blogs";
+                    } else {
+                        alert(data["msg"]);
+                    }
+                },
+                fail: function(data) {
+                    alert(data["msg"]);
+                }
+            })
+        }
+    </script>
 
     <script src="../js/sakura.js"></script>
     <script src="../js/login.js"></script>

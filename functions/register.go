@@ -2,66 +2,55 @@ package functions
 
 import (
 	"Project/Users"
+	"Project/infomation"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
+// 注册
 func Register(ctx *gin.Context) {
 	userName := ctx.PostForm("userName")
-	userEmail := ctx.PostForm("userEmail")
-	passWord := ctx.PostForm("passWord")
-
-	userInfo := &Users.User{
-		UserName:     userName,
-		MailAccount:  userEmail,
-		MailPassword: passWord,
-	}
-
-	if userInfo.CheckUserExist() {
-		ctx.HTML(http.StatusNotAcceptable, "serverError.html", nil)
-		return
-	}
-
-	userInfo.Verification()
-
-	// domain 是域名，path 是域名，合起来限制可以被哪些 url 访问
-	ctx.SetCookie("userName", userName, 60, "/", "localhost:80", false, true)
-	ctx.SetCookie("userEmail", userEmail, 60, "/", "localhost:80", false, true)
-	ctx.SetCookie("passWord", passWord, 60, "/", "localhost:80", false, true)
-	ctx.HTML(http.StatusOK, "verificationCode.html", nil)
-}
-
-func SendCode(ctx *gin.Context) {
-	userName, err := ctx.Cookie("userName")
-	if err != nil {
-		ctx.HTML(http.StatusNotAcceptable, "serverError.html", nil)
-		return
-	}
-	userEmail, err := ctx.Cookie("userEmail")
-	if err != nil {
-		ctx.HTML(http.StatusNotAcceptable, "serverError.html", nil)
-		return
-	}
-	passWord, err := ctx.Cookie("passWord")
-	if err != nil {
-		ctx.HTML(http.StatusNotAcceptable, "serverError.html", nil)
-		return
-	}
-
 	code := ctx.PostForm("code")
+	userEmail := ctx.PostForm("userEmail")
+	passWord := ctx.PostForm("userPassword")
+
 	userInfo := &Users.User{
 		UserName:     userName,
 		MailAccount:  userEmail,
 		MailPassword: passWord,
 	}
 
-	if code != userInfo.GetVerificationCode() {
-		ctx.HTML(http.StatusNotAcceptable, "serverError.html", nil)
+	result := map[string]interface{}{
+		"msg": "注册成功",
+	}
+
+	if userEmail != infomation.SystemUserAccount && userEmail != infomation.SystemUserAccount2 {
+		result["msg"] = "暂不开放注册"
+		ctx.JSON(http.StatusOK, result)
 		return
 	}
 
-	userInfo.Register()
+	if userName == "" || userEmail == "" || passWord == "" || code == "" {
+		result["msg"] = "还有字段未填写"
+		ctx.JSON(http.StatusOK, result)
+		return
+	} else if userInfo.CheckUserExist() {
+		result["msg"] = "用户已存在"
+		ctx.JSON(http.StatusOK, result)
+		return
+	} else if code != userInfo.GetVerificationCode() {
+		result["msg"] = "验证码错误"
+		ctx.JSON(http.StatusOK, result)
+		return
+	}
 
-	ctx.HTML(http.StatusOK, "login.html", nil)
+	err := userInfo.Register()
+	if err != nil {
+		result["msg"] = err.Error()
+		ctx.JSON(http.StatusOK, result)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, result)
 }

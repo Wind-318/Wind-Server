@@ -1,0 +1,30 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.imgs img {
+    position: fixed;
+    width: 100%;
+    height: auto;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+img {
+    max-width: 100%;
+}
+
+.divcontainer {
+    display: flex;
+    margin-top: 0;
+    position: relative;
+    width: auto;
+    height: auto;
+}
+
+.container {
+    word-break: break-all;
+    overflow-y: auto;
+}

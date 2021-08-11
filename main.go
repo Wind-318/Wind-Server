@@ -43,6 +43,7 @@ func main() {
 	go sendEveryUser()
 
 	router.LoadHTMLGlob("HTML/*")
+	router.StaticFS("/blog", http.Dir("./blog"))
 	router.StaticFS("/js", http.Dir("./js"))
 	router.StaticFS("/css", http.Dir("./css"))
 	router.StaticFS("/music", http.Dir("./music"))
@@ -52,23 +53,51 @@ func main() {
 	router.StaticFile("/favicon.ico", "./favicon.ico")
 
 	router.NoRoute(functions.ToNotFound)
-	router.GET("/", functions.ToHead)
-	router.GET("/ToLogin", functions.ToLogin)
-	router.GET("/TochangePassword", functions.ToChangePassword)
-	router.GET("/ToFindPassword", functions.ToFindPassword)
-	router.GET("/ToFunction", functions.ToFunction)
-	router.GET("/ToVerificationCode", functions.ToVerificationCode)
-	router.GET("/Exit", functions.Exit)
+	root := router.Group("")
+	{
+		root.GET("/", functions.ToHead)
+		root.Any("/blog", functions.ToNotFound)
+		root.Any("/js", functions.ToNotFound)
+		root.Any("/css", functions.ToNotFound)
+		root.Any("/music", functions.ToNotFound)
+		root.Any("/picture", functions.ToNotFound)
 
-	router.POST("/modifyPassword", functions.ModifyPassword)
-	router.POST("/ConfirmFind", functions.ConfirmFind)
-	router.POST("/verificationFind", functions.VerificationFind)
-	router.POST("/register", functions.Register)
-	router.POST("/login", functions.Login)
-	router.POST("/changePassword", functions.ChangePassWord)
-	router.POST("/sendCode", functions.SendCode)
-	router.POST("/upload", functions.Upload)
-	router.GET("/sendStock", functions.SendStock)
+		root.GET("/sendStock", functions.SendStock)
+		root.GET("/serverError", functions.ToError)
+	}
+
+	blog := router.Group("/blogs")
+	{
+		blog.GET("/", functions.ToBlog)
+		blog.POST("/InquirePageNums", functions.GetPageNums)
+		blog.GET("/InquireClassification", functions.GetClassification)
+		blog.POST("/InquireText", functions.GetText)
+		blog.GET("/CreateText", functions.ToCreateText)
+		blog.POST("/CreateTexts", functions.CreateText)
+		blog.POST("/GetUserText", functions.GetUserText)
+		blog.POST("/DeleteBlog", functions.DeleteFromBlog)
+	}
+
+	user := router.Group("/user")
+	{
+		user.GET("/ToLogin", functions.ToLogin)
+		user.GET("/TochangePassword", functions.ToChangePassword)
+		user.GET("/Exit", functions.Exit)
+
+		user.POST("/verificationFind", functions.VerificationFind)
+		user.POST("/register", functions.Register)
+		user.POST("/login", functions.Login)
+		user.POST("/changePassword", functions.ChangePassWord)
+		user.POST("/sendCode", functions.SendCode)
+	}
+
+	collections := router.Group("/collections")
+	{
+		collections.GET("/", functions.ToCollections)
+		collections.GET("/IsSystem", functions.IsSystem)
+		collections.GET("/GetWebs", functions.GetWebs)
+		collections.POST("/PutWebs", functions.PutWebs)
+	}
 
 	router.Run(":80")
 }
@@ -83,7 +112,6 @@ func countTime() {
 	}
 }
 
-// 6 点、18 点定时推送
 func sendEveryUser() {
 	db := sqlx.MustConnect("mysql", infomation.MySQLInfo)
 	defer db.Close()

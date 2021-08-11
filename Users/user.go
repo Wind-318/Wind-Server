@@ -4,7 +4,10 @@ import (
 	"Project/Mail"
 	"Project/infomation"
 	"errors"
+	"io/ioutil"
 	"math/rand"
+	"os"
+	"strconv"
 	"time"
 
 	"github.com/go-gomail/gomail"
@@ -53,27 +56,24 @@ func (user *User) CheckUserExist() bool {
 }
 
 // 注册功能
-func (user *User) Register() string {
+func (user *User) Register() error {
 	db := sqlx.MustConnect("mysql", infomation.MySQLInfo)
 	defer db.Close()
 
 	code := infomation.Encryption(user.MailPassword)
 
-	tx, err := db.Begin()
-	if err != nil {
-		return ""
-	}
+	db.Exec("INSERT INTO user VALUES(?, ?, ?, ?, ?, ?)", 0, user.MailAccount, code, user.UserName, 0, 0)
 
-	_, err = tx.Exec("INSERT INTO user VALUES(?,?,?,?)", 0, user.MailAccount, code, user.UserName)
-	if err != nil {
-		return ""
-	}
-	err = tx.Commit()
-	if err != nil {
-		return ""
-	}
+	var id int
+	db.Get(&id, "SELECT id FROM user WHERE account = ?", user.MailAccount)
 
-	return "success"
+	os.Mkdir(`blog/`+strconv.Itoa(id), 0644)
+
+	content, _ := ioutil.ReadFile(`./blogTemplate.html`)
+	ioutil.WriteFile(`blog/`+strconv.Itoa(id)+`/user.html`, content, 0644)
+	db.Exec("INSERT INTO blog VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 0, user.UserName, user.MailAccount, "这是你的第一篇文章", "", "这是你的第一篇文章", "未分类", 0, 0, 0, time.Now().String()[:19], time.Now().String()[:19])
+
+	return nil
 }
 
 // 登录功能
@@ -86,57 +86,58 @@ func (user *User) Login() string {
 
 	err := db.Get(&userpasswd, "SELECT password FROM user WHERE account = ?", user.MailAccount)
 	if err != nil {
-		return "No userAccount"
+		return "账号不存在"
 	} else if userpasswd.Passwd != code {
-		return "password wrong"
+		return "密码错误"
 	}
 	return "success"
 }
 
 // 修改密码
-func (user *User) ChangePassword(newPassword string) string {
+func (user *User) ChangePassword(newPassword string) error {
 	db := sqlx.MustConnect("mysql", infomation.MySQLInfo)
 	defer db.Close()
 
 	tx, err := db.Begin()
 
 	if err != nil {
-		return "fail"
+		return err
 	}
 
 	code := infomation.Encryption(newPassword)
 
 	_, err = tx.Exec("UPDATE user SET password = ? WHERE account = ?", code, user.MailAccount)
 	if err != nil {
-		return "fail"
+		return err
 	}
 	err = tx.Commit()
 	if err != nil {
-		return "fail"
+		return err
 	}
-	return "success"
+	return nil
 }
 
 // 发送验证码
 func (user *User) Verification() error {
-	// 接收者邮箱
-	mail := Mail.GetNewMail(user.MailAccount)
-
-	verificationCode := user.sendCode()
-
-	mail.Send("验证码", "<h1>您的验证码为："+verificationCode+"<h1>", gomail.NewMessage())
-
 	connect, _ := redis.Dial("tcp", "127.0.0.1:6379")
 	defer connect.Close()
 
 	if user.FindVerificationCode() {
-		return errors.New("验证码已发送，请 1 分钟后再试")
+		return errors.New("验证码已发送，请 2 分钟后再试")
 	}
-	// 验证码持续时间 1 分钟，过期自动失效
-	_, err := connect.Do("SET", user.MailAccount, verificationCode, "ex", "60")
+
+	verificationCode := user.sendCode()
+	// 验证码持续时间 2 分钟，过期自动失效
+	_, err := connect.Do("SET", user.MailAccount, verificationCode, "ex", "120")
 	if err != nil {
 		return err
 	}
+
+	// 接收者邮箱
+	mail := Mail.GetNewMail(user.MailAccount)
+
+	mail.Send("验证码", "<h1>您的验证码为："+verificationCode+"<h1>", gomail.NewMessage())
+
 	return nil
 }
 

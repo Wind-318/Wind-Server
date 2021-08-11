@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户中心</title>
+    <link rel="stylesheet" href="../../css/user.css">
+    <script src="../../js/jquery.min.js"></script>
+    <script>
+        window.onload = function() {
+            var container = document.getElementById("container");
+            $.ajax({
+                url: "/blogs/InquireClassification",
+                type: "GET",
+                success: function(data) {
+                    for (var i = 0; i < data["num"]; i++) {
+                        // 新建 a 标签
+                        var temp = document.createElement("a");
+                        temp.setAttribute("id", data["types"][i]);
+
+                        // a 标签的子元素
+                        var att1 = document.createElement("img");
+                        var att2 = document.createElement("span");
+                        att1.setAttribute("src", data["pic"][i]);
+                        att2.setAttribute("id", temp.id + "Span");
+                        att2.setAttribute("style", "left: 40%; top: 40%; font-size: 30px");
+                        att2.innerHTML = data["types"][i];
+                        temp.appendChild(att1);
+                        temp.appendChild(att2);
+
+                        // 将 a 标签加到 div 中
+                        container.appendChild(temp);
+
+                        // 增加监控 js
+                        var jsScript = document.createElement("script");
+                        jsScript.type = "text/javascript";
+                        jsScript.text = `var btn = document.getElementById("` + temp.id + `");
+                        var divs = document.getElementById("container");
+                        var Addr = "` + data["Addr"] + `";
+
+                        btn.onclick = function(ev) {
+                            // 刷新分类下的文章
+                            document.getElementById("container").innerHTML = "";
+
+                            $.ajax({
+                                url: "/blogs/InquireText",
+                                type: "POST",
+                                data: {
+                                    "types": "` + temp.id + `"
+                                },
+                                success: function(data) {
+                                    for (var i = data["num"] - 1; i >= 0; i--) {  
+                                        var temp = document.createElement('a');
+                                        temp.setAttribute("href", data["urls"][i]);
+                                        temp.setAttribute("target", "_blank")
+
+                                        // a 标签的子元素
+                                        var att = document.createElement("input");
+                                        att.setAttribute("type", "checkbox");
+                                        att.setAttribute("id", data["id"][i] + "checkbox");
+                                        att.setAttribute("class", "deletebtn");
+                                        temp.appendChild(att);
+                                        var att1 = document.createElement("img");
+                                        var att2 = document.createElement("span");
+                                        var att3 = document.createElement("p");
+                                        var att4 = document.createElement("p");
+                                        att1.setAttribute("src", data["picurl"][i]);
+                                        att2.setAttribute("id", temp.id + "Span");
+                                        att3.setAttribute("id", temp.id + "Spans");
+                                        att4.setAttribute("id", temp.id + "Spanss");
+                                        att3.setAttribute("class", "Spans");
+                                        att4.setAttribute("class", "Spanss");
+                                        att4.innerHTML = data["titles"][i];
+                                        att2.innerHTML = data["description"][i];
+                                        att3.innerHTML = "作者：" + data["author"][i] + "\t\t\t发布时间：" + data["create_time"][i] + "\t\t\t修改于：" + data["update_time"][i];
+                                        temp.appendChild(att1);
+                                        temp.appendChild(att2);
+                                        temp.appendChild(att3);
+                                        temp.appendChild(att4);
+
+                                        divs.appendChild(temp);
+                                    }
+                                },
+                                fail: function() {
+                                    location.href = "/serverError";
+                                }
+                            })
+                        }`;
+                        document.body.appendChild(jsScript);
+                    }
+
+                },
+                fail: function(data) {
+                    location.href = "/serverError";
+                }
+            })
+        }
+    </script>
+</head>
+
+<body>
+    <div class="navbar">
+        <input type="checkbox" />
+        <span></span>
+        <span></span>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/blogs">博客首页</a></li>
+            <li><a id="newText">新建文章</a></li>
+            <li><a id="deleteText">删除文章</a></li>
+        </ul>
+    </div>
+    <div class="container">
+        <div class="showcase" id="container">
+        </div>
+    </div>
+
+    <script>
+        var btn = document.getElementById("newText");
+        btn.onclick = function() {
+            location.href = "/blogs/CreateText";
+        }
+    </script>
+
+    <script>
+        var btn = document.getElementById("deleteText");
+        btn.onclick = function() {
+            var arr = document.getElementById("container").children;
+            var datas = new Array();
+            for (var i = 0; i < arr.length; i++) {
+                if (document.getElementById(arr[i].id + "checkbox").checked) {
+                    datas.push(arr[i].id);
+                }
+            }
+            $.ajax({
+                url: "/blogs/DeleteBlog",
+                type: "POST",
+                data: {
+                    "checked": JSON.stringify(datas)
+                },
+                success: function(data) {
+                    location.href = "/blogs";
+                }
+            })
+        }
+    </script>
+</body>
+
+</html>
