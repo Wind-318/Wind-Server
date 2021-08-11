@@ -21,7 +21,7 @@
     `isdelete` int NOT NULL,
     `picurl` varchar(255) NOT NULL,
     PRIMARY KEY (`id`)
-    ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+    );
     ```
   - collections 表
     ```sql
@@ -31,7 +31,7 @@
     `description` varchar(255) NOT NULL COMMENT '描述',
     `picurl` varchar(255) NOT NULL,
     PRIMARY KEY (`id`)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+    );
     ```
   - urlinfo 表
     ```sql
@@ -43,7 +43,7 @@
     `title` varchar(255) DEFAULT NULL COMMENT '标题',
     PRIMARY KEY (`id`),
     KEY `test` (`origin`,`url`,`title`)
-    ) ENGINE=InnoDB AUTO_INCREMENT=442 DEFAULT CHARSET=utf8
+    );
     ```
   - user 表
     ```sql
@@ -55,7 +55,7 @@
     `level` int NOT NULL DEFAULT '0',
     `authority` int NOT NULL DEFAULT '0',
     PRIMARY KEY (`id`)
-    ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+    );
     ```
 ## 0.3 版
 - 更新为个人网站(http://windserver.top/)；
