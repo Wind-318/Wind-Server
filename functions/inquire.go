@@ -63,6 +63,10 @@ func GetPageNums(ctx *gin.Context) {
 
 		result["status"] = 1
 
+		var userid int
+		conn.Get(&userid, "SELECT id FROM user WHERE account = ?", email)
+		result["ids"] = userid
+
 		// 更新时间
 		ctx.SetCookie("cookie", cookie, 86400, "/", "localhost/", false, true)
 		redisconn.Do("HMSET", cookie, "email", email)

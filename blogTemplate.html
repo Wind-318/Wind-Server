@@ -54,7 +54,8 @@
                                     for (var i = data["num"] - 1; i >= 0; i--) {  
                                         var temp = document.createElement('a');
                                         temp.setAttribute("href", data["urls"][i]);
-                                        temp.setAttribute("target", "_blank")
+                                        temp.setAttribute("target", "_blank");
+                                        temp.setAttribute("id", data["id"][i]);
 
                                         // a 标签的子元素
                                         var att = document.createElement("input");

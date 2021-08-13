@@ -24,7 +24,7 @@
                 success: function(data) {
                     if (data["status"] == 1) {
                         userStatus.innerText = "文章管理";
-                        userStatus.href = "/blog/" + data["id"] + "/user.html";
+                        userStatus.href = "/blog/" + data["ids"] + "/user.html";
 
                         if (data["isSystem"] == 1) {
                             var litemp = document.createElement("li");
@@ -67,8 +67,6 @@
                         temp.innerText = "退出登录"
                         litemp.appendChild(temp);
                         ulcontainer.appendChild(litemp);
-
-
                     }
                     if (data["num"] < num) {
                         retrun;
@@ -79,13 +77,13 @@
                             var temp = document.createElement('a');
                             temp.setAttribute("href", data["urls"][i - 1]);
                             temp.setAttribute("target", "_blank");
-                            temp.setAttribute("id", data["id"][i]);
+                            temp.setAttribute("id", data["id"][i - 1]);
 
                             // a 标签的子元素
                             if (data["isSystem"] == 1) {
                                 var att = document.createElement("input");
                                 att.setAttribute("type", "checkbox");
-                                att.setAttribute("id", data["id"][i] + "checkbox");
+                                att.setAttribute("id", data["id"][i - 1] + "checkbox");
                                 att.setAttribute("class", "deletebtn");
                                 temp.appendChild(att);
                             }
@@ -114,13 +112,13 @@
                             var temp = document.createElement('a');
                             temp.setAttribute("href", data["urls"][i - 1]);
                             temp.setAttribute("target", "_blank");
-                            temp.setAttribute("id", data["id"][i]);
+                            temp.setAttribute("id", data["id"][i - 1]);
 
                             // a 标签的子元素
                             if (data["isSystem"] == 1) {
                                 var att = document.createElement("input");
                                 att.setAttribute("type", "checkbox");
-                                att.setAttribute("id", data["id"][i] + "checkbox");
+                                att.setAttribute("id", data["id"][i - 1] + "checkbox");
                                 att.setAttribute("class", "deletebtn");
                                 temp.appendChild(att);
                             }
@@ -197,13 +195,13 @@
                                 var temp = document.createElement('a');
                                 temp.setAttribute("href", data["urls"][i - 1]);
                                 temp.setAttribute("target", "_blank");
-                                temp.setAttribute("id", data["id"][i]);
+                                temp.setAttribute("id", data["id"][i - 1]);
 
                                 // a 标签的子元素
                                 if (data["isSystem"] == 1) {
                                     var att = document.createElement("input");
                                     att.setAttribute("type", "checkbox");
-                                    att.setAttribute("id", data["id"][i] + "checkbox");
+                                    att.setAttribute("id", data["id"][i - 1] + "checkbox");
                                     att.setAttribute("class", "deletebtn");
                                     temp.appendChild(att);
                                 }
@@ -232,13 +230,13 @@
                                 var temp = document.createElement('a');
                                 temp.setAttribute("href", data["urls"][i - 1]);
                                 temp.setAttribute("target", "_blank");
-                                temp.setAttribute("id", data["id"][i]);
+                                temp.setAttribute("id", data["id"][i - 1]);
 
                                 // a 标签的子元素
                                 if (data["isSystem"] == 1) {
                                     var att = document.createElement("input");
                                     att.setAttribute("type", "checkbox");
-                                    att.setAttribute("id", data["id"][i] + "checkbox");
+                                    att.setAttribute("id", data["id"][i - 1] + "checkbox");
                                     att.setAttribute("class", "deletebtn");
                                     temp.appendChild(att);
                                 }
