@@ -1,4 +1,4 @@
-# Wind's Server 个人网站服务端代码
+# Wind's Server 个人网站服务端代码[](123)
 - 需要自行启动 MySQL 和 Redis 服务端
 - MySQL 建表指令如下：
   - blog 表
@@ -21,7 +21,7 @@
     `isdelete` int NOT NULL,
     `picurl` varchar(255) NOT NULL,
     PRIMARY KEY (`id`)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4   COLLATE=utf8mb4_0900_ai_ci
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
     ```
   - collections 表
     ```sql
@@ -31,7 +31,7 @@
     `description` varchar(255) NOT NULL COMMENT '描述',
     `picurl` varchar(255) NOT NULL,
     PRIMARY KEY (`id`)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4   COLLATE=utf8mb4_0900_ai_ci
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
     ```
   - urlinfo 表
     ```sql
