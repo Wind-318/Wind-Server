@@ -22,7 +22,7 @@
 
         <input id="attFiles" style="position: absolute; top: 0; bottom: 0; left: 138px;right: 0; opacity: 0; width: 222px;" multiple="multiple" type="file" />
         <div style="text-align: top">
-            <span style="font-size: 12px;">上传附件（文件名不能重复）：</span>
+            <span style="font-size: 12px;">上传附件：</span>
             <img id="uploads" src="../picture/profile.jpg" style="margin-left: 10px; width: 40px; height: 40px; vertical-align: middle;" />
         </div>
     </div>
@@ -64,8 +64,6 @@
                 alert('文件大小最大为 5 MB');
                 return;
             }
-
-
 
             var pictypes = pic.files[0].type;
             var index = pictypes.lastIndexOf("/");

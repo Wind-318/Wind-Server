@@ -26,8 +26,6 @@ var MySQLInfo string = ""
 
 var SystemUserAccount = ""
 
-var SystemUserAccount2 = ""
-
 // 域名
 var Addr = ""
 

@@ -58,7 +58,7 @@ body {
     display: inline-block;
     text-align: center;
     justify-content: center;
-    left: 20%;
+    left: 0;
     top: 20%;
     word-break: break-all;
 }
@@ -84,7 +84,7 @@ body {
     top: 0;
     text-align: center;
     justify-content: center;
-    left: 30%;
+    left: 5%;
     margin: auto;
 }
 
@@ -147,7 +147,7 @@ body {
 /* 拉伸后长度 */
 
 .navbar input:checked~ul {
-    width: 700px;
+    width: 800px;
 }
 
 .navbar span {

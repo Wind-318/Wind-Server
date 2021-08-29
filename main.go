@@ -44,21 +44,22 @@ func main() {
 
 	router.LoadHTMLGlob("HTML/*")
 	router.StaticFS("/blog", http.Dir("./blog"))
-	router.StaticFS("/js", http.Dir("./js"))
 	router.StaticFS("/css", http.Dir("./css"))
+	router.StaticFS("/files", http.Dir("./files"))
+	router.StaticFile("/favicon.ico", "./favicon.ico")
+	router.StaticFS("/js", http.Dir("./js"))
 	router.StaticFS("/music", http.Dir("./music"))
 	router.StaticFS("/picture", http.Dir("./picture"))
-	router.StaticFS("/markdown", http.Dir("./markdown"))
 	router.StaticFile("/robots.txt", "./robots.txt")
-	router.StaticFile("/favicon.ico", "./favicon.ico")
 
 	router.NoRoute(functions.ToNotFound)
 	root := router.Group("")
 	{
 		root.GET("/", functions.ToHead)
 		root.Any("/blog", functions.ToNotFound)
-		root.Any("/js", functions.ToNotFound)
 		root.Any("/css", functions.ToNotFound)
+		root.Any("/files", functions.ToNotFound)
+		root.Any("/js", functions.ToNotFound)
 		root.Any("/music", functions.ToNotFound)
 		root.Any("/picture", functions.ToNotFound)
 
@@ -69,34 +70,50 @@ func main() {
 	blog := router.Group("/blogs")
 	{
 		blog.GET("/", functions.ToBlog)
-		blog.POST("/InquirePageNums", functions.GetPageNums)
-		blog.GET("/InquireClassification", functions.GetClassification)
-		blog.POST("/InquireText", functions.GetText)
 		blog.GET("/CreateText", functions.ToCreateText)
+		blog.GET("/InquireClassification", functions.GetClassification)
+		blog.POST("/AddComment", functions.AddComment)
+		blog.POST("/Author", functions.Author)
 		blog.POST("/CreateTexts", functions.CreateText)
-		blog.POST("/GetUserText", functions.GetUserText)
 		blog.POST("/DeleteBlog", functions.DeleteFromBlog)
+		blog.POST("/DeleteComment", functions.DeleteComment)
+		blog.POST("/GetCommentsID", functions.GetCommentsID)
+		blog.POST("/GetUserText", functions.GetUserText)
+		blog.POST("/GetProfile", functions.GetProfile)
+		blog.POST("/GetLastModify", functions.GetLastModify)
+		blog.POST("/InquirePageNums", functions.GetPageNums)
+		blog.POST("/InquireText", functions.GetText)
+		blog.POST("/ModifyBlog", functions.ModifyBlog)
+		blog.POST("/Parise", functions.Parise)
+		blog.POST("/PariseNum", functions.PariseNum)
+		blog.POST("/TextComment", functions.TextComment)
+		blog.POST("/Views", functions.Views)
 	}
 
 	user := router.Group("/user")
 	{
+		user.GET("/Exit", functions.Exit)
 		user.GET("/ToLogin", functions.ToLogin)
 		user.GET("/TochangePassword", functions.ToChangePassword)
-		user.GET("/Exit", functions.Exit)
 
-		user.POST("/verificationFind", functions.VerificationFind)
-		user.POST("/register", functions.Register)
-		user.POST("/login", functions.Login)
 		user.POST("/changePassword", functions.ChangePassWord)
+		user.POST("/login", functions.Login)
+		user.POST("/register", functions.Register)
 		user.POST("/sendCode", functions.SendCode)
+		user.POST("/verificationFind", functions.VerificationFind)
 	}
 
 	collections := router.Group("/collections")
 	{
 		collections.GET("/", functions.ToCollections)
-		collections.GET("/IsSystem", functions.IsSystem)
 		collections.GET("/GetWebs", functions.GetWebs)
+		collections.GET("/IsSystem", functions.IsSystem)
 		collections.POST("/PutWebs", functions.PutWebs)
+	}
+
+	Resources := router.Group("/resources")
+	{
+		Resources.GET("/", functions.ToResources)
 	}
 
 	router.Run(":80")

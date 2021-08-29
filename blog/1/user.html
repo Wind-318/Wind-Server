@@ -21,7 +21,6 @@
             <li><a href="/blogs">博客首页</a></li>
             <li><a id="newText">新建文章</a></li>
             <li><a id="deleteText">删除文章</a></li>
-            <li><a id="modifyText">修改文章</a></li>
         </ul>
     </div>
     <div class="container">
@@ -53,30 +52,7 @@
                     "checked": JSON.stringify(datas)
                 },
                 success: function(data) {
-                    location.reload();
-                }
-            })
-        }
-    </script>
-
-    <script>
-        var btn = document.getElementById("modifyText");
-        btn.onclick = function() {
-            var arr = document.getElementById("container").children[0];
-            var datas = new Array();
-            for (var i = 0; i < arr.length; i++) {
-                if (document.getElementById(arr[i].id + "checkbox").checked) {
-                    datas.push(arr[i].id);
-                }
-            }
-            $.ajax({
-                url: "/blogs/DeleteBlog",
-                type: "POST",
-                data: {
-                    "checked": JSON.stringify(datas)
-                },
-                success: function(data) {
-                    location.reload();
+                    location.href = "/blogs";
                 }
             })
         }

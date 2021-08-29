@@ -67,3 +67,7 @@ func ToCreateText(ctx *gin.Context) {
 func ToCollections(ctx *gin.Context) {
 	ctx.HTML(http.StatusOK, "collections.html", nil)
 }
+
+func ToResources(ctx *gin.Context) {
+	ctx.HTML(http.StatusOK, "resources.html", nil)
+}
