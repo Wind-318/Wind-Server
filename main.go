@@ -81,6 +81,7 @@ func main() {
 		blog.POST("/GetUserText", functions.GetUserText)
 		blog.POST("/GetProfile", functions.GetProfile)
 		blog.POST("/GetLastModify", functions.GetLastModify)
+		blog.POST("/GetModifyBlog", functions.GetModifyBlog)
 		blog.POST("/InquirePageNums", functions.GetPageNums)
 		blog.POST("/InquireText", functions.GetText)
 		blog.POST("/ModifyBlog", functions.ModifyBlog)
@@ -109,6 +110,7 @@ func main() {
 		collections.GET("/GetWebs", functions.GetWebs)
 		collections.GET("/IsSystem", functions.IsSystem)
 		collections.POST("/PutWebs", functions.PutWebs)
+		collections.POST("/PutPic", functions.PutPic)
 	}
 
 	Resources := router.Group("/resources")

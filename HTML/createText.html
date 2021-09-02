@@ -14,7 +14,7 @@
 
 <body>
     <div style="position: relative; flex-direction: row; display: flex;">
-        <input id="backgroundPic" style="position: absolute; top: 0; bottom: 0; left: 0;right: 0; opacity: 0; width: 138px;" type="file" accept="image/jpg, image/gif, image/png" />
+        <input id="backgroundPic" style="position: absolute; top: 0; bottom: 0; left: 0;right: 0; opacity: 0; width: 138px;" type="file" accept="image/*" />
         <div style="text-align: top">
             <span style="font-size: 12px;">上传文章背景：</span>
             <img id="upload" src="../picture/profile.jpg" style="margin-left: 10px; width: 40px; height: 40px; vertical-align: middle;" />
@@ -97,7 +97,7 @@
                     location.href = "/blogs";
                 },
                 fail: function() {
-                    location.href = "/serverError";
+                    alert("fail");
                 }
             })
         }

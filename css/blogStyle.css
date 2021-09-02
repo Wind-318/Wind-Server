@@ -54,7 +54,7 @@ body {
 .showcase a span {
     position: absolute;
     text-decoration: none;
-    color: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
     display: inline-block;
     text-align: center;
     justify-content: center;
@@ -65,7 +65,7 @@ body {
 
 .showcase a .Spans {
     text-decoration: none;
-    color: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
     display: inline-block;
     position: absolute;
     bottom: 0;
@@ -78,7 +78,7 @@ body {
 .showcase a .Spanss {
     font-size: 20px;
     text-decoration: none;
-    color: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
     display: inline-block;
     position: absolute;
     top: 0;

@@ -25,7 +25,7 @@ func Register(ctx *gin.Context) {
 		"msg": "注册成功",
 	}
 
-	if userEmail != infomation.SystemUserAccount {
+	if userEmail != infomation.SystemUserAccount && userEmail != infomation.SystemUserAccount2 {
 		result["msg"] = "暂不开放注册"
 		ctx.JSON(http.StatusOK, result)
 		return

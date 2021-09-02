@@ -78,8 +78,19 @@ func GetWebs(ctx *gin.Context) {
 func PutWebs(ctx *gin.Context) {
 	url := ctx.PostForm("url")
 	comment := ctx.PostForm("comment")
+	pic := ctx.PostForm("picurl")
 	conn := sqlx.MustConnect("mysql", infomation.MySQLInfo)
 	defer conn.Close()
 
-	conn.Exec("INSERT INTO collections VALUES(?, ?, ?, ?)", 0, url, comment, "")
+	conn.Exec("INSERT INTO collections VALUES(?, ?, ?, ?)", 0, url, comment, pic)
+}
+
+// 增加图片
+func PutPic(ctx *gin.Context) {
+	pic, _ := ctx.FormFile("pic")
+	ctx.SaveUploadedFile(pic, `picture/collections/`+pic.Filename)
+	result := map[string]interface{}{
+		"msg": "success",
+	}
+	ctx.JSON(http.StatusOK, result)
 }

@@ -44,10 +44,6 @@ func SendCode(ctx *gin.Context) {
 		result["msg"] = "邮箱不能为空"
 		ctx.JSON(http.StatusOK, result)
 		return
-	} else if userInfo.CheckUserExist() {
-		result["msg"] = "用户已存在"
-		ctx.JSON(http.StatusOK, result)
-		return
 	}
 
 	err := userInfo.Verification()
