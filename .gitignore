@@ -15,4 +15,4 @@
 # vendor/
 sakura.js
 *.log
-blog/1
+blog/1/*

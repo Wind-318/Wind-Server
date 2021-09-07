@@ -38,7 +38,9 @@ func DeleteFromBlog(ctx *gin.Context) {
 	json.Unmarshal([]byte(jsonArr), &ids)
 
 	for _, id := range ids {
-		if id != cookie && id != infomation.SystemUserAccount {
+		conf := ""
+		conn.Get(&conf, "SELECT authoremail FROM blog WHERE id = ?", id)
+		if conf != cookie && conf != infomation.SystemUserAccount {
 			return
 		}
 		conn.Exec("DELETE FROM blog WHERE id = ?", id)
@@ -81,10 +83,9 @@ func GetModifyBlog(ctx *gin.Context) {
 // 修改文章
 func ModifyBlog(ctx *gin.Context) {
 	// 检查登录状态
-	cookies, err := ctx.Cookie("cookie")
+	_, err := ctx.Cookie("cookie")
 	redisconn, _ := redis.Dial("tcp", "localhost:6379")
 	defer redisconn.Close()
-	cookie, _ := redis.String(redisconn.Do("HGET", cookies, "email"))
 	if err != nil {
 		return
 	}
@@ -100,13 +101,13 @@ func ModifyBlog(ctx *gin.Context) {
 	conn := sqlx.MustConnect("mysql", infomation.MySQLInfo)
 	defer conn.Close()
 
-	var ids int
-	conn.Get(&ids, "SELECT id FROM user WHERE account = ?", cookie)
+	authorid := 0
+	conn.Get(&authorid, "SELECT authorid FROM blog WHERE id = ?", id)
 	types := ""
 	conn.Get(&types, "SELECT types FROM blog WHERE id = ?", id)
 
 	conn.Exec("UPDATE blog SET content = ? WHERE id = ?", text, id)
-	if titles != "" {
+	if titles != "" && titles != "undefined" {
 		conn.Exec("UPDATE blog SET title = ? WHERE id = ?", titles, id)
 	}
 	if description != "" {
@@ -114,14 +115,14 @@ func ModifyBlog(ctx *gin.Context) {
 	}
 	if pictype != "" {
 		var randTime = strconv.Itoa(int(time.Now().UnixNano()))
-		var picAddr = infomation.Addr + `blog/` + strconv.Itoa(ids) + `/` + types + "/" + randTime + "." + pictype
+		var picAddr = infomation.Addr + `blog/` + strconv.Itoa(authorid) + `/` + types + "/" + randTime + "." + pictype
 
 		// 保存文件
-		ctx.SaveUploadedFile(pic, `blog/`+strconv.Itoa(ids)+`/`+types+"/"+randTime+"."+pictype)
+		ctx.SaveUploadedFile(pic, `blog/`+strconv.Itoa(authorid)+`/`+types+"/"+randTime+"."+pictype)
 
 		conn.Exec("UPDATE blog SET picurl = ? WHERE id = ?", picAddr, id)
 	}
 	for i := range attFiles {
-		ctx.SaveUploadedFile(attFiles[i], `blog/`+strconv.Itoa(ids)+`/`+types+"/"+attFiles[i].Filename)
+		ctx.SaveUploadedFile(attFiles[i], `blog/`+strconv.Itoa(authorid)+`/`+types+"/"+attFiles[i].Filename)
 	}
 }

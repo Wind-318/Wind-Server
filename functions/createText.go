@@ -94,13 +94,12 @@ func CreateText(ctx *gin.Context) {
 			<script src="../../../js/sakura.js"></script>
 			<script src="../../../js/marked.min.js"></script>
 			<script src="../../../js/jquery.min.js"></script>
-			<script src="../../../js/blogtext.js"></script>
 			<link rel="stylesheet" href="../../../css/markdowncss.css">
 			<link rel="stylesheet" href="../../../css/content.css">
 			</head>
 			
 			<body>
-			<div id="root" style="flex-direction: column; display: flex; width: 100%; background-image: url('` + picAddr + `'); background-size:cover; background-repeat: no-repeat; background-attachment: fixed;">
+			<div id="root">
 				<div style="flex-direction:row; display: flex;">
 					<div style="display: flex; margin-left: 100px; width: 200px; flex-direction: column; background-color: rgba(122, 122, 122, 0.6); position: relative;">
 						<img alt="" id="profile" style="border-radius: 50%; width: auto; height: auto;">
@@ -127,6 +126,7 @@ func CreateText(ctx *gin.Context) {
 				<div style="margin-left: 100px; width: 1200px; height: 20px; background-color: rgb(82, 60, 145);"></div>
 			</div>
 
+			<script src="../../../js/text.js"></script>
 
 			<script>
 				replyjs();
@@ -135,7 +135,6 @@ func CreateText(ctx *gin.Context) {
 			<script>
 				adddelete();
 			</script>
-			<script src="../../../js/text.js"></script>
 			</body>
 			
 			</html>`

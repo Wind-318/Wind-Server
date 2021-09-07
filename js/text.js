@@ -445,7 +445,7 @@ function modifyfunc() {
     attfile.innerHTML = "文件";
     // 标题
     titleinput = document.createElement("input");
-    titleinput.setAttribute("id", "titles");
+    titleinput.setAttribute("id", "titlesss");
     titleinput.setAttribute("placeholder", "标题");
     titleinput.setAttribute("maxlength", "100");
     titleinput.setAttribute("style", "margin-left: 500px;");
@@ -481,7 +481,7 @@ function modifyfunc() {
                 "id": document.getElementsByName("main")[0].id
             },
             success: function(data) {
-                document.getElementById("titles").innerHTML = data["title"];
+                document.getElementById("titlesss").innerHTML = data["title"];
                 document.getElementById("description").innerHTML = data["description"];
                 document.getElementById("texts").innerHTML = data["content"];
             }
@@ -496,7 +496,7 @@ function modifyfunc() {
     js2.innerHTML = `// 修改文章
     document.getElementById("confirm").onclick = function(ev) {
         var texts = document.getElementById("texts").value;
-        var titles = document.getElementById("titles").value;
+        var titles = document.getElementById("titlesss").value;
         var description = document.getElementById("description").value;
         var types = document.getElementById("types").value;
         var pic = document.getElementById('backgroundPic');
