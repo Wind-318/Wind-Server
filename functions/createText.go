@@ -94,6 +94,7 @@ func CreateText(ctx *gin.Context) {
 			<script src="../../../js/sakura.js"></script>
 			<script src="../../../js/marked.min.js"></script>
 			<script src="../../../js/jquery.min.js"></script>
+			<script src="../../../js/blogtext.js"></script>
 			<link rel="stylesheet" href="../../../css/markdowncss.css">
 			<link rel="stylesheet" href="../../../css/content.css">
 			</head>
@@ -126,15 +127,15 @@ func CreateText(ctx *gin.Context) {
 				<div style="margin-left: 100px; width: 1200px; height: 20px; background-color: rgb(82, 60, 145);"></div>
 			</div>
 
-			<script src="../../../js/text.js"></script>
 
 			<script>
 				replyjs();
 			</script>
 
 			<script>
-				adddelete()
+				adddelete();
 			</script>
+			<script src="../../../js/text.js"></script>
 			</body>
 			
 			</html>`
@@ -180,6 +181,21 @@ func GetLastModify(ctx *gin.Context) {
 	conn.Get(&lastmodify, "SELECT update_time FROM blog WHERE id = ?", id)
 	result := map[string]interface{}{
 		"lastmodify": lastmodify,
+	}
+	ctx.JSON(http.StatusOK, result)
+}
+
+func Getpicurl(ctx *gin.Context) {
+	id := ctx.PostForm("id")
+
+	conn := sqlx.MustConnect("mysql", infomation.MySQLInfo)
+	defer conn.Close()
+
+	picurl := ""
+	conn.Get(&picurl, "SELECT picurl FROM blog WHERE id = ?", id)
+
+	result := map[string]interface{}{
+		"picurl": picurl,
 	}
 	ctx.JSON(http.StatusOK, result)
 }

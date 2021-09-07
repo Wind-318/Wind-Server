@@ -128,7 +128,7 @@ body {
 /* 拉伸后长度 */
 
 .navbar input:checked~ul {
-    width: 700px;
+    width: 800px;
 }
 
 .navbar span {

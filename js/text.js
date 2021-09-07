@@ -22,7 +22,6 @@ $.ajax({
     }
 })
 
-
 // 获取文章评论
 $.ajax({
     url: "/blogs/TextComment",
@@ -353,7 +352,7 @@ function replyjs() {
     })
 }
 
-// 添加删除按钮
+// 添加删除按钮和修改按钮
 function adddelete() {
     $.ajax({
         url: "/collections/IsSystem",
@@ -382,9 +381,175 @@ function adddelete() {
                             }`;
                             document.body.appendChild(btnjs);
                         }
+                        var modifytext = document.createElement("button");
+                        modifytext.setAttribute("id", "modifybutton");
+                        modifytext.innerHTML = "修改";
+                        modifytext.setAttribute("style", "height: auto; width: 100px;")
+                        document.body.appendChild(modifytext);
+                        var modifysrc = document.createElement("script");
+                        modifysrc.innerHTML = `document.getElementById("modifybutton").onclick = function(ev) {
+                            modifyfunc();
+                        }`;
+                        document.body.appendChild(modifysrc);
                     }
                 })
             }
         }
     })
 }
+
+// 添加修改逻辑
+function modifyfunc() {
+    // 修改框
+    var divs = document.createElement("div");
+    divs.setAttribute("id", "replycomment");
+    divs.setAttribute("style", "z-index:10; background-color: rgba(222, 222, 222, 0.8); position: fixed; bottom: 0; flex-direction: column; display: flex; width: 100%; height: 100%;");
+    // 修改和展示框
+    var commentdiv = document.createElement("div");
+    commentdiv.setAttribute("style", "flex-direction: row; display: flex; resize: none; width: 100%; height: 85%");
+    // 修改
+    var textarea = document.createElement("textarea");
+    textarea.setAttribute("id", "texts");
+    textarea.setAttribute("onkeyup", "mdSwitch()");
+    textarea.setAttribute("maxlength", "500000");
+    textarea.setAttribute("style", "display: flex; resize: none; width: 50%; height: 100%; background-color: rgba(222, 222, 222, 0.8);");
+    // 展示框
+    var show = document.createElement("div");
+    show.setAttribute("id", "show-area");
+    show.setAttribute("style", "width: 50%; height: 100%; word-wrap: break-word; overflow-y: auto; overflow-x: hidden;");
+
+    // 选项框
+    var titlearea = document.createElement("div");
+    titlearea.setAttribute("style", "display: flex; width: 100%; height: 15%;");
+    var btn1 = document.createElement("button");
+    btn1.setAttribute("id", "cancel");
+    btn1.setAttribute("style", "position: absolute; left: 0; width: 60px; height: 15%; background-color: rgba(255, 255, 255, 0.8);");
+    var btn2 = document.createElement("button");
+    btn2.setAttribute("id", "confirm");
+    btn2.setAttribute("style", "position: absolute; right: 0; width: 60px; height: 15%; background-color: rgba(255, 255, 255, 0.8);");
+    btn1.innerHTML = "取消";
+    btn2.innerHTML = "修改";
+    // 选项框中加入图片
+    var backgroundpic = document.createElement("input");
+    backgroundpic.setAttribute("id", "backgroundPic");
+    backgroundpic.setAttribute("style", "width: 138px; left: 80px; position: absolute;");
+    backgroundpic.setAttribute("type", "file");
+    backgroundpic.setAttribute("accept", "image/*");
+    backgroundpic.innerHTML = "背景";
+    // 附加文件
+    var attfile = document.createElement("input");
+    attfile.setAttribute("id", "attfile");
+    attfile.setAttribute("style", "width: 138px; left: 250px; position: absolute;");
+    attfile.setAttribute("type", "file");
+    attfile.setAttribute("multiple", "multiple");
+    attfile.innerHTML = "文件";
+    // 标题
+    titleinput = document.createElement("input");
+    titleinput.setAttribute("id", "titles");
+    titleinput.setAttribute("placeholder", "标题");
+    titleinput.setAttribute("maxlength", "100");
+    titleinput.setAttribute("style", "margin-left: 500px;");
+    // 分类
+    typeinput = document.createElement("input");
+    typeinput.setAttribute("id", "types");
+    typeinput.setAttribute("placeholder", "分类");
+    typeinput.setAttribute("maxlength", "100");
+    // 简介
+    descriptioninput = document.createElement("input");
+    descriptioninput.setAttribute("id", "description");
+    descriptioninput.setAttribute("placeholder", "简介");
+    descriptioninput.setAttribute("maxlength", "250");
+    titlearea.appendChild(btn1);
+    titlearea.appendChild(backgroundpic);
+    titlearea.appendChild(attfile);
+    titlearea.appendChild(titleinput);
+    titlearea.appendChild(typeinput);
+    titlearea.appendChild(descriptioninput);
+    titlearea.appendChild(btn2);
+
+    commentdiv.appendChild(textarea);
+    commentdiv.appendChild(show);
+    divs.appendChild(titlearea);
+    divs.appendChild(commentdiv);
+    document.body.appendChild(divs);
+
+    // 给正文赋值
+    $.ajax({
+            url: "/blogs/GetModifyBlog",
+            type: "POST",
+            data: {
+                "id": document.getElementsByName("main")[0].id
+            },
+            success: function(data) {
+                document.getElementById("titles").innerHTML = data["title"];
+                document.getElementById("description").innerHTML = data["description"];
+                document.getElementById("texts").innerHTML = data["content"];
+            }
+        })
+        // 添加脚本
+    var js1 = document.createElement("script");
+    var js2 = document.createElement("script");
+    js1.innerHTML = `// 取消修改
+    document.getElementById("cancel").onclick = function(ev) {
+        document.getElementById("replycomment").remove();
+    }`;
+    js2.innerHTML = `// 修改文章
+    document.getElementById("confirm").onclick = function(ev) {
+        var texts = document.getElementById("texts").value;
+        var titles = document.getElementById("titles").value;
+        var description = document.getElementById("description").value;
+        var types = document.getElementById("types").value;
+        var pic = document.getElementById('backgroundPic');
+        var attFile = document.getElementById("attfile");
+
+        var formData = new FormData();
+        if (pic.files[0] != undefined) {
+            if (pic.files[0].size > 5120000) {
+                alert('文件大小最大为 5 MB');
+                return;
+            }
+            formData.append("pic", pic.files[0]);
+            var pictypes = pic.files[0].type;
+            var index = pictypes.lastIndexOf("/");
+            formData.append("picType", pictypes.substr(index + 1));
+        }
+
+        formData.append("id", "` + document.getElementsByName("main")[0].id + `");
+        formData.append("texts", texts);
+        formData.append("titles", titles);
+        formData.append("types", types);
+        formData.append("description", description);
+        formData.append("authority", 0);
+
+        if (attFile.files[0] != undefined) {
+            for (var i = 0; i < attFile.files.length; i++) {
+                formData.append("attFiles", attFile.files[i]);
+            }
+        }
+
+        $.ajax({
+            url: "/blogs/ModifyBlog",
+            type: "POST",
+            data: formData,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                location.reload();
+            },
+        })
+    }`;
+    document.body.appendChild(js1);
+    document.body.appendChild(js2);
+}
+
+$.ajax({
+    url: "/blogs/Getpicurl",
+    type: "POST",
+    data: {
+        "id": document.getElementsByName("main")[0].id
+    },
+    success: function(data) {
+        document.getElementById("root").setAttribute("style", `flex-direction: column; display: flex; width: 100%; background-image: url('` + data["picurl"] + `'); background-size:cover; background-repeat: no-repeat; background-attachment: fixed;`)
+    }
+})

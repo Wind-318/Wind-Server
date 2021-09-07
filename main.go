@@ -82,6 +82,7 @@ func main() {
 		blog.POST("/GetProfile", functions.GetProfile)
 		blog.POST("/GetLastModify", functions.GetLastModify)
 		blog.POST("/GetModifyBlog", functions.GetModifyBlog)
+		blog.POST("/Getpicurl", functions.Getpicurl)
 		blog.POST("/InquirePageNums", functions.GetPageNums)
 		blog.POST("/InquireText", functions.GetText)
 		blog.POST("/ModifyBlog", functions.ModifyBlog)
