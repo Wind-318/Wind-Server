@@ -13,7 +13,7 @@ window.onscroll = function() {
             },
             success: function(data) {
                 if (data["num"] < num) {
-                    retrun;
+                    return;
                 }
                 var nums = data["end"] - data["start"] + 1;
                 if (nums <= 20) {
