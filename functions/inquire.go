@@ -53,7 +53,6 @@ func GetPageNums(ctx *gin.Context) {
 	defer conn.Close()
 
 	if cookie, err := ctx.Cookie("cookie"); err == nil {
-
 		redisconn, _ := redis.Dial("tcp", "localhost:6379")
 		defer redisconn.Close()
 		email, _ := redis.String(redisconn.Do("HGET", cookie, "email"))

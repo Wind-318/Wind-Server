@@ -15,7 +15,7 @@ func Exit(ctx *gin.Context) {
 	redisconn, _ := redis.Dial("tcp", "localhost:6379")
 	defer redisconn.Close()
 	redisconn.Do("DEL", cookie)
-	ctx.SetCookie("cookie", "", -1, "/", "localhost:80", false, true)
+	ctx.SetCookie("cookie", cookie, -1, "/", "localhost:80", false, true)
 	ctx.HTML(http.StatusOK, "login.html", nil)
 }
 

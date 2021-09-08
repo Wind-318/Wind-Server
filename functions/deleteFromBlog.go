@@ -113,6 +113,8 @@ func ModifyBlog(ctx *gin.Context) {
 	if description != "" {
 		conn.Exec("UPDATE blog SET description = ? WHERE id = ?", description, id)
 	}
+
+	conn.Exec("UPDATE blog SET update_time = ? WHERE id = ?", time.Now().String()[:19], id)
 	if pictype != "" {
 		var randTime = strconv.Itoa(int(time.Now().UnixNano()))
 		var picAddr = infomation.Addr + `blog/` + strconv.Itoa(authorid) + `/` + types + "/" + randTime + "." + pictype
