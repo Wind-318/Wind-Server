@@ -31,7 +31,7 @@ type textInfo struct {
 func GetPageNums(ctx *gin.Context) {
 	val, _ := strconv.Atoi(ctx.PostForm("num"))
 	// 每页数量
-	every := 20
+	every := 6
 	var result = map[string]interface{}{
 		"author":      0,
 		"num":         0,
