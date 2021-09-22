@@ -110,6 +110,7 @@ func main() {
 		collections.GET("/", functions.ToCollections)
 		collections.GET("/GetWebs", functions.GetWebs)
 		collections.GET("/IsSystem", functions.IsSystem)
+		collections.POST("/IsSystems", functions.IsSystems)
 		collections.POST("/PutWebs", functions.PutWebs)
 		collections.POST("/PutPic", functions.PutPic)
 	}

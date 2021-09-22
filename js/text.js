@@ -355,8 +355,11 @@ function replyjs() {
 // 添加删除按钮和修改按钮
 function adddelete() {
     $.ajax({
-        url: "/collections/IsSystem",
-        type: "GET",
+        url: "/collections/IsSystems",
+        type: "POST",
+        data: {
+            "id": document.getElementsByName("main")[0].id
+        },
         success: function(data) {
             if (data["msg"] == "success") {
                 $.ajax({

@@ -39,6 +39,35 @@ func IsSystem(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, result)
 }
 
+// 查看是否是管理员或作者
+func IsSystems(ctx *gin.Context) {
+	result := map[string]interface{}{
+		"msg": "fail",
+	}
+	id := ctx.PostForm("id")
+	conn := sqlx.MustConnect("mysql", infomation.MySQLInfo)
+	defer conn.Close()
+
+	ids := ""
+	conn.Get(&ids, "SELECT authoremail FROM blog WHERE id = ?", id)
+
+	cookie, err := ctx.Cookie("cookie")
+	if err != nil {
+		ctx.JSON(http.StatusOK, result)
+		return
+	}
+
+	redisconn, _ := redis.Dial("tcp", "localhost:6379")
+	defer redisconn.Close()
+
+	account, _ := redis.String(redisconn.Do("HGET", cookie, "email"))
+	if account == infomation.SystemUserAccount || account == ids {
+		result["msg"] = "success"
+	}
+
+	ctx.JSON(http.StatusOK, result)
+}
+
 // 获取网站链接
 func GetWebs(ctx *gin.Context) {
 	result := map[string]interface{}{
@@ -70,7 +99,6 @@ func GetWebs(ctx *gin.Context) {
 	result["urls"] = urls
 	result["comments"] = comments
 	result["picurls"] = picurls
-
 	ctx.JSON(http.StatusOK, result)
 }
 

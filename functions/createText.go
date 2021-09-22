@@ -2,6 +2,7 @@ package functions
 
 import (
 	"Project/infomation"
+	"bytes"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -9,6 +10,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/disintegration/imaging"
 	"github.com/garyburd/redigo/redis"
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
@@ -66,7 +68,7 @@ func CreateText(ctx *gin.Context) {
 
 	// 文件名中加入当前时间
 	var randTime = strconv.Itoa(int(time.Now().UnixNano()))
-	var picAddr = infomation.Addr + `blog/` + strconv.Itoa(id) + `/` + types + "/" + randTime + "." + pictype
+	var picAddr = `../blog/` + strconv.Itoa(id) + `/` + types + "/" + randTime + "." + pictype
 
 	// 保存文件
 	ctx.SaveUploadedFile(pic, `blog/`+strconv.Itoa(id)+`/`+types+"/"+randTime+"."+pictype)
@@ -74,12 +76,27 @@ func CreateText(ctx *gin.Context) {
 		ctx.SaveUploadedFile(attFiles[i], `blog/`+strconv.Itoa(id)+`/`+types+"/"+attFiles[i].Filename)
 	}
 
+	// 创建缩略图
+	imgData, _ := ioutil.ReadFile(`blog/` + strconv.Itoa(id) + `/` + types + "/" + randTime + "." + pictype)
+	buf := bytes.NewBuffer(imgData)
+	image, err := imaging.Decode(buf)
+	if err != nil {
+		result["msg"] = "保存文件失败"
+		return
+	}
+	image = imaging.Resize(image, 0, 400, imaging.Lanczos)
+	err = imaging.Save(image, `../blog/`+strconv.Itoa(id)+`/`+types+"/"+randTime+"small."+pictype)
+	if err != nil {
+		result["msg"] = "保存文件失败"
+		return
+	}
+
 	var mutex = &sync.Mutex{}
 	mutex.Lock()
 	var ids int
 	var num int
 	conn.Get(&num, "SELECT count(id) FROM blog WHERE authoremail = ? AND types = ?", cookie, types)
-	conn.Exec("INSERT INTO blog VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 0, name, cookie, titles, description, text, types, 0, 0, val, time.Now().String()[:19], time.Now().String()[:19], id, infomation.Addr+`blog/`+strconv.Itoa(id)+`/`+types+`/`+strconv.Itoa(num+1)+`.html`, 0, picAddr)
+	conn.Exec("INSERT INTO blog VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 0, name, cookie, titles, description, text, types, 0, 0, val, time.Now().String()[:19], time.Now().String()[:19], id, infomation.Addr+`blog/`+strconv.Itoa(id)+`/`+types+`/`+strconv.Itoa(num+1)+`.html`, 0, picAddr, `../blog/`+strconv.Itoa(id)+`/`+types+"/"+randTime+"small."+pictype)
 	conn.Get(&ids, "select id from blog order by id DESC limit 1")
 	mutex.Unlock()
 

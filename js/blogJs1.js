@@ -59,7 +59,7 @@ window.onload = function() {
                 retrun;
             }
             var nums = data["end"] - data["start"] + 1;
-            if (nums <= 6) {
+            if (nums <= 10) {
                 for (var i = data["start"]; i < data["end"]; i++) {
                     var temp = document.createElement('a');
                     temp.setAttribute("href", data["urls"][i - 1]);

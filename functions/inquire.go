@@ -26,12 +26,13 @@ type textInfo struct {
 	Authorid    int    `db:"authorid"`
 	Urls        string `db:"url"`
 	Picurl      string `db:"picurl"`
+	SmallPic    string `db:"smallpic"`
 }
 
 func GetPageNums(ctx *gin.Context) {
 	val, _ := strconv.Atoi(ctx.PostForm("num"))
 	// 每页数量
-	every := 6
+	every := 10
 	var result = map[string]interface{}{
 		"author":      0,
 		"num":         0,
@@ -73,7 +74,7 @@ func GetPageNums(ctx *gin.Context) {
 	}
 
 	temp := []textInfo{}
-	conn.Select(&temp, "SELECT id, author, title, description, clicknum, great, authority, create_time, update_time, authorid, url, picurl FROM blog")
+	conn.Select(&temp, "SELECT id, author, title, description, types, clicknum, great, authority, create_time, update_time, authorid, url, picurl, smallpic FROM blog")
 	ids := []int{}
 	urlsarr := []string{}
 	titles := []string{}
@@ -86,11 +87,11 @@ func GetPageNums(ctx *gin.Context) {
 		ids = append(ids, data.Id)
 		urlsarr = append(urlsarr, data.Urls)
 		titles = append(titles, data.Title)
-		picurls = append(picurls, data.Picurl)
 		descriptions = append(descriptions, data.Description)
 		authors = append(authors, data.Author)
 		create_time = append(create_time, data.Create_time)
 		update_time = append(update_time, data.Update_time)
+		picurls = append(picurls, data.SmallPic)
 	}
 	result["urls"] = urlsarr
 	result["titles"] = titles
@@ -155,7 +156,7 @@ func GetClassification(ctx *gin.Context) {
 	for _, textType := range arr {
 		tempStr = append(tempStr, textType.Types)
 		var picurl string
-		conn.Get(&picurl, "SELECT picurl FROM blog WHERE types = ?", textType.Types)
+		conn.Get(&picurl, "SELECT smallpic FROM blog WHERE types = ?", textType.Types)
 		picarr = append(picarr, picurl)
 	}
 
@@ -186,7 +187,7 @@ func GetText(ctx *gin.Context) {
 	defer conn.Close()
 
 	arr := []textInfo{}
-	conn.Select(&arr, "SELECT id, author, title, description, clicknum, great, authority, create_time, update_time, authorid, url, picurl FROM blog WHERE authoremail = ? AND types = ?", cookie, types)
+	conn.Select(&arr, "SELECT id, author, title, description, clicknum, great, authority, create_time, update_time, authorid, url, picurl, smallpic FROM blog WHERE authoremail = ? AND types = ?", cookie, types)
 
 	id := make([]int, len(arr))
 	author := make([]string, len(arr))
@@ -213,7 +214,7 @@ func GetText(ctx *gin.Context) {
 		update_time[index] = arr[index].Update_time
 		authorid[index] = arr[index].Authorid
 		urls[index] = arr[index].Urls
-		picurls[index] = arr[index].Picurl
+		picurls[index] = arr[index].SmallPic
 	}
 
 	result["num"] = len(arr)

@@ -26,7 +26,7 @@ body {
 .showcase a {
     position: relative;
     width: auto;
-    height: 300px;
+    height: 400px;
     background-color: rgba(255, 255, 255, 0.5);
     margin: 20px;
     transition: all .3s;
@@ -41,7 +41,7 @@ body {
 .showcase a img {
     opacity: 0.6;
     width: auto;
-    height: 300px;
+    height: 400px;
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
