@@ -121,7 +121,7 @@ func main() {
 		Resources.GET("/", functions.ToResources)
 	}
 
-	router.Run(":80")
+	go router.Run(":80")
 	// 自行选择 SSL 证书
 	router.RunTLS(":443", "windserver.top.pem", "windserver.top.key")
 }

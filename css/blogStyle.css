@@ -12,13 +12,14 @@ body {
 }
 
 .search {
+    z-index: 10;
     width: 40%;
     height: 60px;
     justify-content: center;
     align-items: center;
     text-align: center;
     display: flex;
-    position: relative;
+    position: fixed;
     margin-left: 30%;
     background-color: rgba(99, 99, 99, 0.8);
     ;
@@ -42,6 +43,10 @@ body {
 
 .container {
     flex-direction: column;
+}
+
+.containerss {
+    margin-top: 70px;
 }
 
 .showcase {

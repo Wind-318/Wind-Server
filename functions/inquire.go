@@ -4,6 +4,7 @@ import (
 	"Project/infomation"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/garyburd/redigo/redis"
 	"github.com/gin-gonic/gin"
@@ -236,7 +237,7 @@ func GetText(ctx *gin.Context) {
 
 // 搜索文章
 func Search(ctx *gin.Context) {
-	text := ctx.PostForm("text")
+	text := strings.ToLower(ctx.PostForm("text"))
 	conn, _ := sqlx.Connect("mysql", infomation.MySQLInfo)
 	defer conn.Close()
 	result := map[string]interface{}{}
@@ -254,10 +255,10 @@ func Search(ctx *gin.Context) {
 	update_time := []string{}
 	for index := range temp {
 		flag := false
-		tempstr := temp[index].Title
+		tempstr := strings.ToLower(temp[index].Title)
 		length := len(text)
 		for indexs := range tempstr {
-			if len(tempstr) < length {
+			if indexs+length > len(tempstr) {
 				break
 			}
 			if tempstr[indexs:indexs+length] == text {
