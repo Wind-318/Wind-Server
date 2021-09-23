@@ -11,6 +11,35 @@ body {
     padding: 0;
 }
 
+.search {
+    width: 40%;
+    height: 60px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    display: flex;
+    position: relative;
+    margin-left: 30%;
+    background-color: rgba(99, 99, 99, 0.8);
+    ;
+}
+
+.search img {
+    margin-left: 0;
+    height: 100%;
+    width: auto;
+}
+
+.search input {
+    height: 100%;
+    width: 100%;
+    border-radius: 50px;
+    border: 0;
+    outline: none;
+    background-color: rgba(255, 255, 255, 0.8);
+    font-size: 20px;
+}
+
 .container {
     flex-direction: column;
 }

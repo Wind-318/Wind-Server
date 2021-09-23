@@ -68,7 +68,7 @@ func CreateText(ctx *gin.Context) {
 
 	// 文件名中加入当前时间
 	var randTime = strconv.Itoa(int(time.Now().UnixNano()))
-	var picAddr = `../blog/` + strconv.Itoa(id) + `/` + types + "/" + randTime + "." + pictype
+	var picAddr = infomation.Addr + `blog/` + strconv.Itoa(id) + `/` + types + "/" + randTime + "." + pictype
 
 	// 保存文件
 	ctx.SaveUploadedFile(pic, `blog/`+strconv.Itoa(id)+`/`+types+"/"+randTime+"."+pictype)
@@ -85,7 +85,7 @@ func CreateText(ctx *gin.Context) {
 		return
 	}
 	image = imaging.Resize(image, 0, 400, imaging.Lanczos)
-	err = imaging.Save(image, `../blog/`+strconv.Itoa(id)+`/`+types+"/"+randTime+"small."+pictype)
+	err = imaging.Save(image, `blog/`+strconv.Itoa(id)+`/`+types+"/"+randTime+"small."+pictype)
 	if err != nil {
 		result["msg"] = "保存文件失败"
 		return
@@ -96,7 +96,7 @@ func CreateText(ctx *gin.Context) {
 	var ids int
 	var num int
 	conn.Get(&num, "SELECT count(id) FROM blog WHERE authoremail = ? AND types = ?", cookie, types)
-	conn.Exec("INSERT INTO blog VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 0, name, cookie, titles, description, text, types, 0, 0, val, time.Now().String()[:19], time.Now().String()[:19], id, infomation.Addr+`blog/`+strconv.Itoa(id)+`/`+types+`/`+strconv.Itoa(num+1)+`.html`, 0, picAddr, `../blog/`+strconv.Itoa(id)+`/`+types+"/"+randTime+"small."+pictype)
+	conn.Exec("INSERT INTO blog VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 0, name, cookie, titles, description, text, types, 0, 0, val, time.Now().String()[:19], time.Now().String()[:19], id, infomation.Addr+`blog/`+strconv.Itoa(id)+`/`+types+`/`+strconv.Itoa(num+1)+`.html`, 0, picAddr, infomation.Addr+`blog/`+strconv.Itoa(id)+`/`+types+"/"+randTime+"small."+pictype)
 	conn.Get(&ids, "select id from blog order by id DESC limit 1")
 	mutex.Unlock()
 

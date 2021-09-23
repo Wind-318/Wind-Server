@@ -5,7 +5,6 @@ import (
 	"Project/Text"
 	"Project/Users"
 	"Project/functions"
-	"Project/infomation"
 	"fmt"
 	"io"
 	"math/rand"
@@ -15,7 +14,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-gomail/gomail"
-	"github.com/jmoiron/sqlx"
+	"github.com/unrolled/secure"
 )
 
 func main() {
@@ -38,6 +37,7 @@ func main() {
 		)
 	}))
 	router.Use(gin.Recovery())
+	router.Use(TlsHandler())
 
 	go countTime()
 	go sendEveryUser()
@@ -88,6 +88,7 @@ func main() {
 		blog.POST("/ModifyBlog", functions.ModifyBlog)
 		blog.POST("/Parise", functions.Parise)
 		blog.POST("/PariseNum", functions.PariseNum)
+		blog.POST("/Search", functions.Search)
 		blog.POST("/TextComment", functions.TextComment)
 		blog.POST("/Views", functions.Views)
 	}
@@ -121,8 +122,25 @@ func main() {
 	}
 
 	router.Run(":80")
+	// 自行选择 SSL 证书
+	router.RunTLS(":443", "windserver.top.pem", "windserver.top.key")
 }
 
+func TlsHandler() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		secureMiddleware := secure.New(secure.Options{
+			SSLRedirect: true,
+			SSLHost:     "https://windserver.top:443",
+		})
+		err := secureMiddleware.Process(c.Writer, c.Request)
+		if err != nil {
+			return
+		}
+		c.Next()
+	}
+}
+
+// 计时抓取存到数据库
 func countTime() {
 	for {
 		Text.GenerateText()
@@ -133,10 +151,8 @@ func countTime() {
 	}
 }
 
+// 6 点和 18 点发送给用户
 func sendEveryUser() {
-	db := sqlx.MustConnect("mysql", infomation.MySQLInfo)
-	defer db.Close()
-
 	for {
 		nowHour, nowMinute := time.Now().Hour(), time.Now().Minute()
 		waitSeconds := 0

@@ -30,6 +30,7 @@ require (
 	github.com/mattn/go-pointer v0.0.1 // indirect
 	github.com/pierrec/lz4 v2.6.0+incompatible // indirect
 	github.com/rcrowley/go-metrics v0.0.0-20201227073835-cf1acfcdf475 // indirect
+	github.com/unrolled/secure v1.0.9
 	golang.org/x/crypto v0.0.0-20200820211705-5c72a883971a
 	google.golang.org/genproto v0.0.0-20200526211855-cb27e3aa2013
 	gopkg.in/Knetic/govaluate.v3 v3.0.0 // indirect

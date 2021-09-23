@@ -36,7 +36,7 @@ func SelectUsersAccount() []string {
 
 	useraccount := make([]userAcnt, 0)
 
-	db.Select(&useraccount, "SELECT account FROM user")
+	db.Select(&useraccount, "SELECT account FROM subscribe WHERE stock = ?", 1)
 	ret := make([]string, 0)
 	for _, account := range useraccount {
 		ret = append(ret, account.Accounts)

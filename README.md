@@ -1,7 +1,7 @@
 # Wind's Server 个人网站服务端代码
-- 需要自行启动 MySQL 和 Redis 服务端
+- 需要自行启动 MySQL 和 Redis 服务端，需要配置 go 环境
 - MySQL 建表指令如下：
-  - blog 表
+  - blog 表（记录文章）
     ```sql
     CREATE TABLE `blog` (
       `id` int NOT NULL AUTO_INCREMENT COMMENT 'primary key',
@@ -24,7 +24,7 @@
       PRIMARY KEY (`id`)
     ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
     ```
-  - comments 表
+  - comments 表（记录评论）
     ```sql
     CREATE TABLE `comments` (
       `id` int NOT NULL AUTO_INCREMENT COMMENT 'primary key',
@@ -38,7 +38,7 @@
       PRIMARY KEY (`id`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
     ```
-  - collections 表
+  - collections 表（记录收藏网站）
     ```sql
     CREATE TABLE `collections` (
     `id` int NOT NULL AUTO_INCREMENT COMMENT 'primary key',
@@ -48,7 +48,7 @@
     PRIMARY KEY (`id`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
     ```
-  - urlinfo 表
+  - urlinfo 表（爬虫信息库）
     ```sql
     CREATE TABLE `urlinfo` (
     `id` int NOT NULL AUTO_INCREMENT COMMENT 'ID',
@@ -60,7 +60,7 @@
     KEY `test` (`origin`,`url`,`title`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
     ```
-  - user 表
+  - user 表（用户表）
     ```sql
     CREATE TABLE `user` (
       `id` int NOT NULL AUTO_INCREMENT,
@@ -73,21 +73,34 @@
       PRIMARY KEY (`id`)
     ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
     ```
+  - subscribe 表（订阅列表）
+    ```sql
+    CREATE TABLE `subscribe` (
+      `id` int NOT NULL AUTO_INCREMENT COMMENT 'primary key',
+      `account` varchar(255) NOT NULL COMMENT '用户邮箱',
+      `stock` int NOT NULL COMMENT '股票信息',
+      PRIMARY KEY (`id`)
+    ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+    ```
+- 配置信息在 infomation.go 中
+- 运行：go run main.go
 ## TODO
 - 博客系统完善；
-- 新闻推送机制完善；
+- 消息推送机制完善；
+- 增加资源板块；
 - 完成搜索功能；
-- 横向和纵向内容扩展（未定）；
 - 前端页面美化；
 - 用户注册机制可更改为开放注册或邀请注册；
+- 其它横向和纵向内容扩展（未定）；
 ## 0.3 版
-- 配置信息在 infomation/infomation.go 中，需要自行填写；
-- 目前只能推送财经相关新闻；
-- 更新为个人网站（已暂时关闭注册功能），访问地址：http://windserver.top/
+- 更新为个人网站（已暂时关闭注册功能），访问地址：https://windserver.top/；
+- 可以增加、删除、修改文章，文章及评论支持 markdown 格式；
+- 可以添加收藏的网站；
+- 增加订阅推送数据表，当前可以选择推送股票相关消息；
 ## 0.2 版
 - 订阅后自动推送（每天 6 点和 18 点，一次 10 条）；
 - 需要在 infomation.go 中更改配置；
-## 0.1 版本
+## 0.1 版
 - 需要自行配置数据库表，账号密码存储在 MySQL 中；
 - 默认一次推送 20 条消息，可以自行修改；
 - 验证码由 Redis 缓存 5 分钟后过期，需要重新发送；

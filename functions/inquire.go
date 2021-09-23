@@ -233,3 +233,59 @@ func GetText(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, result)
 }
+
+// 搜索文章
+func Search(ctx *gin.Context) {
+	text := ctx.PostForm("text")
+	conn, _ := sqlx.Connect("mysql", infomation.MySQLInfo)
+	defer conn.Close()
+	result := map[string]interface{}{}
+
+	temp := []textInfo{}
+	conn.Select(&temp, "SELECT id, author, title, description, types, clicknum, great, authority, create_time, update_time, authorid, url, picurl, smallpic FROM blog")
+
+	ids := []int{}
+	urlsarr := []string{}
+	titles := []string{}
+	picurls := []string{}
+	descriptions := []string{}
+	authors := []string{}
+	create_time := []string{}
+	update_time := []string{}
+	for index := range temp {
+		flag := false
+		tempstr := temp[index].Title
+		length := len(text)
+		for indexs := range tempstr {
+			if len(tempstr) < length {
+				break
+			}
+			if tempstr[indexs:indexs+length] == text {
+				flag = true
+				break
+			}
+		}
+		if flag {
+			ids = append(ids, temp[index].Id)
+			urlsarr = append(urlsarr, temp[index].Urls)
+			titles = append(titles, temp[index].Title)
+			descriptions = append(descriptions, temp[index].Description)
+			authors = append(authors, temp[index].Author)
+			create_time = append(create_time, temp[index].Create_time)
+			update_time = append(update_time, temp[index].Update_time)
+			picurls = append(picurls, temp[index].SmallPic)
+		}
+	}
+
+	result["urls"] = urlsarr
+	result["titles"] = titles
+	result["picurl"] = picurls
+	result["description"] = descriptions
+	result["author"] = authors
+	result["create_time"] = create_time
+	result["update_time"] = update_time
+	result["id"] = ids
+	result["num"] = len(urlsarr)
+
+	ctx.JSON(http.StatusOK, result)
+}
