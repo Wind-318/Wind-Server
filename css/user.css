@@ -28,6 +28,20 @@ body {
     border-radius: 250px;
 }
 
+.pros {
+    position: fixed;
+    right: 0;
+    top: 100px;
+    width: 70px;
+    height: 70px;
+}
+
+.pros button {
+    background-color: rgba(71, 68, 110, 0.8);
+    width: 100%;
+    border-radius: 50px;
+}
+
 .container {
     flex-direction: column;
 }

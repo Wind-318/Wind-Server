@@ -116,6 +116,7 @@ func main() {
 		user.POST("/register", functions.Register)
 		user.POST("/sendCode", functions.SendCode)
 		user.POST("/verificationFind", functions.VerificationFind)
+		user.POST("/UploadProfile", functions.UploadProfile)
 	}
 
 	// 收藏路由
