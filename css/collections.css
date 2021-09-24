@@ -81,7 +81,7 @@ body {
 /* 拉伸后长度 */
 
 .navbar input:checked~ul {
-    width: 700px;
+    width: 0;
 }
 
 .navbar span {
@@ -105,7 +105,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 0;
+    width: 700px;
     overflow: hidden;
     white-space: nowrap;
     transition: all 0.5s;
