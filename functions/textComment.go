@@ -22,6 +22,7 @@ type comments struct {
 	Author      string `db:"author"`
 }
 
+// 查找评论
 func TextComment(ctx *gin.Context) {
 	conn := sqlx.MustConnect("mysql", infomation.MySQLInfo)
 	defer conn.Close()
@@ -66,6 +67,7 @@ func TextComment(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, result)
 }
 
+// 添加评论
 func AddComment(ctx *gin.Context) {
 	id := ctx.PostForm("id")
 	parent := ctx.PostForm("parent")
@@ -87,6 +89,7 @@ func AddComment(ctx *gin.Context) {
 	conn.Exec("INSERT INTO comments VALUES(?, ?, ?, ?, ?, ?, ?, ?)", 0, id, content, time.Now().String()[:19], time.Now().String()[:19], parent, pic, author)
 }
 
+// 点赞
 func Parise(ctx *gin.Context) {
 	id := ctx.PostForm("id")
 	conn := sqlx.MustConnect("mysql", infomation.MySQLInfo)
@@ -95,6 +98,7 @@ func Parise(ctx *gin.Context) {
 	conn.Exec("UPDATE blog SET great = great + 1 WHERE id = ?", id)
 }
 
+// 点赞数
 func PariseNum(ctx *gin.Context) {
 	id := ctx.PostForm("id")
 	conn := sqlx.MustConnect("mysql", infomation.MySQLInfo)
@@ -110,6 +114,7 @@ func PariseNum(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, result)
 }
 
+// 浏览量
 func Views(ctx *gin.Context) {
 	id := ctx.PostForm("id")
 	conn := sqlx.MustConnect("mysql", infomation.MySQLInfo)

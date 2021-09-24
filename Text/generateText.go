@@ -117,6 +117,7 @@ func SaveRedis(member ...string) {
 	connect.Do("LPUSH", "listtitle", member[1])
 }
 
+// 选择十条
 func SelectFirst10() string {
 	rwmutex.RLock()
 
@@ -171,6 +172,7 @@ func SelectFirst10WithPicture(picNum string) string {
 	return text
 }
 
+// 选择二十条发送
 func SelectFirst20() string {
 	rwmutex.RLock()
 

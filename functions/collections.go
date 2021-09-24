@@ -22,6 +22,7 @@ func IsSystem(ctx *gin.Context) {
 	result := map[string]interface{}{
 		"msg": "fail",
 	}
+	// 获取登录信息
 	cookie, err := ctx.Cookie("cookie")
 	if err != nil {
 		ctx.JSON(http.StatusOK, result)
@@ -31,6 +32,7 @@ func IsSystem(ctx *gin.Context) {
 	redisconn, _ := redis.Dial("tcp", "localhost:6379")
 	defer redisconn.Close()
 
+	// 获取账号
 	account, _ := redis.String(redisconn.Do("HGET", cookie, "email"))
 	if account == infomation.SystemUserAccount {
 		result["msg"] = "success"
@@ -51,6 +53,7 @@ func IsSystems(ctx *gin.Context) {
 	ids := ""
 	conn.Get(&ids, "SELECT authoremail FROM blog WHERE id = ?", id)
 
+	// 获取登录信息
 	cookie, err := ctx.Cookie("cookie")
 	if err != nil {
 		ctx.JSON(http.StatusOK, result)
@@ -80,6 +83,7 @@ func GetWebs(ctx *gin.Context) {
 	conn := sqlx.MustConnect("mysql", infomation.MySQLInfo)
 	defer conn.Close()
 
+	// 查找收藏网站信息
 	var arr = []collections{}
 	conn.Select(&arr, "SELECT * FROM collections")
 

@@ -16,6 +16,7 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
+// 用户信息
 type User struct {
 	UserName     string
 	MailAccount  string
@@ -30,6 +31,7 @@ type userAcnt struct {
 	Accounts string `db:"account"`
 }
 
+// 得到订阅用户名单
 func SelectUsersAccount() []string {
 	db := sqlx.MustConnect("mysql", infomation.MySQLInfo)
 	defer db.Close()
@@ -44,6 +46,7 @@ func SelectUsersAccount() []string {
 	return ret
 }
 
+// 检查用户是否存在
 func (user *User) CheckUserExist() bool {
 	db := sqlx.MustConnect("mysql", infomation.MySQLInfo)
 	defer db.Close()

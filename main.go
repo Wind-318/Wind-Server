@@ -18,9 +18,12 @@ import (
 )
 
 func main() {
+	// 新建路由
 	router := gin.New()
+	// 关闭控制台颜色
 	gin.DisableConsoleColor()
 
+	// 设置日志参数、路径
 	f, _ := os.OpenFile("logs.log", os.O_TRUNC|os.O_CREATE|os.O_RDWR, 0644)
 	gin.DefaultWriter = io.MultiWriter(f)
 	router.Use(gin.LoggerWithFormatter(func(param gin.LogFormatterParams) string {
@@ -39,9 +42,13 @@ func main() {
 	router.Use(gin.Recovery())
 	router.Use(TlsHandler())
 
+	// 计时抓取信息到数据库
 	go countTime()
+
+	// 发送邮件
 	go sendEveryUser()
 
+	// 加载静态资源
 	router.LoadHTMLGlob("HTML/*")
 	router.StaticFS("/blog", http.Dir("./blog"))
 	router.StaticFS("/css", http.Dir("./css"))
@@ -52,7 +59,10 @@ func main() {
 	router.StaticFS("/picture", http.Dir("./picture"))
 	router.StaticFile("/robots.txt", "./robots.txt")
 
+	// 设置 404 界面
 	router.NoRoute(functions.ToNotFound)
+
+	// 设置根路由
 	root := router.Group("")
 	{
 		root.GET("/", functions.ToHead)
@@ -67,6 +77,7 @@ func main() {
 		root.GET("/serverError", functions.ToError)
 	}
 
+	// 设置博客路由
 	blog := router.Group("/blogs")
 	{
 		blog.GET("/", functions.ToBlog)
@@ -93,6 +104,7 @@ func main() {
 		blog.POST("/Views", functions.Views)
 	}
 
+	// 用户路由
 	user := router.Group("/user")
 	{
 		user.GET("/Exit", functions.Exit)
@@ -106,6 +118,7 @@ func main() {
 		user.POST("/verificationFind", functions.VerificationFind)
 	}
 
+	// 收藏路由
 	collections := router.Group("/collections")
 	{
 		collections.GET("/", functions.ToCollections)
@@ -116,21 +129,24 @@ func main() {
 		collections.POST("/PutPic", functions.PutPic)
 	}
 
+	// 资源路由
 	Resources := router.Group("/resources")
 	{
 		Resources.GET("/", functions.ToResources)
 	}
 
+	// 监听 http
 	go router.Run(":80")
-	// 自行选择 SSL 证书
+	// 监听 https，自行选择 SSL 证书
 	router.RunTLS(":443", "windserver.top.pem", "windserver.top.key")
 }
 
+// 重定向到 https
 func TlsHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		secureMiddleware := secure.New(secure.Options{
 			SSLRedirect: true,
-			SSLHost:     "https://windserver.top:443",
+			SSLHost:     "windserver.top:443",
 		})
 		err := secureMiddleware.Process(c.Writer, c.Request)
 		if err != nil {
@@ -154,7 +170,9 @@ func countTime() {
 // 6 点和 18 点发送给用户
 func sendEveryUser() {
 	for {
+		// 得到现在时间
 		nowHour, nowMinute := time.Now().Hour(), time.Now().Minute()
+		// 等待时间
 		waitSeconds := 0
 
 		if nowHour < 18 && nowHour >= 6 {
@@ -166,7 +184,9 @@ func sendEveryUser() {
 		}
 
 		time.Sleep(time.Second * time.Duration(waitSeconds))
+		// 得到订阅用户名单
 		users := Users.SelectUsersAccount()
+		// 发送邮件
 		for _, user := range users {
 			waitToSend := Mail.GetNewMail(user)
 			waitToSend.Send(time.Now().String()[:19]+" "+time.Now().Weekday().String()+"：每日要闻", Text.SelectFirst10(), gomail.NewMessage())

@@ -74,6 +74,7 @@ func GetPageNums(ctx *gin.Context) {
 		redisconn.Do("EXPIRE", cookie, 86400)
 	}
 
+	// 从数据库选取文章
 	temp := []textInfo{}
 	conn.Select(&temp, "SELECT id, author, title, description, types, clicknum, great, authority, create_time, update_time, authorid, url, picurl, smallpic FROM blog")
 	ids := []int{}

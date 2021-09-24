@@ -9,8 +9,11 @@ import (
 
 // 修改密码
 func VerificationFind(ctx *gin.Context) {
+	// 账号
 	userEmail := ctx.PostForm("userEmail")
+	// 新密码
 	newPassword := ctx.PostForm("userPassword")
+	// 验证码
 	code := ctx.PostForm("code")
 	userInfo := &Users.User{
 		MailAccount: userEmail,
@@ -19,6 +22,7 @@ func VerificationFind(ctx *gin.Context) {
 		"msg": "success",
 	}
 
+	// 检查信息
 	if userEmail == "" || newPassword == "" || code == "" {
 		result["msg"] = "还有字段未填写"
 		ctx.JSON(http.StatusOK, result)

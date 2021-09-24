@@ -33,10 +33,12 @@ func DeleteFromBlog(ctx *gin.Context) {
 	defer redisconn.Close()
 	cookie, _ := redis.String(redisconn.Do("HGET", cookies, "email"))
 
+	// 获取删除文章 id
 	var ids []string
 	jsonArr := ctx.PostForm("checked")
 	json.Unmarshal([]byte(jsonArr), &ids)
 
+	// 删除
 	for _, id := range ids {
 		conf := ""
 		conn.Get(&conf, "SELECT authoremail FROM blog WHERE id = ?", id)

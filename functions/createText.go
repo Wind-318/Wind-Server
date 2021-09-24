@@ -91,6 +91,7 @@ func CreateText(ctx *gin.Context) {
 		return
 	}
 
+	// 插入文章到数据库
 	var mutex = &sync.Mutex{}
 	mutex.Lock()
 	var ids int
@@ -189,6 +190,7 @@ func GetProfile(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, result)
 }
 
+// 获取最后一次编辑时间
 func GetLastModify(ctx *gin.Context) {
 	id := ctx.PostForm("id")
 	conn := sqlx.MustConnect("mysql", infomation.MySQLInfo)
@@ -201,6 +203,7 @@ func GetLastModify(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, result)
 }
 
+// 获取图片 url
 func Getpicurl(ctx *gin.Context) {
 	id := ctx.PostForm("id")
 
