@@ -33,7 +33,7 @@ func ToLogin(ctx *gin.Context) {
 		ctx.HTML(http.StatusOK, "login.html", nil)
 		return
 	}
-	ctx.HTML(http.StatusOK, "function.html", nil)
+	ctx.HTML(http.StatusOK, "login.html", nil)
 }
 
 func ToRegister(ctx *gin.Context) {

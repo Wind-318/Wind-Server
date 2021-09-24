@@ -51,5 +51,5 @@ func UploadProfile(ctx *gin.Context) {
 	// 保存文件
 	ctx.SaveUploadedFile(pic, `blog/`+strconv.Itoa(id)+`/`+pic.Filename)
 
-	conn.Exec("UPDATE user SET pic = ? WHERE ID = ?;", `blog/`+strconv.Itoa(id)+`/`+pic.Filename, id)
+	conn.Exec("UPDATE user SET pic = ? WHERE ID = ?;", `https://windserver.top/blog/`+strconv.Itoa(id)+`/`+pic.Filename, id)
 }

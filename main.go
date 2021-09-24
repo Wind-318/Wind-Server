@@ -40,6 +40,7 @@ func main() {
 		)
 	}))
 	router.Use(gin.Recovery())
+	// http 重定向 https
 	router.Use(TlsHandler())
 
 	// 计时抓取信息到数据库
