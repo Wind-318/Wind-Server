@@ -1,12 +1,12 @@
-package Mail
+package ownmail
 
 import (
-	"Project/infomation"
+	"Project/gofiles/config"
 
 	"github.com/go-gomail/gomail"
 )
 
-type mail struct {
+type ownMail struct {
 	// 发送者邮箱
 	SenderAccount string
 
@@ -26,18 +26,18 @@ type mail struct {
 	Attchs []string
 }
 
-func GetNewMail(userMailAccount string) *mail {
-	return &mail{
-		SenderAccount:  infomation.SenderAccount,
-		SenderPassword: infomation.SenderPassword,
+func GetNewMail(userMailAccount string) *ownMail {
+	return &ownMail{
+		SenderAccount:  config.SenderAccount,
+		SenderPassword: config.SenderPassword,
 		Receiver:       userMailAccount,
-		ServerAddr:     infomation.ServerAddr,
-		ServerPort:     infomation.ServerPort,
+		ServerAddr:     config.ServerAddr,
+		ServerPort:     config.ServerPort,
 	}
 }
 
 // 发送邮件，需要标题和正文
-func (mail *mail) Send(title, text string, mess *gomail.Message, picturesAddr ...string) error {
+func (mail *ownMail) Send(title, text string, mess *gomail.Message, picturesAddr ...string) error {
 	// 设置发送方
 	mess.SetHeader("From", mail.SenderAccount)
 	// 设置接收方

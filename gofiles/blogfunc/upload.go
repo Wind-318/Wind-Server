@@ -1,7 +1,7 @@
-package functions
+package blogfunc
 
 import (
-	"Project/infomation"
+	"Project/gofiles/config"
 	"net/http"
 	"strconv"
 
@@ -20,7 +20,9 @@ func Upload(ctx *gin.Context) {
 	files := res.File["file"]
 
 	for _, file := range files {
-		err = ctx.SaveUploadedFile(file, "userFile"+"/"+file.Filename)
+		go func() {
+			err = ctx.SaveUploadedFile(file, "userFile"+"/"+file.Filename)
+		}()
 		if err != nil {
 			ctx.HTML(http.StatusInternalServerError, "serverError.html", nil)
 			return
@@ -44,12 +46,14 @@ func UploadProfile(ctx *gin.Context) {
 		return
 	}
 	pic, _ := ctx.FormFile("pic")
-	conn := sqlx.MustConnect("mysql", infomation.MySQLInfo)
+	conn := sqlx.MustConnect("mysql", config.MySQLInfo)
 	defer conn.Close()
 	var id int
 	conn.Get(&id, "SELECT id FROM user WHERE account = ?", cookie)
 	// 保存文件
-	ctx.SaveUploadedFile(pic, `blog/`+strconv.Itoa(id)+`/`+pic.Filename)
+	go func() {
+		ctx.SaveUploadedFile(pic, `blog/`+strconv.Itoa(id)+`/`+pic.Filename)
+	}()
 
 	conn.Exec("UPDATE user SET pic = ? WHERE ID = ?;", `https://windserver.top/blog/`+strconv.Itoa(id)+`/`+pic.Filename, id)
 }

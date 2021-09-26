@@ -1,7 +1,6 @@
-package functions
+package user
 
 import (
-	"Project/Users"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -15,8 +14,8 @@ func VerificationFind(ctx *gin.Context) {
 	newPassword := ctx.PostForm("userPassword")
 	// 验证码
 	code := ctx.PostForm("code")
-	userInfo := &Users.User{
-		MailAccount: userEmail,
+	userInfo := &User{
+		Account: userEmail,
 	}
 	result := map[string]interface{}{
 		"msg": "success",

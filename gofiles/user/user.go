@@ -1,8 +1,8 @@
-package Users
+package user
 
 import (
-	"Project/Mail"
-	"Project/infomation"
+	"Project/gofiles/config"
+	"Project/gofiles/ownmail"
 	"errors"
 	"io/ioutil"
 	"math/rand"
@@ -18,9 +18,9 @@ import (
 
 // 用户信息
 type User struct {
-	UserName     string
-	MailAccount  string
-	MailPassword string
+	UserName string
+	Account  string
+	Password string
 }
 
 type userData struct {
@@ -33,7 +33,7 @@ type userAcnt struct {
 
 // 得到订阅用户名单
 func SelectUsersAccount() []string {
-	db := sqlx.MustConnect("mysql", infomation.MySQLInfo)
+	db := sqlx.MustConnect("mysql", config.MySQLInfo)
 	defer db.Close()
 
 	useraccount := make([]userAcnt, 0)
@@ -48,33 +48,33 @@ func SelectUsersAccount() []string {
 
 // 检查用户是否存在
 func (user *User) CheckUserExist() bool {
-	db := sqlx.MustConnect("mysql", infomation.MySQLInfo)
+	db := sqlx.MustConnect("mysql", config.MySQLInfo)
 	defer db.Close()
 
 	useraccount := userAcnt{}
 
-	db.Get(&useraccount, "SELECT account FROM user WHERE account = ?", user.MailAccount)
+	db.Get(&useraccount, "SELECT account FROM user WHERE account = ?", user.Account)
 
-	return useraccount.Accounts == user.MailAccount
+	return useraccount.Accounts == user.Account
 }
 
 // 注册功能
 func (user *User) Register() error {
-	db := sqlx.MustConnect("mysql", infomation.MySQLInfo)
+	db := sqlx.MustConnect("mysql", config.MySQLInfo)
 	defer db.Close()
 
-	code := infomation.Encryption(user.MailPassword)
+	code := config.Encryption(user.Password)
 
-	db.Exec("INSERT INTO user VALUES(?, ?, ?, ?, ?, ?, ?)", 0, user.MailAccount, code, user.UserName, 0, 0, infomation.Addr+"picture/defaultPic.jpg")
+	db.Exec("INSERT INTO user VALUES(?, ?, ?, ?, ?, ?, ?)", 0, user.Account, code, user.UserName, 0, 0, config.Addr+"picture/defaultPic.jpg")
 
 	var id int
-	db.Get(&id, "SELECT id FROM user WHERE account = ?", user.MailAccount)
+	db.Get(&id, "SELECT id FROM user WHERE account = ?", user.Account)
 
 	os.Mkdir(`blog/`+strconv.Itoa(id), 0644)
 
 	content, _ := ioutil.ReadFile(`./blogTemplate.html`)
 	ioutil.WriteFile(`blog/`+strconv.Itoa(id)+`/user.html`, content, 0644)
-	db.Exec("INSERT INTO blog VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 0, user.UserName, user.MailAccount, "这是你的第一篇文章", "", "这是你的第一篇文章", "未分类", 0, 0, 0, time.Now().String()[:19], time.Now().String()[:19])
+	db.Exec("INSERT INTO blog VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 0, user.UserName, user.Account, "这是你的第一篇文章", "", "这是你的第一篇文章", "未分类", 0, 0, 0, time.Now().String()[:19], time.Now().String()[:19])
 
 	return nil
 }
@@ -82,12 +82,12 @@ func (user *User) Register() error {
 // 登录功能
 func (user *User) Login() string {
 	userpasswd := userData{}
-	db := sqlx.MustConnect("mysql", infomation.MySQLInfo)
+	db := sqlx.MustConnect("mysql", config.MySQLInfo)
 	defer db.Close()
 
-	code := infomation.Encryption(user.MailPassword)
+	code := config.Encryption(user.Password)
 
-	err := db.Get(&userpasswd, "SELECT password FROM user WHERE account = ?", user.MailAccount)
+	err := db.Get(&userpasswd, "SELECT password FROM user WHERE account = ?", user.Account)
 	if err != nil {
 		return "账号不存在"
 	} else if userpasswd.Passwd != code {
@@ -98,7 +98,7 @@ func (user *User) Login() string {
 
 // 修改密码
 func (user *User) ChangePassword(newPassword string) error {
-	db := sqlx.MustConnect("mysql", infomation.MySQLInfo)
+	db := sqlx.MustConnect("mysql", config.MySQLInfo)
 	defer db.Close()
 
 	tx, err := db.Begin()
@@ -107,9 +107,9 @@ func (user *User) ChangePassword(newPassword string) error {
 		return err
 	}
 
-	code := infomation.Encryption(newPassword)
+	code := config.Encryption(newPassword)
 
-	_, err = tx.Exec("UPDATE user SET password = ? WHERE account = ?", code, user.MailAccount)
+	_, err = tx.Exec("UPDATE user SET password = ? WHERE account = ?", code, user.Account)
 	if err != nil {
 		return err
 	}
@@ -131,15 +131,15 @@ func (user *User) Verification() error {
 
 	verificationCode := user.sendCode()
 	// 验证码持续时间 2 分钟，过期自动失效
-	_, err := connect.Do("SET", user.MailAccount, verificationCode, "ex", "120")
+	_, err := connect.Do("SET", user.Account, verificationCode, "ex", "120")
 	if err != nil {
 		return err
 	}
 
 	// 接收者邮箱
-	mail := Mail.GetNewMail(user.MailAccount)
+	mails := ownmail.GetNewMail(user.Account)
 
-	mail.Send("验证码", "<h1>您的验证码为："+verificationCode+"<h1>", gomail.NewMessage())
+	mails.Send("验证码", "<h1>您的验证码为："+verificationCode+"<h1>", gomail.NewMessage())
 
 	return nil
 }
@@ -152,7 +152,7 @@ func (user *User) GetVerificationCode() string {
 	connect, _ := redis.Dial("tcp", "127.0.0.1:6379")
 	defer connect.Close()
 
-	reply, _ := redis.String(connect.Do("GET", user.MailAccount))
+	reply, _ := redis.String(connect.Do("GET", user.Account))
 	return reply
 }
 
@@ -161,7 +161,7 @@ func (user *User) FindVerificationCode() bool {
 	connect, _ := redis.Dial("tcp", "127.0.0.1:6379")
 	defer connect.Close()
 
-	isExist, _ := redis.Bool(connect.Do("EXISTS", user.MailAccount))
+	isExist, _ := redis.Bool(connect.Do("EXISTS", user.Account))
 	return isExist
 }
 

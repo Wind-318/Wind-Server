@@ -1,9 +1,7 @@
-package infomation
+package config
 
 import (
 	"crypto/rand"
-	"crypto/sha512"
-	"encoding/hex"
 	"math/big"
 )
 
@@ -22,12 +20,14 @@ var userAgents []string = []string{
 	"Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0",
 	"Mozilla/5.0 (Windows NT 6.1; rv:2.0.1) Gecko/20100101 Firefox/4.0.1"}
 
+// 连接 mysql
 var MySQLInfo string = ""
 
+// 管理员邮箱
 var SystemUserAccount = ""
 
-// 域名
-var Addr = ""
+// 域名   示例：https://域名/
+var Addr = "https://127.0.0.1/"
 
 // 图片数量
 var PicMaxNum = 248
@@ -38,17 +38,21 @@ var PicDir = "picture/"
 // 图片后缀
 var PicFormat = ".jpg"
 
+// 发送方邮箱
 var SenderAccount = ""
 
+// 密码
 var SenderPassword = ""
 
-var ServerAddr = ""
+// 邮箱服务器地址，outlook 是 smtp.office365.com
+var ServerAddr = "smtp.office365.com"
 
-var ServerPort = 
+// 端口
+var ServerPort = 587
 
 // 自定义加密方式
 func Encryption(password string) string {
-	
+
 }
 
 func GetRandomUserAgent() string {

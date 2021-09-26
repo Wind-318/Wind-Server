@@ -1,7 +1,7 @@
-package functions
+package blogfunc
 
 import (
-	"Project/infomation"
+	"Project/gofiles/config"
 	"bytes"
 	"io/ioutil"
 	"net/http"
@@ -55,7 +55,7 @@ func CreateText(ctx *gin.Context) {
 		return
 	}
 
-	conn := sqlx.MustConnect("mysql", infomation.MySQLInfo)
+	conn := sqlx.MustConnect("mysql", config.MySQLInfo)
 	defer conn.Close()
 
 	var name string
@@ -68,12 +68,16 @@ func CreateText(ctx *gin.Context) {
 
 	// 文件名中加入当前时间
 	var randTime = strconv.Itoa(int(time.Now().UnixNano()))
-	var picAddr = infomation.Addr + `blog/` + strconv.Itoa(id) + `/` + types + "/" + randTime + "." + pictype
+	var picAddr = config.Addr + `blog/` + strconv.Itoa(id) + `/` + types + "/" + randTime + "." + pictype
 
-	// 保存文件
-	ctx.SaveUploadedFile(pic, `blog/`+strconv.Itoa(id)+`/`+types+"/"+randTime+"."+pictype)
+	// 异步保存文件
+	go func() {
+		ctx.SaveUploadedFile(pic, `blog/`+strconv.Itoa(id)+`/`+types+"/"+randTime+"."+pictype)
+	}()
 	for i := range attFiles {
-		ctx.SaveUploadedFile(attFiles[i], `blog/`+strconv.Itoa(id)+`/`+types+"/"+attFiles[i].Filename)
+		go func(i int) {
+			ctx.SaveUploadedFile(attFiles[i], `blog/`+strconv.Itoa(id)+`/`+types+"/"+attFiles[i].Filename)
+		}(i)
 	}
 
 	// 创建缩略图
@@ -97,7 +101,7 @@ func CreateText(ctx *gin.Context) {
 	var ids int
 	var num int
 	conn.Get(&num, "SELECT count(id) FROM blog WHERE authoremail = ? AND types = ?", cookie, types)
-	conn.Exec("INSERT INTO blog VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 0, name, cookie, titles, description, text, types, 0, 0, val, time.Now().String()[:19], time.Now().String()[:19], id, infomation.Addr+`blog/`+strconv.Itoa(id)+`/`+types+`/`+strconv.Itoa(num+1)+`.html`, 0, picAddr, infomation.Addr+`blog/`+strconv.Itoa(id)+`/`+types+"/"+randTime+"small."+pictype)
+	conn.Exec("INSERT INTO blog VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 0, name, cookie, titles, description, text, types, 0, 0, val, time.Now().String()[:19], time.Now().String()[:19], id, config.Addr+`blog/`+strconv.Itoa(id)+`/`+types+`/`+strconv.Itoa(num+1)+`.html`, 0, picAddr, config.Addr+`blog/`+strconv.Itoa(id)+`/`+types+"/"+randTime+"small."+pictype)
 	conn.Get(&ids, "select id from blog order by id DESC limit 1")
 	mutex.Unlock()
 
@@ -168,7 +172,7 @@ func GetUserText(ctx *gin.Context) {
 	}
 	content := ""
 	id := ctx.PostForm("ids")
-	conn := sqlx.MustConnect("mysql", infomation.MySQLInfo)
+	conn := sqlx.MustConnect("mysql", config.MySQLInfo)
 	defer conn.Close()
 	conn.Get(&content, "SELECT content FROM blog WHERE id = ?", id)
 	result["content"] = content
@@ -178,7 +182,7 @@ func GetUserText(ctx *gin.Context) {
 // 获取头像
 func GetProfile(ctx *gin.Context) {
 	id := ctx.PostForm("id")
-	conn := sqlx.MustConnect("mysql", infomation.MySQLInfo)
+	conn := sqlx.MustConnect("mysql", config.MySQLInfo)
 	defer conn.Close()
 	userid := ""
 	conn.Get(&userid, "SELECT authorid FROM blog WHERE id = ?", id)
@@ -193,7 +197,7 @@ func GetProfile(ctx *gin.Context) {
 // 获取最后一次编辑时间
 func GetLastModify(ctx *gin.Context) {
 	id := ctx.PostForm("id")
-	conn := sqlx.MustConnect("mysql", infomation.MySQLInfo)
+	conn := sqlx.MustConnect("mysql", config.MySQLInfo)
 	defer conn.Close()
 	lastmodify := ""
 	conn.Get(&lastmodify, "SELECT update_time FROM blog WHERE id = ?", id)
@@ -207,7 +211,7 @@ func GetLastModify(ctx *gin.Context) {
 func Getpicurl(ctx *gin.Context) {
 	id := ctx.PostForm("id")
 
-	conn := sqlx.MustConnect("mysql", infomation.MySQLInfo)
+	conn := sqlx.MustConnect("mysql", config.MySQLInfo)
 	defer conn.Close()
 
 	picurl := ""

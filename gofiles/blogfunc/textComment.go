@@ -1,7 +1,7 @@
-package functions
+package blogfunc
 
 import (
-	"Project/infomation"
+	"Project/gofiles/config"
 	"net/http"
 	"time"
 
@@ -24,7 +24,7 @@ type comments struct {
 
 // 查找评论
 func TextComment(ctx *gin.Context) {
-	conn := sqlx.MustConnect("mysql", infomation.MySQLInfo)
+	conn := sqlx.MustConnect("mysql", config.MySQLInfo)
 	defer conn.Close()
 
 	id := ctx.PostForm("id")
@@ -72,7 +72,7 @@ func AddComment(ctx *gin.Context) {
 	id := ctx.PostForm("id")
 	parent := ctx.PostForm("parent")
 	content := ctx.PostForm("content")
-	conn := sqlx.MustConnect("mysql", infomation.MySQLInfo)
+	conn := sqlx.MustConnect("mysql", config.MySQLInfo)
 	defer conn.Close()
 	pic := ""
 	author := ""
@@ -92,7 +92,7 @@ func AddComment(ctx *gin.Context) {
 // 点赞
 func Parise(ctx *gin.Context) {
 	id := ctx.PostForm("id")
-	conn := sqlx.MustConnect("mysql", infomation.MySQLInfo)
+	conn := sqlx.MustConnect("mysql", config.MySQLInfo)
 	defer conn.Close()
 
 	conn.Exec("UPDATE blog SET great = great + 1 WHERE id = ?", id)
@@ -101,7 +101,7 @@ func Parise(ctx *gin.Context) {
 // 点赞数
 func PariseNum(ctx *gin.Context) {
 	id := ctx.PostForm("id")
-	conn := sqlx.MustConnect("mysql", infomation.MySQLInfo)
+	conn := sqlx.MustConnect("mysql", config.MySQLInfo)
 	defer conn.Close()
 
 	num := 0
@@ -117,7 +117,7 @@ func PariseNum(ctx *gin.Context) {
 // 浏览量
 func Views(ctx *gin.Context) {
 	id := ctx.PostForm("id")
-	conn := sqlx.MustConnect("mysql", infomation.MySQLInfo)
+	conn := sqlx.MustConnect("mysql", config.MySQLInfo)
 	defer conn.Close()
 
 	conn.Exec("UPDATE blog SET clicknum = clicknum + 1 WHERE id = ?", id)
@@ -132,7 +132,7 @@ func Views(ctx *gin.Context) {
 
 func Author(ctx *gin.Context) {
 	id := ctx.PostForm("id")
-	conn := sqlx.MustConnect("mysql", infomation.MySQLInfo)
+	conn := sqlx.MustConnect("mysql", config.MySQLInfo)
 	defer conn.Close()
 
 	author := ""
@@ -147,7 +147,7 @@ func Author(ctx *gin.Context) {
 // 获取所有评论id
 func GetCommentsID(ctx *gin.Context) {
 	id := ctx.PostForm("id")
-	conn := sqlx.MustConnect("mysql", infomation.MySQLInfo)
+	conn := sqlx.MustConnect("mysql", config.MySQLInfo)
 	defer conn.Close()
 
 	comment := []comments{}

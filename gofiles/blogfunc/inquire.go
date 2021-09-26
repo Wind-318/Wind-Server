@@ -1,7 +1,7 @@
-package functions
+package blogfunc
 
 import (
-	"Project/infomation"
+	"Project/gofiles/config"
 	"net/http"
 	"strconv"
 	"strings"
@@ -47,7 +47,7 @@ func GetPageNums(ctx *gin.Context) {
 		"isSystem":    0,
 	}
 
-	conn, err := sqlx.Connect("mysql", infomation.MySQLInfo)
+	conn, err := sqlx.Connect("mysql", config.MySQLInfo)
 	if err != nil {
 		ctx.JSON(http.StatusOK, result)
 		return
@@ -58,7 +58,7 @@ func GetPageNums(ctx *gin.Context) {
 		redisconn, _ := redis.Dial("tcp", "localhost:6379")
 		defer redisconn.Close()
 		email, _ := redis.String(redisconn.Do("HGET", cookie, "email"))
-		if email == infomation.SystemUserAccount {
+		if email == config.SystemUserAccount {
 			result["isSystem"] = 1
 		}
 
@@ -132,7 +132,7 @@ func GetClassification(ctx *gin.Context) {
 		"Addr":  0,
 		"pic":   0,
 	}
-	result["Addr"] = infomation.Addr
+	result["Addr"] = config.Addr
 	cookies, err := ctx.Cookie("cookie")
 	if err != nil {
 		ctx.JSON(http.StatusOK, result)
@@ -142,7 +142,7 @@ func GetClassification(ctx *gin.Context) {
 	defer redisconn.Close()
 	cookie, _ := redis.String(redisconn.Do("HGET", cookies, "email"))
 
-	conn, err := sqlx.Connect("mysql", infomation.MySQLInfo)
+	conn, err := sqlx.Connect("mysql", config.MySQLInfo)
 	if err != nil {
 		ctx.JSON(http.StatusOK, result)
 		return
@@ -185,7 +185,7 @@ func GetText(ctx *gin.Context) {
 	defer redisconn.Close()
 	cookie, _ := redis.String(redisconn.Do("HGET", cookies, "email"))
 
-	conn, _ := sqlx.Connect("mysql", infomation.MySQLInfo)
+	conn, _ := sqlx.Connect("mysql", config.MySQLInfo)
 	defer conn.Close()
 
 	arr := []textInfo{}
@@ -239,7 +239,7 @@ func GetText(ctx *gin.Context) {
 // 搜索文章
 func Search(ctx *gin.Context) {
 	text := strings.ToLower(ctx.PostForm("text"))
-	conn, _ := sqlx.Connect("mysql", infomation.MySQLInfo)
+	conn, _ := sqlx.Connect("mysql", config.MySQLInfo)
 	defer conn.Close()
 	result := map[string]interface{}{}
 

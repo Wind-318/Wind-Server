@@ -1,7 +1,6 @@
-package functions
+package user
 
 import (
-	"Project/Users"
 	"math/rand"
 	"net/http"
 	"time"
@@ -15,9 +14,9 @@ func Login(ctx *gin.Context) {
 	userEmail := ctx.PostForm("userEmail")
 	passWord := ctx.PostForm("userPassword")
 
-	userInfo := &Users.User{
-		MailAccount:  userEmail,
-		MailPassword: passWord,
+	userInfo := &User{
+		Account:  userEmail,
+		Password: passWord,
 	}
 
 	result := map[string]interface{}{

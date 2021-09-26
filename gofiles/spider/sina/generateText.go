@@ -1,8 +1,8 @@
-package Text
+package sina
 
 import (
-	"Project/httpRequest"
-	"Project/infomation"
+	"Project/gofiles/config"
+	"Project/gofiles/httprequest"
 	"math/rand"
 	"regexp"
 	"sync"
@@ -18,13 +18,13 @@ var rwmutex *sync.RWMutex = &sync.RWMutex{}
 // 返回文章链接和标题
 func Search() [][]string {
 	rand.Seed(time.Now().UnixNano())
-	db, _ := sqlx.Open("mysql", infomation.MySQLInfo)
+	db, _ := sqlx.Open("mysql", config.MySQLInfo)
 	defer db.Close()
 
 	connect, _ := redis.Dial("tcp", "127.0.0.1:6379")
 	defer connect.Close()
 
-	html := httpRequest.GetRequestByte("https://finance.sina.com.cn/stock/")
+	html := httprequest.GetRequestByte("https://finance.sina.com.cn/stock/")
 
 	// 匹配规则
 	rule := `href="(https://finance.sina.com.cn/stock/[\S]+?html[\S]*?)">[\S]+?</a>`
@@ -36,7 +36,7 @@ func Search() [][]string {
 		if FindFromCache("seturl", arr[index][1]) {
 			continue
 		}
-		temp := httpRequest.RegexpHtml(arr[index][1], `<title>([\s\S]+?)</title>`)
+		temp := httprequest.RegexpHtml(arr[index][1], `<title>([\s\S]+?)</title>`)
 		if len(temp) == 0 {
 			continue
 		}
@@ -51,7 +51,7 @@ func Search() [][]string {
 // 生成正文
 func GenerateText() string {
 	arr := Search()
-	db, _ := sqlx.Open("mysql", infomation.MySQLInfo)
+	db, _ := sqlx.Open("mysql", config.MySQLInfo)
 	defer db.Close()
 	text := ``
 
@@ -167,7 +167,7 @@ func SelectFirst10WithPicture(picNum string) string {
 		<h2><br>`
 	}
 
-	text += `<br><img src="` + picNum + infomation.PicFormat + `" alt="My image" />`
+	text += `<br><img src="` + picNum + config.PicFormat + `" alt="My image" />`
 
 	return text
 }

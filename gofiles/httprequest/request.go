@@ -1,7 +1,7 @@
-package httpRequest
+package httprequest
 
 import (
-	"Project/infomation"
+	"Project/gofiles/config"
 	"io/ioutil"
 	"net/http"
 	"time"
@@ -22,7 +22,7 @@ func GetRequestByte(url string) []byte {
 	}
 
 	// 随即设置一个 useragent
-	req.Header.Set("User-Agent", infomation.GetRandomUserAgent())
+	req.Header.Set("User-Agent", config.GetRandomUserAgent())
 
 	res, err := getHtmlClient.Do(req)
 	if err != nil {

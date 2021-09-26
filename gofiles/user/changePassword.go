@@ -1,7 +1,6 @@
-package functions
+package user
 
 import (
-	"Project/Users"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -16,8 +15,8 @@ func ChangePassWord(ctx *gin.Context) {
 	// 验证码
 	code := ctx.PostForm("code")
 
-	userInfo := &Users.User{
-		MailAccount: useremail,
+	userInfo := &User{
+		Account: useremail,
 	}
 
 	// 验证码错误，直接返回

@@ -1,7 +1,7 @@
-package functions
+package blogfunc
 
 import (
-	"Project/infomation"
+	"Project/gofiles/config"
 	"encoding/json"
 	"net/http"
 	"strconv"
@@ -27,7 +27,7 @@ func DeleteFromBlog(ctx *gin.Context) {
 	if err != nil {
 		return
 	}
-	conn := sqlx.MustConnect("mysql", infomation.MySQLInfo)
+	conn := sqlx.MustConnect("mysql", config.MySQLInfo)
 	defer conn.Close()
 	redisconn, _ := redis.Dial("tcp", "localhost:6379")
 	defer redisconn.Close()
@@ -42,7 +42,7 @@ func DeleteFromBlog(ctx *gin.Context) {
 	for _, id := range ids {
 		conf := ""
 		conn.Get(&conf, "SELECT authoremail FROM blog WHERE id = ?", id)
-		if conf != cookie && conf != infomation.SystemUserAccount {
+		if conf != cookie && conf != config.SystemUserAccount {
 			return
 		}
 		conn.Exec("DELETE FROM blog WHERE id = ?", id)
@@ -53,7 +53,7 @@ func DeleteFromBlog(ctx *gin.Context) {
 func DeleteComment(ctx *gin.Context) {
 	id := ctx.PostForm("id")
 
-	conn := sqlx.MustConnect("mysql", infomation.MySQLInfo)
+	conn := sqlx.MustConnect("mysql", config.MySQLInfo)
 	defer conn.Close()
 
 	conn.Exec("DELETE FROM comments WHERE id = ?", id)
@@ -67,7 +67,7 @@ func GetModifyBlog(ctx *gin.Context) {
 	}
 
 	id := ctx.PostForm("id")
-	conn := sqlx.MustConnect("mysql", infomation.MySQLInfo)
+	conn := sqlx.MustConnect("mysql", config.MySQLInfo)
 	defer conn.Close()
 	modifyT := modifyText{}
 	conn.Get(&modifyT, "SELECT title, description, content, picurl FROM blog WHERE id = ?", id)
@@ -100,7 +100,7 @@ func ModifyBlog(ctx *gin.Context) {
 	attFiles := attFile.File["attFiles"]
 	pictype := ctx.PostForm("picType")
 
-	conn := sqlx.MustConnect("mysql", infomation.MySQLInfo)
+	conn := sqlx.MustConnect("mysql", config.MySQLInfo)
 	defer conn.Close()
 
 	authorid := 0
@@ -119,14 +119,19 @@ func ModifyBlog(ctx *gin.Context) {
 	conn.Exec("UPDATE blog SET update_time = ? WHERE id = ?", time.Now().String()[:19], id)
 	if pictype != "" {
 		var randTime = strconv.Itoa(int(time.Now().UnixNano()))
-		var picAddr = infomation.Addr + `blog/` + strconv.Itoa(authorid) + `/` + types + "/" + randTime + "." + pictype
+		var picAddr = config.Addr + `blog/` + strconv.Itoa(authorid) + `/` + types + "/" + randTime + "." + pictype
 
 		// 保存文件
-		ctx.SaveUploadedFile(pic, `blog/`+strconv.Itoa(authorid)+`/`+types+"/"+randTime+"."+pictype)
+		go func() {
+			ctx.SaveUploadedFile(pic, `blog/`+strconv.Itoa(authorid)+`/`+types+"/"+randTime+"."+pictype)
+		}()
 
 		conn.Exec("UPDATE blog SET picurl = ? WHERE id = ?", picAddr, id)
 	}
+
 	for i := range attFiles {
-		ctx.SaveUploadedFile(attFiles[i], `blog/`+strconv.Itoa(authorid)+`/`+types+"/"+attFiles[i].Filename)
+		go func(i int) {
+			ctx.SaveUploadedFile(attFiles[i], `blog/`+strconv.Itoa(authorid)+`/`+types+"/"+attFiles[i].Filename)
+		}(i)
 	}
 }

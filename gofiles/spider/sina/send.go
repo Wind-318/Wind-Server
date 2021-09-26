@@ -1,9 +1,8 @@
-package functions
+package sina
 
 import (
-	"Project/Mail"
-	"Project/Text"
-	"Project/Users"
+	"Project/gofiles/ownmail"
+	"Project/gofiles/user"
 	"math/rand"
 	"net/http"
 	"time"
@@ -19,10 +18,10 @@ func SendStock(ctx *gin.Context) {
 		ctx.HTML(http.StatusNotAcceptable, "serverError.html", nil)
 		return
 	}
-	users := Mail.GetNewMail(cookie)
+	users := ownmail.GetNewMail(cookie)
 	rand.Seed(time.Now().UnixNano())
 
-	err = users.Send(time.Now().String()[:19]+" "+time.Now().Weekday().String()+"：每日要闻", Text.SelectFirst10(), gomail.NewMessage())
+	err = users.Send(time.Now().String()[:19]+" "+time.Now().Weekday().String()+"：每日要闻", SelectFirst10(), gomail.NewMessage())
 	if err != nil {
 		ctx.HTML(http.StatusInternalServerError, "serverError.html", nil)
 		return
@@ -37,8 +36,8 @@ func SendCode(ctx *gin.Context) {
 		"code": 200,
 		"msg":  "已发送，若未收到请检查垃圾箱",
 	}
-	userInfo := &Users.User{
-		MailAccount: userEmail,
+	userInfo := &user.User{
+		Account: userEmail,
 	}
 	if userEmail == "" {
 		result["msg"] = "邮箱不能为空"

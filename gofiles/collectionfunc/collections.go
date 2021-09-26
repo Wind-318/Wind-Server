@@ -1,7 +1,7 @@
-package functions
+package collectionfunc
 
 import (
-	"Project/infomation"
+	"Project/gofiles/config"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -34,7 +34,7 @@ func IsSystem(ctx *gin.Context) {
 
 	// 获取账号
 	account, _ := redis.String(redisconn.Do("HGET", cookie, "email"))
-	if account == infomation.SystemUserAccount {
+	if account == config.SystemUserAccount {
 		result["msg"] = "success"
 	}
 
@@ -47,7 +47,7 @@ func IsSystems(ctx *gin.Context) {
 		"msg": "fail",
 	}
 	id := ctx.PostForm("id")
-	conn := sqlx.MustConnect("mysql", infomation.MySQLInfo)
+	conn := sqlx.MustConnect("mysql", config.MySQLInfo)
 	defer conn.Close()
 
 	ids := ""
@@ -64,7 +64,7 @@ func IsSystems(ctx *gin.Context) {
 	defer redisconn.Close()
 
 	account, _ := redis.String(redisconn.Do("HGET", cookie, "email"))
-	if account == infomation.SystemUserAccount || account == ids {
+	if account == config.SystemUserAccount || account == ids {
 		result["msg"] = "success"
 	}
 
@@ -80,7 +80,7 @@ func GetWebs(ctx *gin.Context) {
 		"picurls":  0,
 	}
 
-	conn := sqlx.MustConnect("mysql", infomation.MySQLInfo)
+	conn := sqlx.MustConnect("mysql", config.MySQLInfo)
 	defer conn.Close()
 
 	// 查找收藏网站信息
@@ -111,7 +111,7 @@ func PutWebs(ctx *gin.Context) {
 	url := ctx.PostForm("url")
 	comment := ctx.PostForm("comment")
 	pic := ctx.PostForm("picurl")
-	conn := sqlx.MustConnect("mysql", infomation.MySQLInfo)
+	conn := sqlx.MustConnect("mysql", config.MySQLInfo)
 	defer conn.Close()
 
 	conn.Exec("INSERT INTO collections VALUES(?, ?, ?, ?)", 0, url, comment, pic)
@@ -120,7 +120,9 @@ func PutWebs(ctx *gin.Context) {
 // 增加图片
 func PutPic(ctx *gin.Context) {
 	pic, _ := ctx.FormFile("pic")
-	ctx.SaveUploadedFile(pic, `picture/collections/`+pic.Filename)
+	go func() {
+		ctx.SaveUploadedFile(pic, `picture/collections/`+pic.Filename)
+	}()
 	result := map[string]interface{}{
 		"msg": "success",
 	}

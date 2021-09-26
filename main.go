@@ -1,10 +1,12 @@
 package main
 
 import (
-	"Project/Mail"
-	"Project/Text"
-	"Project/Users"
-	"Project/functions"
+	"Project/gofiles"
+	"Project/gofiles/blogfunc"
+	"Project/gofiles/collectionfunc"
+	"Project/gofiles/ownmail"
+	"Project/gofiles/spider/sina"
+	"Project/gofiles/user"
 	"fmt"
 	"io"
 	"math/rand"
@@ -61,80 +63,80 @@ func main() {
 	router.StaticFile("/robots.txt", "./robots.txt")
 
 	// 设置 404 界面
-	router.NoRoute(functions.ToNotFound)
+	router.NoRoute(gofiles.ToNotFound)
 
 	// 设置根路由
 	root := router.Group("")
 	{
-		root.GET("/", functions.ToHead)
-		root.Any("/blog", functions.ToNotFound)
-		root.Any("/css", functions.ToNotFound)
-		root.Any("/files", functions.ToNotFound)
-		root.Any("/js", functions.ToNotFound)
-		root.Any("/music", functions.ToNotFound)
-		root.Any("/picture", functions.ToNotFound)
+		root.GET("/", gofiles.ToHead)
+		root.Any("/blog", gofiles.ToNotFound)
+		root.Any("/css", gofiles.ToNotFound)
+		root.Any("/files", gofiles.ToNotFound)
+		root.Any("/js", gofiles.ToNotFound)
+		root.Any("/music", gofiles.ToNotFound)
+		root.Any("/picture", gofiles.ToNotFound)
 
-		root.GET("/sendStock", functions.SendStock)
-		root.GET("/serverError", functions.ToError)
+		root.GET("/sendStock", sina.SendStock)
+		root.GET("/serverError", gofiles.ToError)
 	}
 
 	// 设置博客路由
 	blog := router.Group("/blogs")
 	{
-		blog.GET("/", functions.ToBlog)
-		blog.GET("/CreateText", functions.ToCreateText)
-		blog.GET("/InquireClassification", functions.GetClassification)
-		blog.POST("/AddComment", functions.AddComment)
-		blog.POST("/Author", functions.Author)
-		blog.POST("/CreateTexts", functions.CreateText)
-		blog.POST("/DeleteBlog", functions.DeleteFromBlog)
-		blog.POST("/DeleteComment", functions.DeleteComment)
-		blog.POST("/GetCommentsID", functions.GetCommentsID)
-		blog.POST("/GetUserText", functions.GetUserText)
-		blog.POST("/GetProfile", functions.GetProfile)
-		blog.POST("/GetLastModify", functions.GetLastModify)
-		blog.POST("/GetModifyBlog", functions.GetModifyBlog)
-		blog.POST("/Getpicurl", functions.Getpicurl)
-		blog.POST("/InquirePageNums", functions.GetPageNums)
-		blog.POST("/InquireText", functions.GetText)
-		blog.POST("/ModifyBlog", functions.ModifyBlog)
-		blog.POST("/Parise", functions.Parise)
-		blog.POST("/PariseNum", functions.PariseNum)
-		blog.POST("/Search", functions.Search)
-		blog.POST("/TextComment", functions.TextComment)
-		blog.POST("/Views", functions.Views)
+		blog.GET("/", gofiles.ToBlog)
+		blog.GET("/CreateText", gofiles.ToCreateText)
+		blog.GET("/InquireClassification", blogfunc.GetClassification)
+		blog.POST("/AddComment", blogfunc.AddComment)
+		blog.POST("/Author", blogfunc.Author)
+		blog.POST("/CreateTexts", blogfunc.CreateText)
+		blog.POST("/DeleteBlog", blogfunc.DeleteFromBlog)
+		blog.POST("/DeleteComment", blogfunc.DeleteComment)
+		blog.POST("/GetCommentsID", blogfunc.GetCommentsID)
+		blog.POST("/GetUserText", blogfunc.GetUserText)
+		blog.POST("/GetProfile", blogfunc.GetProfile)
+		blog.POST("/GetLastModify", blogfunc.GetLastModify)
+		blog.POST("/GetModifyBlog", blogfunc.GetModifyBlog)
+		blog.POST("/Getpicurl", blogfunc.Getpicurl)
+		blog.POST("/InquirePageNums", blogfunc.GetPageNums)
+		blog.POST("/InquireText", blogfunc.GetText)
+		blog.POST("/ModifyBlog", blogfunc.ModifyBlog)
+		blog.POST("/Parise", blogfunc.Parise)
+		blog.POST("/PariseNum", blogfunc.PariseNum)
+		blog.POST("/Search", blogfunc.Search)
+		blog.POST("/TextComment", blogfunc.TextComment)
+		blog.POST("/Views", blogfunc.Views)
 	}
 
 	// 用户路由
-	user := router.Group("/user")
+	users := router.Group("/user")
 	{
-		user.GET("/Exit", functions.Exit)
-		user.GET("/ToLogin", functions.ToLogin)
-		user.GET("/TochangePassword", functions.ToChangePassword)
+		users.GET("/Exit", gofiles.Exit)
+		users.GET("/ToLogin", gofiles.ToLogin)
+		users.GET("/TochangePassword", gofiles.ToChangePassword)
 
-		user.POST("/changePassword", functions.ChangePassWord)
-		user.POST("/login", functions.Login)
-		user.POST("/register", functions.Register)
-		user.POST("/sendCode", functions.SendCode)
-		user.POST("/verificationFind", functions.VerificationFind)
-		user.POST("/UploadProfile", functions.UploadProfile)
+		users.POST("/changePassword", user.ChangePassWord)
+		users.POST("/login", user.Login)
+		users.POST("/register", user.Register)
+		users.POST("/sendCode", sina.SendCode)
+		users.POST("/verificationFind", user.VerificationFind)
+		users.POST("/UploadProfile", blogfunc.UploadProfile)
 	}
 
 	// 收藏路由
 	collections := router.Group("/collections")
 	{
-		collections.GET("/", functions.ToCollections)
-		collections.GET("/GetWebs", functions.GetWebs)
-		collections.GET("/IsSystem", functions.IsSystem)
-		collections.POST("/IsSystems", functions.IsSystems)
-		collections.POST("/PutWebs", functions.PutWebs)
-		collections.POST("/PutPic", functions.PutPic)
+		collections.GET("/", gofiles.ToCollections)
+		collections.GET("/GetWebs", collectionfunc.GetWebs)
+		collections.GET("/IsSystem", collectionfunc.IsSystem)
+		collections.POST("/IsSystems", collectionfunc.IsSystems)
+		collections.POST("/PutWebs", collectionfunc.PutWebs)
+		collections.POST("/PutPic", collectionfunc.PutPic)
 	}
 
 	// 资源路由
 	Resources := router.Group("/resources")
 	{
-		Resources.GET("/", functions.ToResources)
+		Resources.GET("/", gofiles.ToResources)
 	}
 
 	// 监听 http
@@ -161,7 +163,7 @@ func TlsHandler() gin.HandlerFunc {
 // 计时抓取存到数据库
 func countTime() {
 	for {
-		Text.GenerateText()
+		sina.GenerateText()
 		// 1.5 小时到 3.5 小时抓取一次
 		rand.Seed(time.Now().UnixNano())
 		result := rand.Intn(7200) + 5400
@@ -187,11 +189,11 @@ func sendEveryUser() {
 
 		time.Sleep(time.Second * time.Duration(waitSeconds))
 		// 得到订阅用户名单
-		users := Users.SelectUsersAccount()
+		users := user.SelectUsersAccount()
 		// 发送邮件
 		for _, user := range users {
-			waitToSend := Mail.GetNewMail(user)
-			waitToSend.Send(time.Now().String()[:19]+" "+time.Now().Weekday().String()+"：每日要闻", Text.SelectFirst10(), gomail.NewMessage())
+			waitToSend := ownmail.GetNewMail(user)
+			waitToSend.Send(time.Now().String()[:19]+" "+time.Now().Weekday().String()+"：每日要闻", sina.SelectFirst10(), gomail.NewMessage())
 		}
 	}
 }

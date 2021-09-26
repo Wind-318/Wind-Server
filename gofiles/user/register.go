@@ -1,8 +1,7 @@
-package functions
+package user
 
 import (
-	"Project/Users"
-	"Project/infomation"
+	"Project/gofiles/config"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -15,17 +14,17 @@ func Register(ctx *gin.Context) {
 	userEmail := ctx.PostForm("userEmail")
 	passWord := ctx.PostForm("userPassword")
 
-	userInfo := &Users.User{
-		UserName:     userName,
-		MailAccount:  userEmail,
-		MailPassword: passWord,
+	userInfo := &User{
+		UserName: userName,
+		Account:  userEmail,
+		Password: passWord,
 	}
 
 	result := map[string]interface{}{
 		"msg": "注册成功",
 	}
 
-	if userEmail != infomation.SystemUserAccount {
+	if userEmail != config.SystemUserAccount {
 		result["msg"] = "暂不开放注册"
 		ctx.JSON(http.StatusOK, result)
 		return
