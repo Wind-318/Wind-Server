@@ -6,7 +6,6 @@ import (
 	"Project/gofiles/collectionfunc"
 	"Project/gofiles/ownmail"
 	"Project/gofiles/spider/sina"
-	"Project/gofiles/survive"
 	"Project/gofiles/user"
 	"fmt"
 	"io"
@@ -140,12 +139,13 @@ func main() {
 		Resources.GET("/", gofiles.ToResources)
 	}
 
-	Survive := router.Group("/survive")
-	{
-		Survive.GET("/getproperty", survive.Get)
-		Survive.GET("/add", survive.Add)
-	}
-
+	/*
+		Survive := router.Group("/survive")
+		{
+			Survive.GET("/getproperty", survive.Get)
+			Survive.GET("/add", survive.Add)
+		}
+	*/
 	// 监听 http
 	go router.Run(":80")
 	// 监听 https，自行选择 SSL 证书
