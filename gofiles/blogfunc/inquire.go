@@ -258,7 +258,7 @@ func Search(ctx *gin.Context) {
 
 	for index := range temp {
 		tempstr := strings.ToLower(temp[index].Title)
-		if algorithm.Kmp(tempstr, text) != -1 || text == "" {
+		if text == "" || algorithm.Kmp(tempstr, text) != -1 {
 			ids = append(ids, temp[index].Id)
 			urlsarr = append(urlsarr, temp[index].Urls)
 			titles = append(titles, temp[index].Title)
