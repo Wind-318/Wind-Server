@@ -70,6 +70,7 @@ body {
 }
 
 .navbar {
+    z-index: 20;
     height: 30px;
     display: flex;
     justify-content: center;

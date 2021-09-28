@@ -4,6 +4,7 @@ go 1.15
 
 require (
 	github.com/Shopify/sarama v1.27.2 // indirect
+	github.com/andlabs/ui v0.0.0-20200610043537-70a69d6ae31e
 	github.com/coreos/etcd v3.3.10+incompatible
 	github.com/coreos/pkg v0.0.0-20180928190104-399ea9e2e55f // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
@@ -25,11 +26,12 @@ require (
 	github.com/kataras/iris v0.0.2
 	github.com/lib/pq v1.2.0
 	github.com/lxn/walk v0.0.0-20210112085537-c389da54e794
-	github.com/lxn/win v0.0.0-20210218163916-a377121e959e // indirect
+	github.com/lxn/win v0.0.0-20210218163916-a377121e959e
 	github.com/mattn/go-gtk v0.0.0-20191030024613-af2e013261f5 // indirect
 	github.com/mattn/go-pointer v0.0.1 // indirect
 	github.com/pierrec/lz4 v2.6.0+incompatible // indirect
 	github.com/rcrowley/go-metrics v0.0.0-20201227073835-cf1acfcdf475 // indirect
+	github.com/sciter-sdk/go-sciter v0.5.0
 	github.com/unrolled/secure v1.0.9
 	golang.org/x/crypto v0.0.0-20200820211705-5c72a883971a
 	google.golang.org/genproto v0.0.0-20200526211855-cb27e3aa2013

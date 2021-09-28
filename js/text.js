@@ -7,6 +7,7 @@ $.ajax({
     },
     success: function(data) {
         document.getElementById('contentText').innerHTML = marked(data["content"]);
+        document.getElementById("titles").innerHTML = data["title"];
     },
 })
 

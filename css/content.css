@@ -7,7 +7,7 @@ img {
     max-width: 100%;
 }
 
-.divcontainer {
+.root .divcontainer {
     display: flex;
     margin-top: 0;
     position: relative;
@@ -15,8 +15,15 @@ img {
     height: auto;
 }
 
-.divcontainer .comments {
+.root .divcontainer .comments {
     display: flex;
+}
+
+.root .divcontainer .contents {
+    flex-direction: column;
+    width: auto;
+    margin: 0 auto;
+    background-color: rgba(255, 255, 255, 0.7);
 }
 
 .root .tempr {

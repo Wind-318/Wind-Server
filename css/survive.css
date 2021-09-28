@@ -1,0 +1,48 @@
+body {
+    background-image: url('');
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow: hidden;
+}
+
+.container {
+    width: auto;
+    height: auto;
+    position: relative;
+    display: flex;
+    margin: 0 auto;
+    flex-direction: column;
+}
+
+.container .display {
+    width: auto;
+    height: auto;
+    margin: 0 auto;
+    background-color: rgba(99, 43, 43, 0.8);
+    font-size: 20px;
+    color: white;
+}
+
+.container ul {
+    width: auto;
+    height: auto;
+    margin: 300px auto;
+    background-color: rgba(43, 80, 134, 0.8);
+}
+
+.container ul li {
+    width: auto;
+    height: auto;
+    background-color: rgba(4, 35, 65, 0.8);
+    cursor: pointer;
+    padding: 30px;
+    list-style: none;
+    font-size: 20px;
+    text-align: center;
+    border-top: 3px solid rgba(43, 80, 134, 0.8);
+    color: white;
+}
+
+.container ul li:first-child {
+    border-top: none;
+}

@@ -1,5 +1,5 @@
 # Wind's Server 个人网站服务端代码
-- 需要自行启动 MySQL 和 Redis 服务端，需要配置 go 环境
+- 需要自行启动 MySQL 和 Redis 服务端，需要配置 golang 环境
 - MySQL 建表指令如下：
   - blog 表（记录文章）
     ```sql
@@ -82,20 +82,24 @@
       PRIMARY KEY (`id`)
     ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
     ```
-- 配置信息在 infomation.go 中
+- 配置信息在 gofiles/config/config.go 中
 - 需要自行添加 https 证书（或关闭 https）；
 - 运行：go run main.go
 ## TODO
-- [ ] 消息推送机制完善；
-- [ ] 博客系统完善；
+- [ ] 消息推送机制优化；
+- [ ] 博客系统优化及修复；
 - [ ] 增加资源板块；
 - [ ] 用户注册机制可更改为开放注册或邀请注册；
 - [ ] 前端页面美化；
 - [ ] 其它横向和纵向内容扩展（未定）；
+## 0.3.31
+- 访问地址：https://windserver.top/
+- 修复更改标题后标题不改变的特性；
+- 将新建文章时原地跳转到页面的行为修改为打开新窗口并跳转；
 ## 0.3.3 
-- 访问地址：https://windserver.top/；
 - 支持头像修改；
 - 更多注释；
+- 文件上传更改为异步；
 ## 0.3.2 
 - 导航栏优化，目前导航栏默认为展开状态；
 ## 0.3.1 

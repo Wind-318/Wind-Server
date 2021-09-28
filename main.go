@@ -6,6 +6,7 @@ import (
 	"Project/gofiles/collectionfunc"
 	"Project/gofiles/ownmail"
 	"Project/gofiles/spider/sina"
+	"Project/gofiles/survive"
 	"Project/gofiles/user"
 	"fmt"
 	"io"
@@ -137,6 +138,12 @@ func main() {
 	Resources := router.Group("/resources")
 	{
 		Resources.GET("/", gofiles.ToResources)
+	}
+
+	Survive := router.Group("/survive")
+	{
+		Survive.GET("/getproperty", survive.Get)
+		Survive.GET("/add", survive.Add)
 	}
 
 	// 监听 http

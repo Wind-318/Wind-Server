@@ -23,10 +23,13 @@ var userAgents []string = []string{
 // 连接 mysql
 var MySQLInfo string = ""
 
+// 连接游戏数据库
+var MySQLgame string = ""
+
 // 管理员邮箱
 var SystemUserAccount = ""
 
-// 域名   示例：https://域名/
+// 域名
 var Addr = "https://127.0.0.1/"
 
 // 图片数量

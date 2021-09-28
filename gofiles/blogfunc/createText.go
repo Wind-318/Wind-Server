@@ -175,7 +175,10 @@ func GetUserText(ctx *gin.Context) {
 	conn := sqlx.MustConnect("mysql", config.MySQLInfo)
 	defer conn.Close()
 	conn.Get(&content, "SELECT content FROM blog WHERE id = ?", id)
+	title := ""
+	conn.Get(&title, "SELECT title FROM blog WHERE id = ?", id)
 	result["content"] = content
+	result["title"] = title
 	ctx.JSON(http.StatusOK, result)
 }
 

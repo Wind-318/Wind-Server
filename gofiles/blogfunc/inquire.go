@@ -1,6 +1,7 @@
 package blogfunc
 
 import (
+	"Project/gofiles/algorithm"
 	"Project/gofiles/config"
 	"net/http"
 	"strconv"
@@ -254,20 +255,10 @@ func Search(ctx *gin.Context) {
 	authors := []string{}
 	create_time := []string{}
 	update_time := []string{}
+
 	for index := range temp {
-		flag := false
 		tempstr := strings.ToLower(temp[index].Title)
-		length := len(text)
-		for indexs := range tempstr {
-			if indexs+length > len(tempstr) {
-				break
-			}
-			if tempstr[indexs:indexs+length] == text {
-				flag = true
-				break
-			}
-		}
-		if flag {
+		if algorithm.Kmp(tempstr, text) != -1 || text == "" {
 			ids = append(ids, temp[index].Id)
 			urlsarr = append(urlsarr, temp[index].Urls)
 			titles = append(titles, temp[index].Title)
@@ -289,5 +280,17 @@ func Search(ctx *gin.Context) {
 	result["id"] = ids
 	result["num"] = len(urlsarr)
 
+	// 检查登录状态
+	cookies, err := ctx.Cookie("cookie")
+	if err != nil {
+		result["isSystem"] = 0
+	}
+	redisconn, _ := redis.Dial("tcp", "localhost:6379")
+	defer redisconn.Close()
+	cookie, _ := redis.String(redisconn.Do("HGET", cookies, "email"))
+	if cookie == config.SystemUserAccount {
+		result["isSystem"] = 1
+	}
+	result["isSystem"] = 0
 	ctx.JSON(http.StatusOK, result)
 }

@@ -1,7 +1,7 @@
 package Download
 
 import (
-	"Project/httpRequest"
+	"Project/gofiles/httprequest"
 	"io/ioutil"
 	"math/rand"
 	"os"
@@ -33,7 +33,7 @@ func DownloadGet(url string, position ...string) {
 	// 递归创建所有所需文件夹
 	os.MkdirAll(fileroot, 0644)
 
-	data := httpRequest.GetRequestByte(url)
+	data := httprequest.GetRequestByte(url)
 
 	err := ioutil.WriteFile(pos, data, 0644)
 	if err != nil {
@@ -55,7 +55,7 @@ func DownloadHtmlSource(url, rule string, position ...string) {
 
 	// 资源文件匹配规则
 	sourceRule := rule
-	sources := httpRequest.RegexpHtml(url, sourceRule)
+	sources := httprequest.RegexpHtml(url, sourceRule)
 
 	var wg sync.WaitGroup
 	controlMaxNum := make(chan int, 5)
