@@ -104,6 +104,7 @@ func main() {
 		blog.POST("/PariseNum", blogfunc.PariseNum)
 		blog.POST("/Search", blogfunc.Search)
 		blog.POST("/TextComment", blogfunc.TextComment)
+		blog.POST("/uploadTextFiles", blogfunc.UploadTextFiles)
 		blog.POST("/Views", blogfunc.Views)
 	}
 

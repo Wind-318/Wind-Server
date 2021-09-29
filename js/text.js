@@ -319,6 +319,7 @@ function childreply(childid) {
     document.body.appendChild(js2);
 }
 
+// 删除文章
 function deletecomment(cid) {
     $.ajax({
         url: "/blogs/DeleteComment",
@@ -507,12 +508,14 @@ function modifyfunc() {
         var attFile = document.getElementById("attfile");
 
         var formData = new FormData();
+        var formDatas = new FormData();
         if (pic.files[0] != undefined) {
             if (pic.files[0].size > 5120000) {
                 alert('文件大小最大为 5 MB');
                 return;
             }
             formData.append("pic", pic.files[0]);
+            formDatas.append("pic", pic.files[0]);
             var pictypes = pic.files[0].type;
             var index = pictypes.lastIndexOf("/");
             formData.append("picType", pictypes.substr(index + 1));
@@ -522,14 +525,25 @@ function modifyfunc() {
         formData.append("texts", texts);
         formData.append("titles", titles);
         formData.append("types", types);
+        formDatas.append("types", types);
         formData.append("description", description);
         formData.append("authority", 0);
 
         if (attFile.files[0] != undefined) {
             for (var i = 0; i < attFile.files.length; i++) {
-                formData.append("attFiles", attFile.files[i]);
+                formDatas.append("attFiles", attFile.files[i]);
             }
         }
+
+        $.ajax({
+            url:"/blogs/uploadTextFiles",
+            type:"POST",
+            data: formDatas,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success:function() {}
+        })
 
         $.ajax({
             url: "/blogs/ModifyBlog",
@@ -540,7 +554,7 @@ function modifyfunc() {
             contentType: false,
             success: function(data) {
                 location.reload();
-            },
+            }
         })
     }`;
     document.body.appendChild(js1);

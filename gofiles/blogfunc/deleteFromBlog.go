@@ -96,8 +96,6 @@ func ModifyBlog(ctx *gin.Context) {
 	titles := ctx.PostForm("titles")
 	description := ctx.PostForm("description")
 	pic, _ := ctx.FormFile("pic")
-	attFile, _ := ctx.MultipartForm()
-	attFiles := attFile.File["attFiles"]
 	pictype := ctx.PostForm("picType")
 
 	conn := sqlx.MustConnect("mysql", config.MySQLInfo)
@@ -118,20 +116,9 @@ func ModifyBlog(ctx *gin.Context) {
 
 	conn.Exec("UPDATE blog SET update_time = ? WHERE id = ?", time.Now().String()[:19], id)
 	if pictype != "" {
-		var randTime = strconv.Itoa(int(time.Now().UnixNano()))
-		var picAddr = config.Addr + `blog/` + strconv.Itoa(authorid) + `/` + types + "/" + randTime + "." + pictype
-
-		// 保存文件
-		go func() {
-			ctx.SaveUploadedFile(pic, `blog/`+strconv.Itoa(authorid)+`/`+types+"/"+randTime+"."+pictype)
-		}()
+		var picAddr = config.Addr + `blog/` + strconv.Itoa(authorid) + `/` + types + "/" + pic.Filename
 
 		conn.Exec("UPDATE blog SET picurl = ? WHERE id = ?", picAddr, id)
-	}
-
-	for i := range attFiles {
-		go func(i int) {
-			ctx.SaveUploadedFile(attFiles[i], `blog/`+strconv.Itoa(authorid)+`/`+types+"/"+attFiles[i].Filename)
-		}(i)
+		conn.Exec("UPDATE blog SET smallpic = ? WHERE id = ?", `blog/`+strconv.Itoa(authorid)+`/`+types+"/small"+pic.Filename, id)
 	}
 }
