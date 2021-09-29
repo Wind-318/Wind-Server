@@ -515,15 +515,12 @@ function modifyfunc() {
                 return;
             }
             formData.append("pic", pic.files[0]);
-            formDatas.append("pic", pic.files[0]);
             var pictypes = pic.files[0].type;
             var index = pictypes.lastIndexOf("/");
             formData.append("picType", pictypes.substr(index + 1));
-            formDatas.append("picType", pictypes.substr(index + 1));
         }
 
         formData.append("id", "` + document.getElementsByName("main")[0].id + `");
-        formDatas.append("id", "` + document.getElementsByName("main")[0].id + `");
         formData.append("texts", texts);
         formData.append("titles", titles);
         formData.append("types", types);
@@ -532,20 +529,10 @@ function modifyfunc() {
 
         if (attFile.files[0] != undefined) {
             for (var i = 0; i < attFile.files.length; i++) {
-                formDatas.append("attFiles", attFile.files[i]);
+                formData.append("attFiles", attFile.files[i]);
             }
         }
-
-        $.ajax({
-            url:"/blogs/ModifyBlogFiles",
-            type:"POST",
-            data: formDatas,
-            cache: false,
-            processData: false,
-            contentType: false,
-            success:function() {}
-        })
-
+        
         $.ajax({
             url: "/blogs/ModifyBlog",
             type: "POST",

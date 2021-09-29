@@ -41,6 +41,10 @@ func CreateText(ctx *gin.Context) {
 	types := ctx.PostForm("types")
 	authority := ctx.PostForm("authority")
 	pic, _ := ctx.FormFile("pic")
+	pictype := ctx.PostForm("picType")
+	// 附件
+	attFile, _ := ctx.MultipartForm()
+	attFiles := attFile.File["attFiles"]
 
 	// 数据检验
 	val, err := strconv.Atoi(authority)
@@ -62,13 +66,45 @@ func CreateText(ctx *gin.Context) {
 	conn.Get(&id, "SELECT id FROM user WHERE account = ?", cookie)
 	conn.Get(&name, "SELECT username FROM user WHERE account = ?", cookie)
 
+	// 创建文件夹
+	os.Mkdir(`blog/`+strconv.Itoa(id)+`/`+types, 0644)
+
+	randtime := strconv.Itoa(int(time.Now().UnixNano()))
+	go func() {
+		// 保存文件
+		err = ctx.SaveUploadedFile(pic, `blog/`+strconv.Itoa(id)+`/`+types+"/"+randtime+"."+pictype)
+		if err != nil {
+			return
+		}
+		// 创建缩略图
+		imgData, _ := ioutil.ReadFile(`blog/` + strconv.Itoa(id) + `/` + types + "/" + randtime + "." + pictype)
+		buf := bytes.NewBuffer(imgData)
+		image, err := imaging.Decode(buf)
+		if err != nil {
+			return
+		}
+		image = imaging.Resize(image, 0, 400, imaging.Lanczos)
+		err = imaging.Save(image, `blog/`+strconv.Itoa(id)+`/`+types+"/"+randtime+"small."+pictype)
+		if err != nil {
+			return
+		}
+
+		// 保存文件
+		for i := range attFiles {
+			err = ctx.SaveUploadedFile(attFiles[i], `blog/`+strconv.Itoa(id)+`/`+types+"/"+attFiles[i].Filename)
+			if err != nil {
+				return
+			}
+		}
+	}()
+
 	// 插入文章到数据库
 	var mutex = &sync.Mutex{}
 	mutex.Lock()
 	var ids int
 	var num int
 	conn.Get(&num, "SELECT count(id) FROM blog WHERE authoremail = ? AND types = ?", cookie, types)
-	conn.Exec("INSERT INTO blog VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 0, name, cookie, titles, description, text, types, 0, 0, val, time.Now().String()[:19], time.Now().String()[:19], id, config.Addr+`blog/`+strconv.Itoa(id)+`/`+types+`/`+strconv.Itoa(num+1)+`.html`, 0, config.Addr+`blog/`+strconv.Itoa(id)+`/`+types+"/"+pic.Filename, config.Addr+`blog/`+strconv.Itoa(id)+`/`+types+"/small"+pic.Filename)
+	conn.Exec("INSERT INTO blog VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 0, name, cookie, titles, description, text, types, 0, 0, val, time.Now().String()[:19], time.Now().String()[:19], id, config.Addr+`blog/`+strconv.Itoa(id)+`/`+types+`/`+strconv.Itoa(num+1)+`.html`, 0, config.Addr+`blog/`+strconv.Itoa(id)+`/`+types+"/"+randtime+"."+pictype, config.Addr+`blog/`+strconv.Itoa(id)+`/`+types+"/"+randtime+"small."+pictype)
 	conn.Get(&ids, "select id from blog order by id DESC limit 1")
 	mutex.Unlock()
 
@@ -130,59 +166,6 @@ func CreateText(ctx *gin.Context) {
 	ioutil.WriteFile(`blog/`+strconv.Itoa(id)+`/`+types+`/`+strconv.Itoa(num+1)+`.html`, []byte(htmls), 0644)
 
 	ctx.JSON(http.StatusOK, result)
-}
-
-// 创建文章时上传的文件
-func UploadTextFiles(ctx *gin.Context) {
-	// 检查登录状态
-	cookies, err := ctx.Cookie("cookie")
-	redisconn, _ := redis.Dial("tcp", "localhost:6379")
-	defer redisconn.Close()
-	cookie, _ := redis.String(redisconn.Do("HGET", cookies, "email"))
-	if err != nil {
-		return
-	}
-	conn := sqlx.MustConnect("mysql", config.MySQLInfo)
-	defer conn.Close()
-	var id int
-	conn.Get(&id, "SELECT id FROM user WHERE account = ?", cookie)
-
-	// 文章分类
-	types := ctx.PostForm("types")
-	// 背景图片
-	pic, _ := ctx.FormFile("pic")
-	// 附件
-	attFile, _ := ctx.MultipartForm()
-	attFiles := attFile.File["attFiles"]
-
-	// 创建文件夹
-	os.Mkdir(`blog/`+strconv.Itoa(id)+`/`+types, 0644)
-
-	// 保存文件
-	err = ctx.SaveUploadedFile(pic, `blog/`+strconv.Itoa(id)+`/`+types+"/"+pic.Filename)
-	if err != nil {
-		return
-	}
-	// 创建缩略图
-	imgData, _ := ioutil.ReadFile(`blog/` + strconv.Itoa(id) + `/` + types + "/" + pic.Filename)
-	buf := bytes.NewBuffer(imgData)
-	image, err := imaging.Decode(buf)
-	if err != nil {
-		return
-	}
-	image = imaging.Resize(image, 0, 400, imaging.Lanczos)
-	err = imaging.Save(image, `blog/`+strconv.Itoa(id)+`/`+types+"/small"+pic.Filename)
-	if err != nil {
-		return
-	}
-
-	// 保存文件
-	for i := range attFiles {
-		err = ctx.SaveUploadedFile(attFiles[i], `blog/`+strconv.Itoa(id)+`/`+types+"/"+attFiles[i].Filename)
-		if err != nil {
-			return
-		}
-	}
 }
 
 // 获取某一 id 的文章

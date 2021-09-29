@@ -107,6 +107,9 @@ func ModifyBlog(ctx *gin.Context) {
 	pic, _ := ctx.FormFile("pic")
 	// 背景类型
 	pictype := ctx.PostForm("picType")
+	// 文件
+	attFile, _ := ctx.MultipartForm()
+	attFiles := attFile.File["attFiles"]
 
 	conn := sqlx.MustConnect("mysql", config.MySQLInfo)
 	defer conn.Close()
@@ -129,59 +132,38 @@ func ModifyBlog(ctx *gin.Context) {
 
 	// 更新修改时间
 	conn.Exec("UPDATE blog SET update_time = ? WHERE id = ?", time.Now().String()[:19], id)
+	randtime := strconv.Itoa(int(time.Now().UnixNano()))
 	if pictype != "" {
-		var picAddr = config.Addr + `blog/` + strconv.Itoa(authorid) + `/` + types + "/" + pic.Filename
+		var picAddr = config.Addr + `blog/` + strconv.Itoa(authorid) + `/` + types + "/" + randtime + "." + pictype
 
 		conn.Exec("UPDATE blog SET picurl = ? WHERE id = ?", picAddr, id)
-		conn.Exec("UPDATE blog SET smallpic = ? WHERE id = ?", config.Addr+`blog/`+strconv.Itoa(authorid)+`/`+types+"/small"+pic.Filename, id)
+		conn.Exec("UPDATE blog SET smallpic = ? WHERE id = ?", config.Addr+`blog/`+strconv.Itoa(authorid)+`/`+types+"/"+randtime+"small."+pictype, id)
 	}
-}
 
-// 修改文章上传的文件
-func ModifyBlogFiles(ctx *gin.Context) {
-	// 检查登录状态
-	_, err := ctx.Cookie("cookie")
-	redisconn, _ := redis.Dial("tcp", "localhost:6379")
-	defer redisconn.Close()
-	if err != nil {
-		return
-	}
-	id := ctx.PostForm("id")
-	pic, _ := ctx.FormFile("pic")
-	pictype := ctx.PostForm("picType")
-	attFile, _ := ctx.MultipartForm()
-	attFiles := attFile.File["attFiles"]
+	go func() {
+		if pictype != "" {
+			ctx.SaveUploadedFile(pic, `blog/`+strconv.Itoa(authorid)+`/`+types+"/"+randtime+"."+pictype)
 
-	// 获取文章分类
-	conn := sqlx.MustConnect("mysql", config.MySQLInfo)
-	defer conn.Close()
-	types := ""
-	conn.Get(&types, "SELECT types FROM blog WHERE id = ?", id)
-	authorid := 0
-	conn.Get(&authorid, "SELECT authorid FROM blog WHERE id = ?", id)
-
-	if pictype != "" {
-		ctx.SaveUploadedFile(pic, `blog/`+strconv.Itoa(authorid)+`/`+types+"/"+pic.Filename)
-
-		// 创建缩略图
-		imgData, _ := ioutil.ReadFile(`blog/` + strconv.Itoa(authorid) + `/` + types + "/" + pic.Filename)
-		buf := bytes.NewBuffer(imgData)
-		image, err := imaging.Decode(buf)
-		if err != nil {
-			return
+			// 创建缩略图
+			imgData, _ := ioutil.ReadFile(`blog/` + strconv.Itoa(authorid) + `/` + types + "/" + randtime + "." + pictype)
+			buf := bytes.NewBuffer(imgData)
+			image, err := imaging.Decode(buf)
+			if err != nil {
+				return
+			}
+			image = imaging.Resize(image, 0, 400, imaging.Lanczos)
+			err = imaging.Save(image, `blog/`+strconv.Itoa(authorid)+`/`+types+"/"+randtime+"small."+pictype)
+			if err != nil {
+				return
+			}
 		}
-		image = imaging.Resize(image, 0, 400, imaging.Lanczos)
-		err = imaging.Save(image, `blog/`+strconv.Itoa(authorid)+`/`+types+"/small"+pic.Filename)
-		if err != nil {
-			return
-		}
-	}
 
-	// 保存文件
-	for i := range attFiles {
-		err = ctx.SaveUploadedFile(attFiles[i], `blog/`+strconv.Itoa(authorid)+`/`+types+"/"+attFiles[i].Filename)
-		if err != nil {
-			return
+		// 保存文件
+		for i := range attFiles {
+			err = ctx.SaveUploadedFile(attFiles[i], `blog/`+strconv.Itoa(authorid)+`/`+types+"/"+attFiles[i].Filename)
+			if err != nil {
+				return
+			}
 		}
-	}
+	}()
 }

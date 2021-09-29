@@ -72,27 +72,15 @@
             formData.append("description", description);
             formData.append("authority", 0);
             formData.append("pic", pic.files[0]);
-
-            // 文件部分
-            var formDatas = new FormData();
-            formDatas.append("pic", pic.files[0]);
-            formDatas.append("types", types);
+            var pictypes = pic.files[0].type;
+            var index = pictypes.lastIndexOf("/");
+            formData.append("picType", pictypes.substr(index + 1));
 
             if (attFile.files[0] != undefined) {
                 for (var i = 0; i < attFile.files.length; i++) {
-                    formDatas.append("attFiles", attFile.files[i]);
+                    formData.append("attFiles", attFile.files[i]);
                 }
             }
-
-            $.ajax({
-                url: "/blogs/uploadTextFiles",
-                type: "POST",
-                data: formDatas,
-                cache: false,
-                processData: false,
-                contentType: false,
-                success: function() {}
-            })
 
             $.ajax({
                 url: "/blogs/CreateTexts",
