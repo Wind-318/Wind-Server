@@ -100,6 +100,7 @@ func main() {
 		blog.POST("/InquirePageNums", blogfunc.GetPageNums)
 		blog.POST("/InquireText", blogfunc.GetText)
 		blog.POST("/ModifyBlog", blogfunc.ModifyBlog)
+		blog.POST("/ModifyBlogFiles", blogfunc.ModifyBlogFiles)
 		blog.POST("/Parise", blogfunc.Parise)
 		blog.POST("/PariseNum", blogfunc.PariseNum)
 		blog.POST("/Search", blogfunc.Search)

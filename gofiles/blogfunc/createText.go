@@ -68,7 +68,7 @@ func CreateText(ctx *gin.Context) {
 	var ids int
 	var num int
 	conn.Get(&num, "SELECT count(id) FROM blog WHERE authoremail = ? AND types = ?", cookie, types)
-	conn.Exec("INSERT INTO blog VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 0, name, cookie, titles, description, text, types, 0, 0, val, time.Now().String()[:19], time.Now().String()[:19], id, config.Addr+`blog/`+strconv.Itoa(id)+`/`+types+`/`+strconv.Itoa(num+1)+`.html`, 0, `blog/`+strconv.Itoa(id)+`/`+types+"/"+pic.Filename, config.Addr+`blog/`+strconv.Itoa(id)+`/`+types+"/small"+pic.Filename)
+	conn.Exec("INSERT INTO blog VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 0, name, cookie, titles, description, text, types, 0, 0, val, time.Now().String()[:19], time.Now().String()[:19], id, config.Addr+`blog/`+strconv.Itoa(id)+`/`+types+`/`+strconv.Itoa(num+1)+`.html`, 0, config.Addr+`blog/`+strconv.Itoa(id)+`/`+types+"/"+pic.Filename, config.Addr+`blog/`+strconv.Itoa(id)+`/`+types+"/small"+pic.Filename)
 	conn.Get(&ids, "select id from blog order by id DESC limit 1")
 	mutex.Unlock()
 
@@ -147,32 +147,33 @@ func UploadTextFiles(ctx *gin.Context) {
 	var id int
 	conn.Get(&id, "SELECT id FROM user WHERE account = ?", cookie)
 
+	// 文章分类
 	types := ctx.PostForm("types")
+	// 背景图片
 	pic, _ := ctx.FormFile("pic")
+	// 附件
 	attFile, _ := ctx.MultipartForm()
 	attFiles := attFile.File["attFiles"]
 
 	// 创建文件夹
 	os.Mkdir(`blog/`+strconv.Itoa(id)+`/`+types, 0644)
 
-	if pic != nil {
-		// 保存文件
-		err = ctx.SaveUploadedFile(pic, `blog/`+strconv.Itoa(id)+`/`+types+"/"+pic.Filename)
-		if err != nil {
-			return
-		}
-		// 创建缩略图
-		imgData, _ := ioutil.ReadFile(`blog/` + strconv.Itoa(id) + `/` + types + "/" + pic.Filename)
-		buf := bytes.NewBuffer(imgData)
-		image, err := imaging.Decode(buf)
-		if err != nil {
-			return
-		}
-		image = imaging.Resize(image, 0, 400, imaging.Lanczos)
-		err = imaging.Save(image, `blog/`+strconv.Itoa(id)+`/`+types+"/small"+pic.Filename)
-		if err != nil {
-			return
-		}
+	// 保存文件
+	err = ctx.SaveUploadedFile(pic, `blog/`+strconv.Itoa(id)+`/`+types+"/"+pic.Filename)
+	if err != nil {
+		return
+	}
+	// 创建缩略图
+	imgData, _ := ioutil.ReadFile(`blog/` + strconv.Itoa(id) + `/` + types + "/" + pic.Filename)
+	buf := bytes.NewBuffer(imgData)
+	image, err := imaging.Decode(buf)
+	if err != nil {
+		return
+	}
+	image = imaging.Resize(image, 0, 400, imaging.Lanczos)
+	err = imaging.Save(image, `blog/`+strconv.Itoa(id)+`/`+types+"/small"+pic.Filename)
+	if err != nil {
+		return
 	}
 
 	// 保存文件

@@ -519,13 +519,14 @@ function modifyfunc() {
             var pictypes = pic.files[0].type;
             var index = pictypes.lastIndexOf("/");
             formData.append("picType", pictypes.substr(index + 1));
+            formDatas.append("picType", pictypes.substr(index + 1));
         }
 
         formData.append("id", "` + document.getElementsByName("main")[0].id + `");
+        formDatas.append("id", "` + document.getElementsByName("main")[0].id + `");
         formData.append("texts", texts);
         formData.append("titles", titles);
         formData.append("types", types);
-        formDatas.append("types", types);
         formData.append("description", description);
         formData.append("authority", 0);
 
@@ -536,7 +537,7 @@ function modifyfunc() {
         }
 
         $.ajax({
-            url:"/blogs/uploadTextFiles",
+            url:"/blogs/ModifyBlogFiles",
             type:"POST",
             data: formDatas,
             cache: false,
