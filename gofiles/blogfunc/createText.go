@@ -102,9 +102,8 @@ func CreateText(ctx *gin.Context) {
 	var mutex = &sync.Mutex{}
 	mutex.Lock()
 	var ids int
-	var num int
-	conn.Get(&num, "SELECT count(id) FROM blog WHERE authoremail = ? AND types = ?", cookie, types)
-	conn.Exec("INSERT INTO blog VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 0, name, cookie, titles, description, text, types, 0, 0, val, time.Now().String()[:19], time.Now().String()[:19], id, config.Addr+`blog/`+strconv.Itoa(id)+`/`+types+`/`+strconv.Itoa(num+1)+`.html`, 0, config.Addr+`blog/`+strconv.Itoa(id)+`/`+types+"/"+randtime+"."+pictype, config.Addr+`blog/`+strconv.Itoa(id)+`/`+types+"/"+randtime+"small."+pictype)
+	num := strconv.Itoa(int(time.Now().UnixNano()))
+	conn.Exec("INSERT INTO blog VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 0, name, cookie, titles, description, text, types, 0, 0, val, time.Now().String()[:19], time.Now().String()[:19], id, config.Addr+`blog/`+strconv.Itoa(id)+`/`+types+`/`+num+`.html`, 0, config.Addr+`blog/`+strconv.Itoa(id)+`/`+types+"/"+randtime+"."+pictype, config.Addr+`blog/`+strconv.Itoa(id)+`/`+types+"/"+randtime+"small."+pictype)
 	conn.Get(&ids, "select id from blog order by id DESC limit 1")
 	mutex.Unlock()
 
@@ -163,7 +162,7 @@ func CreateText(ctx *gin.Context) {
 			</body>
 			
 			</html>`
-	ioutil.WriteFile(`blog/`+strconv.Itoa(id)+`/`+types+`/`+strconv.Itoa(num+1)+`.html`, []byte(htmls), 0644)
+	ioutil.WriteFile(`blog/`+strconv.Itoa(id)+`/`+types+`/`+num+`.html`, []byte(htmls), 0644)
 
 	ctx.JSON(http.StatusOK, result)
 }
