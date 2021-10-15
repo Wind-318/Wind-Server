@@ -21,7 +21,10 @@ func Search() [][]string {
 	db, _ := sqlx.Open("mysql", config.MySQLInfo)
 	defer db.Close()
 
-	connect, _ := redis.Dial("tcp", "127.0.0.1:6379")
+	connect, err := redis.Dial("tcp", "127.0.0.1:6379")
+	if err != nil {
+		return nil
+	}
 	defer connect.Close()
 
 	html := httprequest.GetRequestByte("https://finance.sina.com.cn/stock/")

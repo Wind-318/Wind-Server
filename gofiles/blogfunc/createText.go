@@ -34,13 +34,19 @@ func CreateText(ctx *gin.Context) {
 		return
 	}
 
-	// 获取数据
+	// 获取内容
 	text := ctx.PostForm("texts")
+	// 标题
 	titles := ctx.PostForm("titles")
+	// 简介
 	description := ctx.PostForm("description")
+	// 分类
 	types := ctx.PostForm("types")
+	// 权限
 	authority := ctx.PostForm("authority")
+	// 图片
 	pic, _ := ctx.FormFile("pic")
+	// 图片类型
 	pictype := ctx.PostForm("picType")
 	// 附件
 	attFile, _ := ctx.MultipartForm()
@@ -58,6 +64,7 @@ func CreateText(ctx *gin.Context) {
 		return
 	}
 
+	// 连接数据库
 	conn := sqlx.MustConnect("mysql", config.MySQLInfo)
 	defer conn.Close()
 
@@ -83,7 +90,9 @@ func CreateText(ctx *gin.Context) {
 		if err != nil {
 			return
 		}
+		// 图片缩略
 		image = imaging.Resize(image, 0, 400, imaging.Lanczos)
+		// 保存缩略图
 		err = imaging.Save(image, `blog/`+strconv.Itoa(id)+`/`+types+"/"+randtime+"small."+pictype)
 		if err != nil {
 			return

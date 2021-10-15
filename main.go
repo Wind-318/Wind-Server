@@ -186,6 +186,7 @@ func sendEveryUser() {
 		// 等待时间
 		waitSeconds := 0
 
+		// 计算现在到 6 点或者到 18 点还有多少秒
 		if nowHour < 18 && nowHour >= 6 {
 			waitSeconds += (17-nowHour)*3600 + (60-nowMinute)*60
 		} else if nowHour >= 18 {
