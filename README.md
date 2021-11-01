@@ -1,3 +1,4 @@
+# 访问地址：https://windserver.top/
 # Wind's Server 个人网站服务端架设流程
 - 需要自行安装并启动 MySQL 和 Redis 服务端，需要配置 golang 环境
 - 首先新建数据库，然后新建如下几张表，指令如下：
@@ -85,8 +86,7 @@
 - 配置信息在 gofiles/config/config.go 中，需要根据情况自行填写；
 - 需要自行添加 https 证书（或关闭 https）；
 - 运行：go run main.go
-## 访问地址：https://windserver.top/
-## TODO
+# TODO
 - [ ] **每季度新番列表导航；**
 - [ ] **增加资源板块；**
 - [ ] 用户注册机制可自定义为开放注册或邀请注册；
