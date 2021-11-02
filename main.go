@@ -4,11 +4,14 @@ import (
 	"Project/gofiles"
 	"Project/gofiles/blogfunc"
 	"Project/gofiles/collectionfunc"
+	"Project/gofiles/config"
 	"Project/gofiles/ownmail"
 	"Project/gofiles/spider/sina"
 	"Project/gofiles/user"
+	"bufio"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"math/rand"
 	"net/http"
 	"os"
@@ -16,10 +19,13 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-gomail/gomail"
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/jmoiron/sqlx"
 	"github.com/unrolled/secure"
 )
 
 func main() {
+	initDatabase()
 	// 新建路由
 	router := gin.New()
 	// 关闭控制台颜色
@@ -203,5 +209,31 @@ func sendEveryUser() {
 			waitToSend := ownmail.GetNewMail(user)
 			waitToSend.Send(time.Now().String()[:19]+" "+time.Now().Weekday().String()+"：每日要闻", sina.SelectFirst10(), gomail.NewMessage())
 		}
+	}
+}
+
+// 建库建表
+func initDatabase() {
+	// 连接
+	conn := sqlx.MustConnect("mysql", config.MySQLInit)
+	defer conn.Close()
+
+	// 如果存在同名表则丢弃
+	drops, _ := os.Open("./sql/drop.sql")
+	defer drops.Close()
+	buf := bufio.NewScanner(drops)
+	for buf.Scan() {
+		conn.Exec(buf.Text())
+	}
+
+	// 读取各表建表指令
+	files, _ := ioutil.ReadDir("./sql")
+	for _, file := range files {
+		if file.Name() == "drop.sql" {
+			continue
+		}
+		bytes, _ := ioutil.ReadFile("./sql/" + file.Name())
+		// 执行
+		conn.Exec(string(bytes))
 	}
 }
