@@ -122,16 +122,12 @@ func SaveRedis(member ...string) {
 
 // 选择十条
 func SelectFirst10() string {
-	rwmutex.RLock()
-
 	con, _ := redis.Dial("tcp", "127.0.0.1:6379")
 	titles, err := redis.Strings(con.Do("LRANGE", "listtitle", 0, 9))
 	if err != nil {
 		return ""
 	}
 	urls, err := redis.Strings(con.Do("LRANGE", "listurl", 0, 9))
-
-	rwmutex.RUnlock()
 
 	if err != nil {
 		return ""
