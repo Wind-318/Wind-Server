@@ -139,7 +139,7 @@ func (user *User) Verification() error {
 	// 接收者邮箱
 	mails := ownmail.GetNewMail(user.Account)
 
-	mails.Send("验证码", "<h1>您的验证码为："+verificationCode+"<h1>", gomail.NewMessage())
+	mails.Send("验证码", "<h1>您的验证码为:"+verificationCode+"<h1>", gomail.NewMessage())
 
 	return nil
 }
