@@ -131,7 +131,7 @@ body {
 
 .navbar {
     z-index: 9;
-    height: 60px;
+    height: 30px;
     display: flex;
     justify-content: center;
     align-items: center;

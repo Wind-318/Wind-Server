@@ -119,6 +119,7 @@ func main() {
 		users.GET("/Exit", gofiles.Exit)
 		users.GET("/ToLogin", gofiles.ToLogin)
 		users.GET("/TochangePassword", gofiles.ToChangePassword)
+		users.GET("/signAddScore", user.SignAddScore)
 
 		users.POST("/changePassword", user.ChangePassWord)
 		users.POST("/login", user.Login)
@@ -145,15 +146,8 @@ func main() {
 		Resources.GET("/", gofiles.ToResources)
 	}
 
-	/*
-		Survive := router.Group("/survive")
-		{
-			Survive.GET("/getproperty", survive.Get)
-			Survive.GET("/add", survive.Add)
-		}
-	*/
 	// 监听 http
-	go router.Run(":80")
+	router.Run(":80")
 	// 监听 https，自行选择 SSL 证书
 	router.RunTLS(":443", "windserver.top.pem", "windserver.top.key")
 }
@@ -207,7 +201,7 @@ func sendEveryUser() {
 		// 发送邮件
 		for _, user := range users {
 			waitToSend := ownmail.GetNewMail(user)
-			waitToSend.Send(time.Now().String()[:19]+" "+time.Now().Weekday().String()+"：每日要闻", sina.SelectFirst10(), gomail.NewMessage())
+			waitToSend.Send(time.Now().String()[:19]+" "+time.Now().Weekday().String()+":每日要闻", sina.SelectFirst10(), gomail.NewMessage())
 		}
 	}
 }

@@ -36,6 +36,7 @@ func GetPageNums(ctx *gin.Context) {
 	// 每页数量
 	every := 10
 	var result = map[string]interface{}{
+		"authority":   0,
 		"author":      0,
 		"num":         0,
 		"start":       0,
@@ -77,11 +78,12 @@ func GetPageNums(ctx *gin.Context) {
 
 	// 从数据库选取文章
 	temp := []textInfo{}
-	conn.Select(&temp, "SELECT id, author, title, description, types, clicknum, great, authority, create_time, update_time, authorid, url, picurl, smallpic FROM blog")
+	conn.Select(&temp, "SELECT id, author, title, description, types, clicknum, great, authority, create_time, update_time, authorid, url, picurl, smallpic FROM blog WHERE authority == 0")
 	ids := []int{}
 	urlsarr := []string{}
 	titles := []string{}
 	picurls := []string{}
+	authoritys := []int{}
 	descriptions := []string{}
 	authors := []string{}
 	create_time := []string{}
@@ -95,6 +97,7 @@ func GetPageNums(ctx *gin.Context) {
 		create_time = append(create_time, data.Create_time)
 		update_time = append(update_time, data.Update_time)
 		picurls = append(picurls, data.SmallPic)
+		authoritys = append(authoritys, data.Authority)
 	}
 	result["urls"] = urlsarr
 	result["titles"] = titles
@@ -104,6 +107,7 @@ func GetPageNums(ctx *gin.Context) {
 	result["create_time"] = create_time
 	result["update_time"] = update_time
 	result["id"] = ids
+	result["authority"] = authoritys
 
 	num := len(temp)
 	if val >= num {
@@ -245,12 +249,13 @@ func Search(ctx *gin.Context) {
 	result := map[string]interface{}{}
 
 	temp := []textInfo{}
-	conn.Select(&temp, "SELECT id, author, title, description, types, clicknum, great, authority, create_time, update_time, authorid, url, picurl, smallpic FROM blog")
+	conn.Select(&temp, "SELECT id, author, title, description, types, clicknum, great, authority, create_time, update_time, authorid, url, picurl, smallpic FROM blog WHERE authority == 0")
 
 	ids := []int{}
 	urlsarr := []string{}
 	titles := []string{}
 	picurls := []string{}
+	authoritys := []int{}
 	descriptions := []string{}
 	authors := []string{}
 	create_time := []string{}
@@ -258,7 +263,7 @@ func Search(ctx *gin.Context) {
 
 	for index := range temp {
 		tempstr := strings.ToLower(temp[index].Title)
-		if text == "" || algorithm.Kmp(tempstr, text) != -1 {
+		if text == "" || algorithm.Match(tempstr, text) != -1 {
 			ids = append(ids, temp[index].Id)
 			urlsarr = append(urlsarr, temp[index].Urls)
 			titles = append(titles, temp[index].Title)
@@ -267,6 +272,7 @@ func Search(ctx *gin.Context) {
 			create_time = append(create_time, temp[index].Create_time)
 			update_time = append(update_time, temp[index].Update_time)
 			picurls = append(picurls, temp[index].SmallPic)
+			authoritys = append(authoritys, temp[index].Authority)
 		}
 	}
 
@@ -279,6 +285,7 @@ func Search(ctx *gin.Context) {
 	result["update_time"] = update_time
 	result["id"] = ids
 	result["num"] = len(urlsarr)
+	result["authority"] = authoritys
 
 	// 检查登录状态
 	cookies, err := ctx.Cookie("cookie")

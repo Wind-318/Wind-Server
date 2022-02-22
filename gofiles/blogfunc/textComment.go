@@ -83,6 +83,13 @@ func AddComment(ctx *gin.Context) {
 	redisconn, _ := redis.Dial("tcp", "localhost:6379")
 	defer redisconn.Close()
 	email, _ := redis.String(redisconn.Do("HGET", cookie, "email"))
+	// 原积分
+	score := 0
+	conn.Get(&score, "SELECT score WHERE account = ?", email)
+	score += 3
+	// 回复加 3 积分
+	conn.Exec("update user SET score = ? WHERE account = ?", score, email)
+
 	conn.Get(&pic, "SELECT pic FROM user WHERE account = ?", email)
 	conn.Get(&author, "SELECT username FROM user WHERE account = ?", email)
 
@@ -91,10 +98,26 @@ func AddComment(ctx *gin.Context) {
 
 // 点赞
 func Parise(ctx *gin.Context) {
-	id := ctx.PostForm("id")
+	// 检查登录状态
+	cookies, err := ctx.Cookie("cookie")
+	redisconn, _ := redis.Dial("tcp", "localhost:6379")
+	defer redisconn.Close()
+
+	cookie, _ := redis.String(redisconn.Do("HGET", cookies, "email"))
+	if err != nil {
+		return
+	}
+	// 连接数据库
 	conn := sqlx.MustConnect("mysql", config.MySQLInfo)
 	defer conn.Close()
+	// 原积分
+	score := 0
+	conn.Get(&score, "SELECT score WHERE account = ?", cookie)
+	score += 3
+	// 点赞奖励 3 积分
+	conn.Exec("update user SET score = ? WHERE account = ?", score, cookie)
 
+	id := ctx.PostForm("id")
 	conn.Exec("UPDATE blog SET great = great + 1 WHERE id = ?", id)
 }
 

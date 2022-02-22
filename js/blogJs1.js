@@ -86,7 +86,7 @@ window.onload = function() {
                     att4.setAttribute("class", "Spanss");
                     att4.innerHTML = data["titles"][i - 1];
                     att2.innerHTML = data["description"][i - 1];
-                    att3.innerHTML = "作者：" + data["author"][i - 1] + "\t\t\t发布时间：" + data["create_time"][i - 1] + "\t\t\t修改于：" + data["update_time"][i - 1];
+                    att3.innerHTML = "作者:" + data["author"][i - 1] + "\t\t\t发布时间:" + data["create_time"][i - 1] + "\t\t\t修改于:" + data["update_time"][i - 1];
                     temp.appendChild(att1);
                     temp.appendChild(att2);
                     temp.appendChild(att3);
@@ -122,7 +122,7 @@ window.onload = function() {
                     att4.setAttribute("class", "Spanss");
                     att4.innerHTML = data["titles"][i - 1];
                     att2.innerHTML = data["description"][i - 1];
-                    att3.innerHTML = "作者：" + data["author"][i - 1] + "\t\t\t发布时间：" + data["create_time"][i - 1] + "\t\t\t修改于：" + data["update_time"][i - 1];
+                    att3.innerHTML = "作者:" + data["author"][i - 1] + "\t\t\t发布时间:" + data["create_time"][i - 1] + "\t\t\t修改于:" + data["update_time"][i - 1];
                     temp.appendChild(att1);
                     temp.appendChild(att2);
                     temp.appendChild(att3);
