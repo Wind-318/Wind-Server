@@ -125,7 +125,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 500px;
+    width: 800px;
     overflow: hidden;
     white-space: nowrap;
     transition: all 0.5s;

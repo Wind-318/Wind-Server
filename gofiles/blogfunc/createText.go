@@ -25,14 +25,14 @@ func CreateText(ctx *gin.Context) {
 
 	// 检查登录状态
 	cookies, err := ctx.Cookie("cookie")
-	redisconn, _ := redis.Dial("tcp", "localhost:6379")
-	defer redisconn.Close()
-	cookie, _ := redis.String(redisconn.Do("HGET", cookies, "email"))
 	if err != nil {
 		result["msg"] = "请先登录"
 		ctx.JSON(http.StatusOK, result)
 		return
 	}
+	redisconn, _ := redis.Dial("tcp", "localhost:6379")
+	defer redisconn.Close()
+	cookie, _ := redis.String(redisconn.Do("HGET", cookies, "email"))
 
 	// 获取内容
 	text := ctx.PostForm("texts")

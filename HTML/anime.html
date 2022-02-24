@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <script src="../js/jquery.min.js"></script>
+    <script>
+        $.ajax({
+            url: "/anime/checkPermission",
+            async: false,
+            type: "GET",
+            success: function(data) {
+                if (data["msg"] == "fail") {
+                    location.href = "/";
+                    alert("非公开信息，需要 1 级以上权限");
+                }
+            },
+            fail: function() {}
+        })
+    </script>
+    <link rel="stylesheet" href="../css/animeStyle.css">
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/vue.js"></script>
+    <title>新番导航</title>
+</head>
+
+<body class="bg-dark">
+    <button class="btn btn-primary position-fixed" style="width: 5%;" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">导航</button>
+
+    <div class="offcanvas offcanvas-start" style="width: 25%;" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
+        <div class="offcanvas-body bg-dark">
+            <span class="h2 container text-center text-white p-3 my-3">导航页</span>
+            <hr class="text-white my-3">
+            <ul class="nav nav-pills nav-justified justify-content-center flex-column">
+                <li class="nav-item">
+                    <a href="/" class="nav-link p-3 h4 text-white" data-bs-toggle="pill">HOME</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/blogs" class="nav-link p-3 h4 text-white" data-bs-toggle="pill">讨论区</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/collections" class="nav-link p-3 h4 text-white" data-bs-toggle="pill">收藏网站</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/anime" class="nav-link active p-3 h4 text-white" data-bs-toggle="pill">新番导航</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="container p-3 my-5 border bg-dark">
+        <div class="container mt-3">
+            <h2 class="text-white text-center">往年一览</h2>
+            <div class="container justify-content-center" style="display: flex; flex-direction: row;">
+                <input type="text" class="input-group" style="width: 30%;" maxlength="200" id="keyword">
+                <button class="btn-primary" id="confirm">搜索</button>
+            </div>
+            <br>
+            <!-- Nav tabs -->
+            <ul class="nav nav-pills nav-justified" role="tablist" id="years">
+                <li class="nav-item" id="navTabs">
+                    <a class="nav-link active h4" data-bs-toggle="pill" href="#lastestAnime">季度新番列表</a>
+                </li>
+                <li class="nav-item" id="navTabs">
+                    <a class="nav-link h4" data-bs-toggle="pill" href="#searchResult" id="searchNav">搜索结果</a>
+                </li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content" id="tabContent">
+                <div id="lastestAnime" class="container tab-pane active">
+                    <div class="container border p-3 my-3" style="display: flex; flex-direction: row;">
+                        <div class="container" style="width: 250px;">
+                            <img src="C:\\Users\\31816\\OneDrive\\桌面\\1.jpg" style="width: 150px; height: 180px;">
+                        </div>
+                        <div class="container text-center" style="width: 100% - 250px;">
+                            <span class="h2 text-white">自称贤者弟子的贤者</span>
+                            <br>
+                            <span class="text-break text-white">电视动画《自称贤者弟子的贤者》改编自りゅうせんひろつぐ原作同名轻小说作品，于2020年5月宣布动画化的消息。 在VRMMO游戏ArcEarthonline中，扮演九贤者之一，召唤师邓布鲁夫・冈达德亚一角的咲森鉴，突然在游戏的梦境中发生了逆转，跌落进了已经成为了现实的游戏世界中。 而且，老练威严的贤者居然变成了楚楚可怜的少女。。。 这样岂不是要让建立至今贤者的威严就此瓦解！ 想到这些的咲森鉴决定，用贤者弟子米拉的名义---------- 转生后的美少女冒险梦幻的金字塔，开幕！</span>
+                            <ul class="nav justify-content-center p-3 my-3">
+                                <li class="nav-item border">
+                                    <a class="nav-link" href="https://www.yhdmp.cc/showp/21237.html" target="_blank">樱花动漫</a>
+                                </li>
+                                <li class="nav-item border">
+                                    <a class="nav-link" href="#">bilibili</a>
+                                </li>
+                                <li class="nav-item border">
+                                    <a class="nav-link" href="#">bangumi</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="searchResult" class="container tab-pane">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/anime.js"></script>
+</body>
+
+</html>

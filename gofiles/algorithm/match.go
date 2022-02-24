@@ -1,6 +1,6 @@
 package algorithm
 
-// 滑动窗口精确匹配
+// 滑动窗口精确匹配, target 为待查询字符串
 func Match(str, target string) int {
 	targetLength := len(target)
 	strLength := len(str)

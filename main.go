@@ -2,6 +2,7 @@ package main
 
 import (
 	"Project/gofiles"
+	"Project/gofiles/anime"
 	"Project/gofiles/blogfunc"
 	"Project/gofiles/collectionfunc"
 	"Project/gofiles/config"
@@ -146,8 +147,17 @@ func main() {
 		Resources.GET("/", gofiles.ToResources)
 	}
 
+	animes := router.Group("/anime")
+	{
+		animes.GET("/", gofiles.ToAnime)
+		animes.GET("/checkPermission", anime.CheckPermission)
+		animes.GET("/getYear", anime.GetYear)
+
+		animes.POST("/search", anime.Search)
+	}
+
 	// 监听 http
-	router.Run(":80")
+	go router.Run(":80")
 	// 监听 https，自行选择 SSL 证书
 	router.RunTLS(":443", "windserver.top.pem", "windserver.top.key")
 }

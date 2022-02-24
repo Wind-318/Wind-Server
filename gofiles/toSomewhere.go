@@ -71,3 +71,7 @@ func ToCollections(ctx *gin.Context) {
 func ToResources(ctx *gin.Context) {
 	ctx.HTML(http.StatusOK, "resources.html", nil)
 }
+
+func ToAnime(ctx *gin.Context) {
+	ctx.HTML(http.StatusOK, "anime.html", nil)
+}
