@@ -5,28 +5,25 @@ import (
 	"Project/gofiles/anime"
 	"Project/gofiles/blogfunc"
 	"Project/gofiles/collectionfunc"
-	"Project/gofiles/config"
-	"Project/gofiles/ownmail"
+	"Project/gofiles/initCode"
 	"Project/gofiles/spider/sina"
 	"Project/gofiles/user"
-	"bufio"
 	"fmt"
 	"io"
-	"io/ioutil"
-	"math/rand"
 	"net/http"
 	"os"
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/go-gomail/gomail"
-	_ "github.com/go-sql-driver/mysql"
-	"github.com/jmoiron/sqlx"
 	"github.com/unrolled/secure"
 )
 
 func main() {
-	initDatabase()
+	initCode.InitDatabase()
+	go func() {
+		initCode.InitAnime()
+		initCode.ContinueGetNewAnime()
+	}()
 	// 新建路由
 	router := gin.New()
 	// 关闭控制台颜色
@@ -53,10 +50,10 @@ func main() {
 	router.Use(TlsHandler())
 
 	// 计时抓取信息到数据库
-	go countTime()
+	go initCode.CountTime()
 
 	// 发送邮件
-	go sendEveryUser()
+	go initCode.SendEveryUser()
 
 	// 加载静态资源
 	router.LoadHTMLGlob("HTML/*")
@@ -174,70 +171,5 @@ func TlsHandler() gin.HandlerFunc {
 			return
 		}
 		c.Next()
-	}
-}
-
-// 计时抓取存到数据库
-func countTime() {
-	for {
-		sina.GenerateText()
-		// 1.5 小时到 3.5 小时抓取一次
-		rand.Seed(time.Now().UnixNano())
-		result := rand.Intn(7200) + 5400
-		time.Sleep(time.Second * time.Duration(result))
-	}
-}
-
-// 6 点和 18 点发送给用户
-func sendEveryUser() {
-	for {
-		// 得到现在时间
-		nowHour, nowMinute := time.Now().Hour(), time.Now().Minute()
-		// 等待时间
-		waitSeconds := 0
-
-		// 计算现在到 6 点或者到 18 点还有多少秒
-		if nowHour < 18 && nowHour >= 6 {
-			waitSeconds += (17-nowHour)*3600 + (60-nowMinute)*60
-		} else if nowHour >= 18 {
-			waitSeconds += (23-nowHour)*3600 + (60-nowMinute)*60 + 6*3600
-		} else {
-			waitSeconds += (5-nowHour)*3600 + (60-nowMinute)*60
-		}
-
-		time.Sleep(time.Second * time.Duration(waitSeconds))
-		// 得到订阅用户名单
-		users := user.SelectUsersAccount()
-		// 发送邮件
-		for _, user := range users {
-			waitToSend := ownmail.GetNewMail(user)
-			waitToSend.Send(time.Now().String()[:19]+" "+time.Now().Weekday().String()+":每日要闻", sina.SelectFirst10(), gomail.NewMessage())
-		}
-	}
-}
-
-// 建库建表
-func initDatabase() {
-	// 连接
-	conn := sqlx.MustConnect("mysql", config.MySQLInit)
-	defer conn.Close()
-
-	// 如果存在同名表则丢弃
-	drops, _ := os.Open("./sql/drop.sql")
-	defer drops.Close()
-	buf := bufio.NewScanner(drops)
-	for buf.Scan() {
-		conn.Exec(buf.Text())
-	}
-
-	// 读取各表建表指令
-	files, _ := ioutil.ReadDir("./sql")
-	for _, file := range files {
-		if file.Name() == "drop.sql" {
-			continue
-		}
-		bytes, _ := ioutil.ReadFile("./sql/" + file.Name())
-		// 执行
-		conn.Exec(string(bytes))
 	}
 }

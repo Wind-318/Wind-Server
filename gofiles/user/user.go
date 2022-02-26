@@ -65,7 +65,7 @@ func (user *User) Register() error {
 
 	code := config.Encryption(user.Password)
 
-	db.Exec("INSERT INTO user VALUES(?, ?, ?, ?, ?, ?, ?)", 0, user.Account, code, user.UserName, 0, 0, config.Addr+"picture/defaultPic.jpg")
+	db.Exec("INSERT INTO user VALUES(?, ?, ?, ?, ?, ?, ?, ?)", 0, user.Account, code, user.UserName, 0, 0, config.Addr+"picture/defaultPic.jpg", 0)
 
 	var id int
 	db.Get(&id, "SELECT id FROM user WHERE account = ?", user.Account)

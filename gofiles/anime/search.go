@@ -37,19 +37,19 @@ func Search(ctx *gin.Context) {
 	result := map[string]interface{}{}
 
 	names := make([]string, 0)
+	idNums := []string{}
 	conn.Select(&names, "SELECT name FROM bangumi")
 
-	ncount := 0
 	for index, name := range names {
 		if algorithm.Match(name, text) == 1 {
 			tempInfo := AnimeInfo{}
 			conn.Get(&tempInfo, "SELECT name, url, year, description, picurl FROM bangumi WHERE name = ?", name)
 			conn.Select(&tempInfo, "SELECT source, urls FROM animesource WHERE anime = ?", name)
 			result[strconv.Itoa(index)] = tempInfo
-			ncount++
+			idNums = append(idNums, strconv.Itoa(index))
 		}
 	}
-	result["count"] = ncount
+	result["count"] = idNums
 
 	ctx.JSON(http.StatusOK, result)
 }

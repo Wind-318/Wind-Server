@@ -8,6 +8,7 @@
     <title>Wind's Server</title>
     <script src="../js/sakura.js"></script>
     <script src="../js/fontawesome.js"></script>
+    <script src="../js/jquery.min.js"></script>
     <link rel="stylesheet" href="../css/style.css">
     <link rel="icon" href="../favicon.ico">
 </head>
@@ -23,19 +24,20 @@
             <li><a href="/collections">收藏</a></li>
             <li><a href="/resources">资源</a></li>
             <li><a href="/anime">新番导航</a></li>
-            <li><a href="/" id="signAddScore">签到</a></li>
+            <li><a href="javascript:void(0)" id="signAddScore">签到</a></li>
         </ul>
     </div>
     <script>
-        var signScore = document.getElementById("signAddScore");
-        $.ajax({
-            url: "/signAddScore",
-            type: "GET",
-            success: function() {
-                alert("签到成功,获得 5 积分");
-            },
-            fail: function() {}
-        })
+        document.getElementById("signAddScore").onclick = function() {
+            $.ajax({
+                url: "/user/signAddScore",
+                type: "GET",
+                success: function(data) {
+                    alert(data["msg"]);
+                },
+                fail: function() {}
+            })
+        }
     </script>
     <div class="box ">
         <img src="../picture/profile.jpg " alt="" class="box-img">
