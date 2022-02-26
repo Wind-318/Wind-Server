@@ -66,6 +66,7 @@ func InitAnime() {
 
 			conn.Exec("INSERT INTO bangumi VALUES(?, ?, ?, ?, ?, ?, ?)", 0, ans2[index][2], ans2[index][1], ans2[index][3], "", "", 0)
 		}
+		time.Sleep(2500 * time.Millisecond)
 	}
 
 	// 获取片源地址
@@ -89,8 +90,8 @@ func InitAnime() {
 			conn.Exec("INSERT INTO animesource VALUES(?, ?, ?, ?)", 0, data[3], "樱花动漫", "https://www.yhdmp.cc"+data[1])
 			conn.Exec("UPDATE bangumi SET description = ?, picurl = ? WHERE name = ?", data[4], data[2], data[3])
 		}
+		time.Sleep(2500 * time.Millisecond)
 	}
-	time.Sleep(2500 * time.Millisecond)
 }
 
 // 持续追踪

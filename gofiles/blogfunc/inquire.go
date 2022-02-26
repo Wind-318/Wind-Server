@@ -249,7 +249,7 @@ func Search(ctx *gin.Context) {
 	result := map[string]interface{}{}
 
 	temp := []textInfo{}
-	conn.Select(&temp, "SELECT id, author, title, description, types, clicknum, great, authority, create_time, update_time, authorid, url, picurl, smallpic FROM blog WHERE authority == 0")
+	conn.Select(&temp, "SELECT id, author, title, description, types, clicknum, great, authority, create_time, update_time, authorid, url, picurl, smallpic FROM blog WHERE authority = 0")
 
 	ids := []int{}
 	urlsarr := []string{}
