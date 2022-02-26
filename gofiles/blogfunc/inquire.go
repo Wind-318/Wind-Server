@@ -78,7 +78,7 @@ func GetPageNums(ctx *gin.Context) {
 
 	// 从数据库选取文章
 	temp := []textInfo{}
-	conn.Select(&temp, "SELECT id, author, title, description, types, clicknum, great, authority, create_time, update_time, authorid, url, picurl, smallpic FROM blog WHERE authority == 0")
+	conn.Select(&temp, "SELECT id, author, title, description, types, clicknum, great, authority, create_time, update_time, authorid, url, picurl, smallpic FROM blog WHERE authority = 0")
 	ids := []int{}
 	urlsarr := []string{}
 	titles := []string{}
@@ -262,8 +262,7 @@ func Search(ctx *gin.Context) {
 	update_time := []string{}
 
 	for index := range temp {
-		tempstr := strings.ToLower(temp[index].Title)
-		if text == "" || algorithm.Match(tempstr, text) != -1 {
+		if text == "" || algorithm.Match(temp[index].Title, text) != -1 {
 			ids = append(ids, temp[index].Id)
 			urlsarr = append(urlsarr, temp[index].Urls)
 			titles = append(titles, temp[index].Title)
@@ -295,9 +294,9 @@ func Search(ctx *gin.Context) {
 	redisconn, _ := redis.Dial("tcp", "localhost:6379")
 	defer redisconn.Close()
 	cookie, _ := redis.String(redisconn.Do("HGET", cookies, "email"))
+	result["isSystem"] = 0
 	if cookie == config.SystemUserAccount {
 		result["isSystem"] = 1
 	}
-	result["isSystem"] = 0
 	ctx.JSON(http.StatusOK, result)
 }
