@@ -66,8 +66,31 @@ func InitAnime() {
 
 			conn.Exec("INSERT INTO bangumi VALUES(?, ?, ?, ?, ?, ?, ?)", 0, ans2[index][2], ans2[index][1], ans2[index][3], "", "", 0)
 		}
-		time.Sleep(2500 * time.Millisecond)
 	}
+
+	// 获取片源地址
+	yhdmAnime := "https://www.yhdmp.cc/list/?pagesize=24&pageindex="
+	for i := 0; ; i++ {
+		res, err := http.Get(yhdmAnime + strconv.Itoa(i))
+		defer res.Body.Close()
+		if err != nil {
+			continue
+		}
+		html, err := ioutil.ReadAll(res.Body)
+		if err != nil {
+			continue
+		}
+		obj := regexp.MustCompile(`<a href="(/showp[\s\S]+?)">[\s\S]+?<img referrerpolicy="no-referrer" src="([\s\S]+?)" alt="([\s\S]+?)"></a>[\s\S]+?<p>([\s\S]+?)</p>`)
+		arr := obj.FindAllStringSubmatch(string(html), -1)
+		if len(arr) == 0 {
+			break
+		}
+		for _, data := range arr {
+			conn.Exec("INSERT INTO animesource VALUES(?, ?, ?, ?)", 0, data[3], "樱花动漫", "https://www.yhdmp.cc"+data[1])
+			conn.Exec("UPDATE bangumi SET description = ?, picurl = ? WHERE name = ?", data[4], data[2], data[3])
+		}
+	}
+	time.Sleep(2500 * time.Millisecond)
 }
 
 // 持续追踪

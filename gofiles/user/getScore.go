@@ -45,6 +45,6 @@ func SignAddScore(ctx *gin.Context) {
 	redisconn.Do("HMSET", cookie, "userSign", time.Now().Day())
 
 	// 签到奖励 5 积分
-	conn.Exec("update user SET score = score + 5 WHERE account = ?", cookie)
+	conn.Exec("UPDATE user SET score = score + 5 WHERE account = ?", cookie)
 	ctx.JSON(http.StatusOK, result)
 }

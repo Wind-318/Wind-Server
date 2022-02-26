@@ -44,7 +44,8 @@ func Search(ctx *gin.Context) {
 		if algorithm.Match(name, text) == 1 {
 			tempInfo := AnimeInfo{}
 			conn.Get(&tempInfo, "SELECT name, url, year, description, picurl FROM bangumi WHERE name = ?", name)
-			conn.Select(&tempInfo, "SELECT source, urls FROM animesource WHERE anime = ?", name)
+			conn.Select(&tempInfo.Source, "SELECT source FROM animesource WHERE anime = ?", name)
+			conn.Select(&tempInfo.Urls, "SELECT urls FROM animesource WHERE anime = ?", name)
 			result[strconv.Itoa(index)] = tempInfo
 			idNums = append(idNums, strconv.Itoa(index))
 		}

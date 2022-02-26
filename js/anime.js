@@ -58,7 +58,6 @@ function searchs() {
                 div1ChildNode.appendChild(div1_1ChildNode);
                 // 1.1.1 号子节点
                 var div1_1_1ChildNode = document.createElement("img");
-                div1_1_1ChildNode.setAttribute("style", "width: 150px; height: 180px;");
                 div1_1_1ChildNode.setAttribute("src", data[data["count"][i]].Picurl);
                 div1_1ChildNode.appendChild(div1_1_1ChildNode);
                 // 1.2 号子节点
@@ -96,6 +95,9 @@ function searchs() {
                     continue;
                 }
                 for (var index = 0; index < data[data["count"][i]].Source.length; index++) {
+                    if (data[data["count"][i]].Source == null) {
+                        continue;
+                    }
                     // 1.2.3.x 号子节点
                     var tempChildNode = document.createElement("li");
                     tempChildNode.setAttribute("class", "nav-item border");
@@ -105,7 +107,7 @@ function searchs() {
                     temp_1ChildNode.setAttribute("class", "nav-link");
                     temp_1ChildNode.setAttribute("target", "_blank");
                     temp_1ChildNode.setAttribute("href", data[data["count"][i]].Urls[index]);
-                    temp_1ChildNode.innerHTML = data[i.toString()].Source[index];
+                    temp_1ChildNode.innerHTML = data[data["count"][i]].Source[index];
                     tempChildNode.appendChild(temp_1ChildNode);
                 }
             }
