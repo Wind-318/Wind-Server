@@ -13,7 +13,7 @@ import (
 // 建库建表
 func InitDatabase() {
 	// 连接
-	conn := sqlx.MustConnect("mysql", config.MySQLInit)
+	conn := sqlx.MustConnect("mysql", config.MySQLInfo)
 	defer conn.Close()
 
 	// 如果存在同名表则丢弃
