@@ -2,6 +2,7 @@ package initCode
 
 import (
 	"Project/gofiles/config"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"regexp"
@@ -19,14 +20,15 @@ func InitAnime() {
 	defer conn.Close()
 	for i := 1; ; i++ {
 		res, err := http.Get(bangumi + strconv.Itoa(i))
-		defer res.Body.Close()
 		if err != nil {
 			return
 		}
+		defer res.Body.Close()
 		html, err := ioutil.ReadAll(res.Body)
 		if err != nil {
 			return
 		}
+
 		curPage := string(html)
 		obj1 := regexp.MustCompile(`<li id="item[\s\S]+?<a href="(/subject[\S]+?)" class="subjectCover cover ll[\s\S]+?<img src="([\s\S]+?)" class="cover"[\s\S]+?<a href="/subject/[\S]+?" class="l">([\s\S]+?)</a>[\s\S]+?<p class="info tip">([\s\S]+?)</p>`)
 		obj2 := regexp.MustCompile(`<li id="item[\s\S]+?<a href="(/subject[\S]+?)" class="subjectCover cover ll[\s\S]+?<a href="/subject/[\S]+?" class="l">([\s\S]+?)</a>[\s\S]+?<p class="info tip">([\s\S]+?)</p>`)
@@ -50,6 +52,7 @@ func InitAnime() {
 			recordName[ans1[index][3]] = true
 
 			conn.Exec("INSERT INTO bangumi VALUES(?, ?, ?, ?, ?, ?, ?)", 0, ans1[index][3], ans1[index][1], ans1[index][4], "", ans1[index][2], 0)
+			conn.Exec("INSERT INTO animesource VALUES(?, ?, ?, ?)", 0, ans1[index][3], "bangumi", ans1[index][1])
 		}
 		for index := range ans2 {
 			if _, ok := recordName[ans2[index][2]]; ok {
@@ -65,15 +68,32 @@ func InitAnime() {
 			ans2[index][1] = "https://bgm.tv" + ans2[index][1]
 
 			conn.Exec("INSERT INTO bangumi VALUES(?, ?, ?, ?, ?, ?, ?)", 0, ans2[index][2], ans2[index][1], ans2[index][3], "", "", 0)
+			conn.Exec("INSERT INTO animesource VALUES(?, ?, ?, ?)", 0, ans2[index][2], "bangumi", ans2[index][1])
 		}
-		time.Sleep(2500 * time.Millisecond)
+		time.Sleep(5000 * time.Millisecond)
 	}
 
-	// 获取片源地址
-	yhdmAnime := "https://www.yhdmp.cc/list/?pagesize=24&pageindex="
-	for i := 0; ; i++ {
+	ysjdmCatch()
+	yhdmCatch()
+}
+
+// 更新策略：若当前时间为 1 月、4 月、7 月和 10 月，则每天进行一次追踪更新，其余月份则每七天进行一次追踪更新
+func ContinueGetNewAnime() {
+	// everyUpdateDays := 7
+	// if nowMonth := time.Now().Month(); nowMonth == 1 || nowMonth == 4 || nowMonth == 7 || nowMonth == 10 {
+	// 	everyUpdateDays = 1
+	// }
+
+}
+
+// 樱花动漫片源地址
+func yhdmCatch() {
+	conn := sqlx.MustConnect("mysql", config.MySQLInfo)
+	defer conn.Close()
+
+	yhdmAnime := "https://www.yhdmp.cc/list/?year="
+	for i := 2000; ; i++ {
 		res, err := http.Get(yhdmAnime + strconv.Itoa(i))
-		defer res.Body.Close()
 		if err != nil {
 			continue
 		}
@@ -81,25 +101,93 @@ func InitAnime() {
 		if err != nil {
 			continue
 		}
-		obj := regexp.MustCompile(`<a href="(/showp[\s\S]+?)">[\s\S]+?<img referrerpolicy="no-referrer" src="([\s\S]+?)" alt="([\s\S]+?)"></a>[\s\S]+?<p>([\s\S]+?)</p>`)
+		obj := regexp.MustCompile(`<a href="(/showp[\s\S]+?)">[\s\S]+?<img referrerpolicy="no-referrer" src="([\s\S]+?)" alt="([\s\S]+?)">[\s\S]+?<p>([\s\S]+?)</p>`)
 		arr := obj.FindAllStringSubmatch(string(html), -1)
 		if len(arr) == 0 {
 			break
 		}
 		for _, data := range arr {
+			// 若此时库中无此动漫，则加入
+			isExist := 0
+			conn.Get(&isExist, "SELECT count(*) FROM bangumi WHERE name = ?", data[3])
+			if isExist == 0 {
+				conn.Exec("INSERT INTO bangumi VALUES(?, ?, ?, ?, ?, ?, ?)", 0, data[3], "https://www.yhdmp.cc"+data[1], strconv.Itoa(i), data[4], data[2], 0)
+			}
+
 			conn.Exec("INSERT INTO animesource VALUES(?, ?, ?, ?)", 0, data[3], "樱花动漫", "https://www.yhdmp.cc"+data[1])
-			conn.Exec("UPDATE bangumi SET description = ?, picurl = ? WHERE name = ?", data[4], data[2], data[3])
+			conn.Exec("UPDATE bangumi SET description = ? WHERE name = ?", data[4], data[3])
+			conn.Exec("UPDATE bangumi SET picurl = ? WHERE name = ?", data[2], data[3])
 		}
-		time.Sleep(2500 * time.Millisecond)
+
+		res.Body.Close()
+		time.Sleep(5000 * time.Millisecond)
 	}
 }
 
-// 持续追踪
-func ContinueGetNewAnime() {
-	// 若当前时间为 1 月、4 月、7 月和 10 月，则每天进行一次追踪更新，其余月份则每七天进行一次追踪更新
-	//everyUpdateDays := 7
-	//if nowMonth := time.Now().Month(); nowMonth == 1 || nowMonth == 4 || nowMonth == 7 || nowMonth == 10 {
-	//	everyUpdateDays = 1
-	//}
+// 异世界动漫片源地址
+func ysjdmCatch() {
+	conn := sqlx.MustConnect("mysql", config.MySQLInfo)
+	defer conn.Close()
+	ysjdmAnime := "http://121.4.190.96:9991/getsortdata_all_z.php?action=acg&page="
+	for i := 1; ; i++ {
+		res, err := http.Get(ysjdmAnime + strconv.Itoa(i) + "&year=0&area=all&class=0&dect=&id=")
+		if err != nil {
+			continue
+		}
+		html, err := ioutil.ReadAll(res.Body)
+		if err != nil {
+			continue
+		}
+		text := string(html)
+		obj := regexp.MustCompile(`<a class="li-hv" href="([\s\S]+?)" title="([\s\S]+?)">[\s\S]+?data-original="([\s\S]+?)"`)
+		arr := obj.FindAllStringSubmatch(text, -1)
+		if len(arr) == 0 {
+			break
+		}
+		for _, data := range arr {
+			conn.Exec("INSERT INTO animesource VALUES(?, ?, ?, ?)", 0, data[2], "异世界动漫 1", "http://ysjdm8.com"+data[1])
+			conn.Exec("UPDATE bangumi SET picurl = ? WHERE name = ?", data[3], data[2])
 
+			time.Sleep(time.Millisecond * 2500)
+
+			// 检查是否有简介可更新
+			tempRes, err := http.Get("http://ysjdm8.com" + data[1])
+			if err != nil {
+				fmt.Println(err)
+				continue
+			}
+			defer tempRes.Body.Close()
+			description, err := ioutil.ReadAll(tempRes.Body)
+			if err != nil {
+				fmt.Println(err)
+				continue
+			}
+			tempObj := regexp.MustCompile(`<div class="des2"><b>([\s\S]+?)</div>`)
+			tempArr := tempObj.FindAllStringSubmatch(string(description), -1)
+			if len(tempArr) > 0 && len(tempArr[0]) > 1 {
+				conn.Exec("UPDATE bangumi SET description = ? WHERE name = ?", tempArr[0][1], data[2])
+			}
+
+			// 检查库中是否存在此动漫，不存在则添加
+			isExist := 0
+			conn.Get(&isExist, "SELECT count(*) FROM bangumi WHERE name = ?", data[2])
+			if isExist == 0 {
+				yearObj := regexp.MustCompile(`<b>年代：</b>(\d{4})</dd>`)
+				yearArr := yearObj.FindAllStringSubmatch(string(description), -1)
+				animeYear := "2000"
+				if len(yearArr) > 0 && len(yearArr[0]) > 1 {
+					animeYear = yearArr[0][1]
+				}
+
+				if len(tempArr) > 0 && len(tempArr[0]) > 1 {
+					conn.Exec("INSERT INTO bangumi VALUES(?, ?, ?, ?, ?, ?, ?)", 0, data[2], "http://ysjdm8.com"+data[1], animeYear, tempArr[0][1], data[3], 0)
+				} else {
+					conn.Exec("INSERT INTO bangumi VALUES(?, ?, ?, ?, ?, ?, ?)", 0, data[2], "http://ysjdm8.com"+data[1], animeYear, "", data[3], 0)
+				}
+			}
+		}
+
+		res.Body.Close()
+		time.Sleep(5000 * time.Millisecond)
+	}
 }

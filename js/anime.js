@@ -59,6 +59,7 @@ function searchs() {
                 // 1.1.1 号子节点
                 var div1_1_1ChildNode = document.createElement("img");
                 div1_1_1ChildNode.setAttribute("src", data[data["count"][i]].Picurl);
+                div1_1_1ChildNode.setAttribute("style", "max-width: 200px;");
                 div1_1ChildNode.appendChild(div1_1_1ChildNode);
                 // 1.2 号子节点
                 var div1_2ChildNode = document.createElement("div");
@@ -80,17 +81,6 @@ function searchs() {
                 var div1_2_3ChildNode = document.createElement("ul");
                 div1_2_3ChildNode.setAttribute("class", "nav justify-content-center p-3 my-3");
                 div1_2ChildNode.appendChild(div1_2_3ChildNode);
-                // 1.2.3.1 号子节点
-                var div1_2_3_1ChildNode = document.createElement("li");
-                div1_2_3_1ChildNode.setAttribute("class", "nav-item border");
-                div1_2_3ChildNode.appendChild(div1_2_3_1ChildNode);
-                // 1.2.3.1.1 号子节点
-                var div_1_2_3_1_1ChildNode = document.createElement("a");
-                div_1_2_3_1_1ChildNode.setAttribute("class", "nav-link");
-                div_1_2_3_1_1ChildNode.setAttribute("target", "_blank");
-                div_1_2_3_1_1ChildNode.setAttribute("href", data[data["count"][i]].Url);
-                div_1_2_3_1_1ChildNode.innerHTML = "bangumi";
-                div1_2_3_1ChildNode.appendChild(div_1_2_3_1_1ChildNode);
                 if (data[data["count"][i]].Source == null) {
                     continue;
                 }
