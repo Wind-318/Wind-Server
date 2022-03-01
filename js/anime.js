@@ -29,7 +29,10 @@ function searchs() {
     var year = document.getElementById("years");
     var tabContent = document.getElementById("tabContent");
     var searchResult = document.getElementById("searchResult");
-    searchResult.innerHTML = "";
+    var everyPageSearch = document.getElementById("everyPageSearch");
+
+    // 清除原内容
+    everyPageSearch.innerHTML = "";
     $.ajax({
         url: "/anime/search",
         type: "POST",
@@ -37,6 +40,19 @@ function searchs() {
             "text": text.value
         },
         success: function(data) {
+            // 每页显示数量，可以根据总量自动改变
+            var onceAppear = 30;
+            if (data["count"].length <= 100) {
+                onceAppear = 20;
+            } else if (data["count"].length <= 300) {
+                onceAppear = 25;
+            } else if (data["count"].length <= 500) {
+                onceAppear = 45;
+            } else {
+                onceAppear = 100;
+            }
+
+            // 所有页面去除 active
             for (var index = 0; index < year.children.length; index++) {
                 year.children[index].children[0].setAttribute("class", "nav-link h4");
                 tabContent.children[index].setAttribute("class", "container tab-pane");
@@ -45,12 +61,41 @@ function searchs() {
             document.getElementById("searchNav").setAttribute("class", "nav-link h4 active");
             document.getElementById("searchResult").setAttribute("class", "container tab-pane active");
 
+            // 页面数量
+            var numPage = Math.floor(data["count"].length / onceAppear);
+            var numPageRest = data["count"].length - onceAppear * numPage;
+            if (numPageRest > 0) {
+                numPage++;
+            }
+
+            // 添加每页的框架
+            for (var i = 1; i <= numPage; i++) {
+                var DivChildNode = document.createElement("div");
+                if (i == 1) {
+                    DivChildNode.setAttribute("class", "container tab-pane active");
+                } else {
+                    DivChildNode.setAttribute("class", "container tab-pane");
+                }
+                DivChildNode.setAttribute("id", "Page" + i.toString());
+                everyPageSearch.appendChild(DivChildNode);
+            }
+
+            // 计算本页是否装满
+            var isFull = onceAppear;
+            var nowPage = 1;
             for (var i = 0; i < data["count"].length; i++) {
+                // 每页框架作为父节点
+                var fatherNode = document.getElementById("Page" + nowPage.toString());
+                isFull--;
+                if (isFull <= 0) {
+                    nowPage++;
+                    isFull = onceAppear;
+                }
                 // 1 号子节点
                 var div1ChildNode = document.createElement("div");
                 div1ChildNode.setAttribute("class", "container border p-3 my-3");
                 div1ChildNode.setAttribute("style", "display: flex; flex-direction: row;");
-                searchResult.appendChild(div1ChildNode);
+                fatherNode.appendChild(div1ChildNode);
                 // 1.1 号子节点
                 var div1_1ChildNode = document.createElement("div");
                 div1_1ChildNode.setAttribute("class", "container");
@@ -100,6 +145,35 @@ function searchs() {
                     temp_1ChildNode.innerHTML = data[data["count"][i]].Source[index];
                     tempChildNode.appendChild(temp_1ChildNode);
                 }
+            }
+
+            // 添加分页节点
+            document.getElementById("waitToClear").innerHTML = "";
+            var ulChildNode = document.createElement("ul");
+            ulChildNode.setAttribute("class", "nav nav-pills p-3 fixed-bottom container justify-content-center");
+            ulChildNode.setAttribute("role", "tablist");
+            document.getElementById("waitToClear").appendChild(ulChildNode);
+            // 分页节点的子节点
+            for (var i = 1; i <= numPage; i++) {
+                var liChildNode = document.createElement("li");
+                liChildNode.setAttribute("class", "nav-item");
+                ulChildNode.appendChild(liChildNode);
+                // a 节点
+                var aChildNode = document.createElement("a");
+                if (i == 1) {
+                    aChildNode.setAttribute("class", "nav-link active");
+                } else {
+                    aChildNode.setAttribute("class", "nav-link");
+                }
+                aChildNode.setAttribute("data-bs-toggle", "pill");
+                aChildNode.setAttribute("href", "#Page" + i.toString());
+                aChildNode.innerHTML = "第 " + i.toString() + " 页";
+                liChildNode.appendChild(aChildNode);
+            }
+
+            // 没有结果时
+            if (everyPageSearch.children.length == 0) {
+                everyPageSearch.innerHTML = "没有搜索到相关内容";
             }
         },
         fail: function() {}

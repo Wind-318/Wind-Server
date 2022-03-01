@@ -52,23 +52,24 @@
 
     <div class="container p-3 my-5 border bg-dark">
         <div class="container mt-3">
-            <h2 class="text-white text-center">往年一览</h2>
+            <h2 class="text-white text-center h2">往年一览</h2>
             <div class="container justify-content-center" style="display: flex; flex-direction: row;">
                 <input type="text" class="input-group" style="width: 30%;" maxlength="200" id="keyword">
                 <button class="btn-primary" id="confirm">搜索</button>
             </div>
             <br>
-            <!-- Nav tabs -->
+
+
             <ul class="nav nav-pills nav-justified" role="tablist" id="years">
                 <li class="nav-item" id="navTabs">
-                    <a class="nav-link active h4" data-bs-toggle="pill" href="#lastestAnime">季度新番列表</a>
+                    <a class="nav-link active h4" data-bs-toggle="pill" href="#lastestAnime" id="newAnime"></a>
                 </li>
                 <li class="nav-item" id="navTabs">
                     <a class="nav-link h4" data-bs-toggle="pill" href="#searchResult" id="searchNav">搜索结果</a>
                 </li>
             </ul>
 
-            <!-- Tab panes -->
+
             <div class="tab-content" id="tabContent">
                 <div id="lastestAnime" class="container tab-pane active">
                     <div class="container border p-3 my-3" style="display: flex; flex-direction: row;">
@@ -95,6 +96,16 @@
                 </div>
 
                 <div id="searchResult" class="container tab-pane">
+
+                    <div class="container p-3 my-3 border">
+                        <div class="tab-content" id="everyPageSearch">
+                        </div>
+                    </div>
+
+                    <div id="waitToClear" class="fixed-bottom container justify-content-center">
+
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -110,6 +121,19 @@
         document.getElementById("toCollections").onclick = function() {
             location.href = "/collections";
         }
+
+        var nowMonth = new Date().getMonth + 1;
+        var month = "";
+        if (nowMonth >= 10) {
+            month = "十月新番";
+        } else if (nowMonth >= 7) {
+            month = "七月新番";
+        } else if (nowMonth >= 4) {
+            month = "四月新番";
+        } else {
+            month = "一月新番";
+        }
+        document.getElementById("newAnime").innerHTML = month;
     </script>
     <script src="../js/anime.js"></script>
 </body>

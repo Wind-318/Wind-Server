@@ -32,9 +32,24 @@ type AnimeInfo struct {
 // 搜索动漫
 func Search(ctx *gin.Context) {
 	text := ctx.PostForm("text")
+	result := map[string]interface{}{}
+
+	// 若搜索内容全为空格，直接返回空
+	isEmpty := true
+	for i := range text {
+		if text[i] != ' ' {
+			isEmpty = false
+			break
+		}
+	}
+	if isEmpty {
+		result["count"] = 0
+		ctx.JSON(http.StatusOK, result)
+		return
+	}
+
 	conn := sqlx.MustConnect("mysql", config.MySQLInfo)
 	defer conn.Close()
-	result := map[string]interface{}{}
 
 	names := make([]string, 0)
 	idNums := []string{}
@@ -48,6 +63,10 @@ func Search(ctx *gin.Context) {
 			conn.Select(&tempInfo.Urls, "SELECT urls FROM animesource WHERE anime = ?", name)
 			result[strconv.Itoa(index)] = tempInfo
 			idNums = append(idNums, strconv.Itoa(index))
+			// 超过 1000 时自动停止搜索
+			if len(idNums) >= 1000 {
+				break
+			}
 		}
 	}
 	result["count"] = idNums
