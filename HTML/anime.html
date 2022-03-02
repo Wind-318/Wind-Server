@@ -26,8 +26,8 @@
     <title>新番导航</title>
 </head>
 
-<body class="bg-dark">
-    <button class="btn btn-primary position-fixed" style="width: 5%;" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">导航</button>
+<body class="bg-dark" id="darkBody">
+    <button class="btn btn-primary position-fixed" style="width: 7%;" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">导航</button>
 
     <div class="offcanvas offcanvas-start" style="width: 25%;" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
         <div class="offcanvas-body bg-dark">
@@ -59,8 +59,7 @@
             </div>
             <br>
 
-
-            <ul class="nav nav-pills nav-justified" role="tablist" id="years">
+            <ul class="nav nav-pills" role="tablist" id="years">
                 <li class="nav-item" id="navTabs">
                     <a class="nav-link active h4" data-bs-toggle="pill" href="#lastestAnime" id="newAnime"></a>
                 </li>
@@ -69,47 +68,32 @@
                 </li>
             </ul>
 
-
             <div class="tab-content" id="tabContent">
                 <div id="lastestAnime" class="container tab-pane active">
-                    <div class="container border p-3 my-3" style="display: flex; flex-direction: row;">
-                        <div class="container" style="width: 250px;">
-                            <img src="#">
-                        </div>
-                        <div class="container text-center" style="width: 100% - 250px;">
-                            <span class="h2 text-white">自称贤者弟子的贤者</span>
-                            <br>
-                            <span class="text-break text-white">电视动画《自称贤者弟子的贤者》改编自りゅうせんひろつぐ原作同名轻小说作品，于2020年5月宣布动画化的消息。 在VRMMO游戏ArcEarthonline中，扮演九贤者之一，召唤师邓布鲁夫・冈达德亚一角的咲森鉴，突然在游戏的梦境中发生了逆转，跌落进了已经成为了现实的游戏世界中。 而且，老练威严的贤者居然变成了楚楚可怜的少女。。。 这样岂不是要让建立至今贤者的威严就此瓦解！ 想到这些的咲森鉴决定，用贤者弟子米拉的名义---------- 转生后的美少女冒险梦幻的金字塔，开幕！</span>
-                            <ul class="nav justify-content-center p-3 my-3">
-                                <li class="nav-item border">
-                                    <a class="nav-link" href="https://www.yhdmp.cc/showp/21237.html" target="_blank">樱花动漫</a>
-                                </li>
-                                <li class="nav-item border">
-                                    <a class="nav-link" href="#">bilibili</a>
-                                </li>
-                                <li class="nav-item border">
-                                    <a class="nav-link" href="#">bangumi</a>
-                                </li>
-                            </ul>
+                    <div class="container p-3 my-3 border">
+                        <div class="tab-content" id="everyPageSearchLastestAnime">
                         </div>
                     </div>
+
+                    <div id="waitToClearLastestAnime" class="container justify-content-center">
+                    </div>
                 </div>
-
                 <div id="searchResult" class="container tab-pane">
-
                     <div class="container p-3 my-3 border">
                         <div class="tab-content" id="everyPageSearch">
                         </div>
                     </div>
 
-                    <div id="waitToClear" class="fixed-bottom container justify-content-center">
-
+                    <div id="waitToClear" class="container justify-content-center">
                     </div>
-
                 </div>
             </div>
         </div>
+
+
     </div>
+
+    <button type="button" class="btn btn-info text-center fixed-top container bg-dark text-white" style="width: 30%;" id="switch">白天/夜间切换</button>
 
     <script>
         document.getElementById("toHome").onclick = function() {
@@ -134,6 +118,17 @@
             month = "一月新番";
         }
         document.getElementById("newAnime").innerHTML = month;
+
+
+        document.getElementById("switch").onclick = function() {
+            if (document.body.id == "darkBody") {
+                document.body.id = "lightBody";
+                document.body.setAttribute("style", "display: flex; background-image: url('../picture/anime/3.jpg'); background-repeat: no-repeat; background-size: cover; background-attachment: fixed; opacity: 0.8;");
+            } else {
+                document.body.id = "darkBody"
+                document.body.setAttribute("style", "");
+            }
+        }
     </script>
     <script src="../js/anime.js"></script>
 </body>

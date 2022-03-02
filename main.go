@@ -144,13 +144,15 @@ func main() {
 		Resources.GET("/", gofiles.ToResources)
 	}
 
+	// 动漫路由
 	animes := router.Group("/anime")
 	{
 		animes.GET("/", gofiles.ToAnime)
 		animes.GET("/checkPermission", anime.CheckPermission)
-		animes.GET("/getYear", anime.GetYear)
+		animes.GET("/searchNewAnime", anime.SearchNewAnime)
 
 		animes.POST("/search", anime.Search)
+		animes.POST("/searchByYear", anime.SearchByYear)
 	}
 
 	// 监听 http

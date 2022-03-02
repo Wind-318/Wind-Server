@@ -2,12 +2,12 @@ package anime
 
 import (
 	"net/http"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gomodule/redigo/redis"
 )
 
+// 检查权限
 func CheckPermission(ctx *gin.Context) {
 	result := map[string]interface{}{
 		"msg": "success",
@@ -27,11 +27,5 @@ func CheckPermission(ctx *gin.Context) {
 		redisconn.Do("HMSET", cookies, "email", email)
 		redisconn.Do("EXPIRE", cookies, 86400)
 	}
-	ctx.JSON(http.StatusOK, result)
-}
-
-func GetYear(ctx *gin.Context) {
-	result := map[string]interface{}{}
-	result["year"] = time.Now().Year()
 	ctx.JSON(http.StatusOK, result)
 }

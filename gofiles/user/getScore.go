@@ -43,6 +43,7 @@ func SignAddScore(ctx *gin.Context) {
 
 	// 签到日期为本日
 	redisconn.Do("HMSET", cookie, "userSign", time.Now().Day())
+	redisconn.Do("EXPIRE", cookie, 86400)
 
 	// 签到奖励 5 积分
 	conn.Exec("UPDATE user SET score = score + 5 WHERE account = ?", cookie)
