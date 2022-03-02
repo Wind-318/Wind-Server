@@ -65,6 +65,8 @@ func Search(ctx *gin.Context) {
 			conn.Get(&tempInfo, "SELECT name, url, year, description, picurl FROM bangumi WHERE name = ?", name)
 			conn.Select(&tempInfo.Source, "SELECT source FROM animesource WHERE anime = ?", name)
 			conn.Select(&tempInfo.Urls, "SELECT urls FROM animesource WHERE anime = ?", name)
+
+			tempInfo.Picurl = ""
 			result[strconv.Itoa(index)] = tempInfo
 			idNums = append(idNums, strconv.Itoa(index))
 			// 超过 1000 时自动停止搜索
@@ -95,6 +97,8 @@ func SearchNewAnime(ctx *gin.Context) {
 		conn.Get(&tempInfo, "SELECT name, url, year, description, picurl FROM bangumi WHERE name = ?", name)
 		conn.Select(&tempInfo.Source, "SELECT source FROM animesource WHERE anime = ?", name)
 		conn.Select(&tempInfo.Urls, "SELECT urls FROM animesource WHERE anime = ?", name)
+
+		tempInfo.Picurl = ""
 		result[strconv.Itoa(index)] = tempInfo
 		idNums = append(idNums, strconv.Itoa(index))
 	}
@@ -120,6 +124,8 @@ func SearchByYear(ctx *gin.Context) {
 		conn.Get(&tempInfo, "SELECT name, url, year, description, picurl FROM bangumi WHERE name = ?", name)
 		conn.Select(&tempInfo.Source, "SELECT source FROM animesource WHERE anime = ?", name)
 		conn.Select(&tempInfo.Urls, "SELECT urls FROM animesource WHERE anime = ?", name)
+
+		tempInfo.Picurl = ""
 		result[strconv.Itoa(index)] = tempInfo
 		idNums = append(idNums, strconv.Itoa(index))
 	}

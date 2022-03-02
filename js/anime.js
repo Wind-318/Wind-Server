@@ -41,6 +41,7 @@ function init() {
         DivChildNode.appendChild(Div_2ChildNode);
         // 添加脚本
         var ListenScript = document.createElement("script");
+        ListenScript.setAttribute("id", "ListenScript" + i.toString());
         ListenScript.innerHTML = `document.getElementById("AYear` + i.toString() + `").onclick = function() {searchByYear(` + i + `);}`;
         document.body.appendChild(ListenScript);
     }
