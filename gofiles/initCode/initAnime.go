@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"regexp"
 	"strconv"
 	"time"
@@ -15,6 +16,11 @@ import (
 
 // 从 bangumi 获取基本信息
 func InitAnime() {
+	// 创建文件夹
+	os.MkdirAll("./picture/anime/bangumi", 0644)
+	os.MkdirAll("./picture/anime/yhdm", 0644)
+	os.MkdirAll("./picture/anime/ysjdm1", 0644)
+
 	bangumi := "https://bgm.tv/anime/browser/?sort=date&page="
 	conn := sqlx.MustConnect("mysql", config.MySQLInfo)
 	defer conn.Close()
@@ -56,7 +62,18 @@ func InitAnime() {
 			ans1[index][1] = "https://bgm.tv" + ans1[index][1]
 			ans1[index][2] = "https:" + ans1[index][2]
 
-			_, err := conn.Exec("INSERT INTO bangumi VALUES(?, ?, ?, ?, ?, ?, ?)", 0, ans1[index][3], ans1[index][1], ans1[index][4], "", ans1[index][2], 0)
+			// 保存图片
+			if ans1[index][2][:5] != "https" {
+				ans1[index][2] = "https:" + ans1[index][2]
+			}
+			picFile, _ := http.Get(ans1[index][2])
+			picByte, err := ioutil.ReadAll(picFile.Body)
+			picName := strconv.Itoa(int(time.Now().UnixNano()))
+			if err == nil {
+				ioutil.WriteFile("./picture/anime/bangumi/"+picName+".jpg", picByte, 0644)
+			}
+
+			_, err = conn.Exec("INSERT INTO bangumi VALUES(?, ?, ?, ?, ?, ?, ?)", 0, ans1[index][3], ans1[index][1], ans1[index][4], "", "../picture/anime/bangumi/"+picName+".jpg", 0)
 			if err != nil {
 				fmt.Println(err)
 			}
@@ -82,7 +99,7 @@ func InitAnime() {
 			ans2[index][3] = arr[0][0]
 			ans2[index][1] = "https://bgm.tv" + ans2[index][1]
 
-			_, err := conn.Exec("INSERT INTO bangumi VALUES(?, ?, ?, ?, ?, ?, ?)", 0, ans2[index][2], ans2[index][1], ans2[index][3], "", "", 0)
+			_, err = conn.Exec("INSERT INTO bangumi VALUES(?, ?, ?, ?, ?, ?, ?)", 0, ans2[index][2], ans2[index][1], ans2[index][3], "", "#", 0)
 			if err != nil {
 				fmt.Println(err)
 			}
@@ -136,13 +153,24 @@ func yhdmCatch() {
 					continue
 				}
 
+				// 保存图片
+				if data[2][:4] != "http" {
+					data[2] = "http:" + data[2]
+				}
+				picFile, _ := http.Get(data[2])
+				picByte, err := ioutil.ReadAll(picFile.Body)
+				picName := strconv.Itoa(int(time.Now().UnixNano()))
+				if err == nil {
+					ioutil.WriteFile("./picture/anime/yhdm/"+picName+".jpg", picByte, 0644)
+				}
+
 				// 检索后动漫名称如已存在，则更新资料；如不存在则插入
 				isExist = 0
 				conn.Get(&isExist, "SELECT count(*) FROM bangumi WHERE name = ?", data[3])
 				if isExist > 0 {
-					conn.Exec("UPDATE bangumi SET url = ?, description = ?, picurl = ? WHERE name = ?", "https://www.yhdmp.cc"+data[1], data[4], data[2], data[3])
+					conn.Exec("UPDATE bangumi SET url = ?, description = ?, picurl = ? WHERE name = ?", "https://www.yhdmp.cc"+data[1], data[4], "../picture/anime/yhdm/"+picName+".jpg", data[3])
 				} else {
-					conn.Exec("INSERT INTO bangumi VALUES(?, ?, ?, ?, ?, ?, ?)", 0, data[3], "https://www.yhdmp.cc"+data[1], strconv.Itoa(i), data[4], data[2], 0)
+					conn.Exec("INSERT INTO bangumi VALUES(?, ?, ?, ?, ?, ?, ?)", 0, data[3], "https://www.yhdmp.cc"+data[1], strconv.Itoa(i), data[4], "../picture/anime/yhdm/"+picName+".jpg", 0)
 				}
 
 				conn.Exec("INSERT INTO animesource VALUES(?, ?, ?, ?)", 0, data[3], "樱花动漫", "https://www.yhdmp.cc"+data[1])
@@ -199,14 +227,22 @@ func ysjdmCatch() {
 			tempObj := regexp.MustCompile(`<div class="des2"><b>([\s\S]+?)</div>`)
 			tempArr := tempObj.FindAllStringSubmatch(string(description), -1)
 
+			// 保存图片
+			picFile, _ := http.Get(data[3])
+			picByte, err := ioutil.ReadAll(picFile.Body)
+			picName := strconv.Itoa(int(time.Now().UnixNano()))
+			if err == nil {
+				ioutil.WriteFile("./picture/anime/ysjdm1/"+picName+".jpg", picByte, 0644)
+			}
+
 			// 检索后动漫名称如已存在，则更新资料；如不存在则插入
 			isExist = 0
 			conn.Get(&isExist, "SELECT count(*) FROM bangumi WHERE name = ?", data[2])
 			if isExist > 0 {
 				if len(tempArr) > 0 && len(tempArr[0]) > 1 {
-					conn.Exec("UPDATE bangumi SET url = ?, description = ?, picurl = ? WHERE name = ?", "http://ysjdm8.com"+data[1], tempArr[0][1], data[3], data[2])
+					conn.Exec("UPDATE bangumi SET url = ?, description = ?, picurl = ? WHERE name = ?", "http://ysjdm8.com"+data[1], tempArr[0][1], "../picture/anime/ysjdm1/"+picName+".jpg", data[2])
 				} else {
-					conn.Exec("UPDATE bangumi SET url = ?, picurl = ? WHERE name = ?", "http://ysjdm8.com"+data[1], data[3], data[2])
+					conn.Exec("UPDATE bangumi SET url = ?, picurl = ? WHERE name = ?", "http://ysjdm8.com"+data[1], "../picture/anime/ysjdm1/"+picName+".jpg", data[2])
 				}
 			} else {
 				yearObj := regexp.MustCompile(`<b>年代：</b>(\d{4})</dd>`)
@@ -217,9 +253,9 @@ func ysjdmCatch() {
 				}
 
 				if len(tempArr) > 0 && len(tempArr[0]) > 1 {
-					conn.Exec("INSERT INTO bangumi VALUES(?, ?, ?, ?, ?, ?, ?)", 0, data[2], "http://ysjdm8.com"+data[1], animeYear, tempArr[0][1], data[3], 0)
+					conn.Exec("INSERT INTO bangumi VALUES(?, ?, ?, ?, ?, ?, ?)", 0, data[2], "http://ysjdm8.com"+data[1], animeYear, tempArr[0][1], "../picture/anime/ysjdm1/"+picName+".jpg", 0)
 				} else {
-					conn.Exec("INSERT INTO bangumi VALUES(?, ?, ?, ?, ?, ?, ?)", 0, data[2], "http://ysjdm8.com"+data[1], animeYear, "", data[3], 0)
+					conn.Exec("INSERT INTO bangumi VALUES(?, ?, ?, ?, ?, ?, ?)", 0, data[2], "http://ysjdm8.com"+data[1], animeYear, "", "../picture/anime/ysjdm1/"+picName+".jpg", 0)
 				}
 			}
 
