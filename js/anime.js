@@ -81,7 +81,7 @@ window.onload = function() {
                 } else {
                     DivChildNode.setAttribute("class", "container tab-pane");
                 }
-                DivChildNode.setAttribute("id", "Page" + i.toString());
+                DivChildNode.setAttribute("id", "NewPage" + i.toString());
                 everyPageSearch.appendChild(DivChildNode);
             }
 
@@ -90,7 +90,7 @@ window.onload = function() {
             var nowPage = 1;
             for (var i = 0; i < data["count"].length; i++) {
                 // 每页框架作为父节点
-                var fatherNode = document.getElementById("Page" + nowPage.toString());
+                var fatherNode = document.getElementById("NewPage" + nowPage.toString());
                 isFull--;
                 if (isFull <= 0) {
                     nowPage++;
@@ -170,7 +170,7 @@ window.onload = function() {
                     aChildNode.setAttribute("class", "nav-link");
                 }
                 aChildNode.setAttribute("data-bs-toggle", "pill");
-                aChildNode.setAttribute("href", "#Page" + i.toString());
+                aChildNode.setAttribute("href", "#NewPage" + i.toString());
                 aChildNode.innerHTML = "第 " + i.toString() + " 页";
                 liChildNode.appendChild(aChildNode);
             }

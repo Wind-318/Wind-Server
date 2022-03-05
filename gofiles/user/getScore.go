@@ -3,6 +3,7 @@ package user
 import (
 	"Project/gofiles/config"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -31,10 +32,11 @@ func SignAddScore(ctx *gin.Context) {
 	defer conn.Close()
 
 	// 判断是否已签到
-	isSign, _ := redis.Bool(redisconn.Do("HEXISTS", cookie, "userSign"))
+	isSign, _ := redis.Bool(redisconn.Do("HEXISTS", cookie+"userSign", "userSign"))
 	if isSign {
-		signDay, _ := redis.Int(redisconn.Do("HGET", cookie, "userSign"))
-		if (time.Now().Day() - signDay) < 1 {
+		signDay, _ := redis.String(redisconn.Do("HGET", cookie+"userSign", "userSign"))
+		signDays, _ := strconv.Atoi(signDay)
+		if (time.Now().Day() - signDays) < 1 {
 			result["msg"] = "今日已签到"
 			ctx.JSON(http.StatusOK, result)
 			return
@@ -42,8 +44,7 @@ func SignAddScore(ctx *gin.Context) {
 	}
 
 	// 签到日期为本日
-	redisconn.Do("HMSET", cookie, "userSign", time.Now().Day())
-	redisconn.Do("EXPIRE", cookie, 86400)
+	redisconn.Do("HMSET", cookie+"userSign", "userSign", time.Now().Day())
 
 	// 签到奖励 5 积分
 	conn.Exec("UPDATE user SET score = score + 5 WHERE account = ?", cookie)

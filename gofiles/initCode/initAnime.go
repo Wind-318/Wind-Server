@@ -60,12 +60,13 @@ func InitAnime() {
 			ans1[index][4] = arr[0][0]
 
 			ans1[index][1] = "https://bgm.tv" + ans1[index][1]
-			ans1[index][2] = "https:" + ans1[index][2]
 
 			// 保存图片
 			if ans1[index][2][:5] != "https" {
 				ans1[index][2] = "https:" + ans1[index][2]
 			}
+			// 休息数秒
+			time.Sleep(5 * time.Second)
 			picFile, _ := http.Get(ans1[index][2])
 			picByte, err := ioutil.ReadAll(picFile.Body)
 			picName := strconv.Itoa(int(time.Now().UnixNano()))
@@ -108,14 +109,14 @@ func InitAnime() {
 				fmt.Println(err)
 			}
 		}
-		time.Sleep(5000 * time.Millisecond)
+		time.Sleep(30 * time.Second)
 	}
 
 	ysjdmCatch()
 	yhdmCatch()
 }
 
-// 更新策略：若当前时间为 1 月、4 月、7 月和 10 月，则每天进行一次追踪更新，其余月份则每七天进行一次追踪更新
+// 更新策略：若当前时间为 1 月、4 月、7 月和 10 月，则每三天进行一次追踪更新，其余月份则每七天进行一次追踪更新
 func ContinueGetNewAnime() {
 	everyUpdateDays := 7
 	if nowMonth := time.Now().Month(); nowMonth == 1 || nowMonth == 4 || nowMonth == 7 || nowMonth == 10 {
@@ -157,6 +158,8 @@ func yhdmCatch() {
 				if data[2][:4] != "http" {
 					data[2] = "http:" + data[2]
 				}
+				// 休息数秒
+				time.Sleep(5 * time.Second)
 				picFile, _ := http.Get(data[2])
 				picByte, err := ioutil.ReadAll(picFile.Body)
 				picName := strconv.Itoa(int(time.Now().UnixNano()))
@@ -228,6 +231,8 @@ func ysjdmCatch() {
 			tempArr := tempObj.FindAllStringSubmatch(string(description), -1)
 
 			// 保存图片
+			// 休息数秒
+			time.Sleep(5 * time.Second)
 			picFile, _ := http.Get(data[3])
 			picByte, err := ioutil.ReadAll(picFile.Body)
 			picName := strconv.Itoa(int(time.Now().UnixNano()))
