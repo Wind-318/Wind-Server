@@ -1,14 +1,12 @@
-package anime
+package storage
 
 import (
-	"net/http"
-
+	"github.com/garyburd/redigo/redis"
 	"github.com/gin-gonic/gin"
-	"github.com/gomodule/redigo/redis"
 )
 
-// 检查权限
-func CheckPermission(ctx *gin.Context) {
+// 存储文件
+func StroageFiles(ctx *gin.Context) {
 	result := map[string]interface{}{
 		"msg": "success",
 	}
@@ -22,8 +20,8 @@ func CheckPermission(ctx *gin.Context) {
 	if !isExist || err != nil {
 		result["msg"] = "fail"
 	} else {
+		email, _ := redis.String(redisconn.Do("HGET", cookies, "email"))
 		ctx.SetCookie("cookie", cookies, 86400, "/", "localhost/", false, true)
 		redisconn.Do("EXPIRE", cookies, 86400)
 	}
-	ctx.JSON(http.StatusOK, result)
 }

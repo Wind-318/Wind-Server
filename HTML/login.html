@@ -105,7 +105,8 @@
     </script>
     <script>
         var btn = document.getElementById("btnSignin");
-        btn.onclick = function(ev) {
+
+        function SignInClick(ev) {
             var userEmail = document.getElementById("userEmailSignin").value;
             var userPassword = document.getElementById("userPasswordSignin").value;
             $.ajax({
@@ -127,6 +128,15 @@
                 }
             })
         }
+
+        btn.onclick = SignInClick;
+
+        // 按下确认键搜索
+        document.getElementById("keyword").addEventListener("keydown", function(event) {
+            if (event.key == "Enter") {
+                SignInClick();
+            }
+        })
     </script>
 
     <script src="../js/sakura.js"></script>

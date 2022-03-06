@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <title>存储</title>
     <script src="../js/jquery.min.js"></script>
     <script>
         $.ajax({
@@ -21,9 +21,8 @@
             fail: function() {}
         })
     </script>
-    <link rel="stylesheet" href="../css/animeStyle.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
     <script src="../js/bootstrap.min.js"></script>
-    <title>新番导航</title>
 </head>
 
 <body class="bg-dark" id="darkBody">
@@ -44,54 +43,19 @@
                     <a href="/collections" class="nav-link p-3 h4 text-white" data-bs-toggle="pill" id="toCollections">收藏网站</a>
                 </li>
                 <li class="nav-item">
-                    <a href="/anime" class="nav-link active p-3 h4 text-white" data-bs-toggle="pill">新番导航</a>
+                    <a href="/anime" class="nav-link p-3 h4 text-white" data-bs-toggle="pill" id="toAnime">新番导航</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/stroage" class="nav-link active p-3 h4 text-white" data-bs-toggle="pill">存储</a>
                 </li>
             </ul>
         </div>
     </div>
 
-    <div class="container p-3 my-5 border bg-dark">
-        <div class="container mt-3">
-            <h2 class="text-white text-center h2">往年一览</h2>
-            <div class="container justify-content-center" style="display: flex; flex-direction: row;">
-                <input type="text" class="input-group" style="width: 30%;" maxlength="200" id="keyword">
-                <button class="btn-primary" id="confirm">搜索</button>
-            </div>
-            <br>
-
-            <ul class="nav nav-pills" role="tablist" id="years">
-                <li class="nav-item" id="navTabs">
-                    <a class="nav-link active h4" data-bs-toggle="pill" href="#lastestAnime" id="newAnime"></a>
-                </li>
-                <li class="nav-item" id="navTabs">
-                    <a class="nav-link h4" data-bs-toggle="pill" href="#searchResult" id="searchNav">搜索结果</a>
-                </li>
-            </ul>
-
-            <div class="tab-content" id="tabContent">
-                <div id="lastestAnime" class="container tab-pane active">
-                    <div class="container p-3 my-3 border">
-                        <div class="tab-content" id="everyPageSearchLastestAnime">
-                        </div>
-                    </div>
-
-                    <div id="waitToClearLastestAnime" class="container justify-content-center">
-                    </div>
-                </div>
-                <div id="searchResult" class="container tab-pane">
-                    <div class="container p-3 my-3 border">
-                        <div class="tab-content" id="everyPageSearch">
-                        </div>
-                    </div>
-
-                    <div id="waitToClear" class="container justify-content-center">
-                    </div>
-                </div>
-            </div>
-        </div>
-
+    <div class="container bg-dark border p-3 my-5">
 
     </div>
+
 
     <button type="button" class="btn btn-info text-center fixed-top container bg-dark text-white" style="width: 30%;" id="switch">白天/夜间切换</button>
 
@@ -105,33 +69,20 @@
         document.getElementById("toCollections").onclick = function() {
             location.href = "/collections";
         }
-
-        var nowMonth = new Date().getMonth + 1;
-        var month = "";
-        if (nowMonth >= 10) {
-            month = "十月新番";
-        } else if (nowMonth >= 7) {
-            month = "七月新番";
-        } else if (nowMonth >= 4) {
-            month = "四月新番";
-        } else {
-            month = "一月新番";
+        document.getElementById("toAnime").onclick = function() {
+            location.href = "/anime";
         }
-        document.getElementById("newAnime").innerHTML = month;
-
 
         document.getElementById("switch").onclick = function() {
             if (document.body.id == "darkBody") {
                 document.body.id = "lightBody";
-                document.body.setAttribute("style", "display: flex; background-image: url('../picture/anime/3.jpg'); background-repeat: no-repeat; background-size: cover; background-attachment: fixed; opacity: 0.8;");
+                document.body.setAttribute("style", "display: flex; background-image: url( '../picture/anime/3.jpg'); background-repeat: no-repeat; background-size: cover; background-attachment: fixed; opacity: 0.8;");
             } else {
                 document.body.id = "darkBody"
                 document.body.setAttribute("style", "");
             }
         }
     </script>
-
-    <script src="../js/anime.js"></script>
 </body>
 
 </html>

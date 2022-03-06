@@ -75,3 +75,8 @@ func ToResources(ctx *gin.Context) {
 func ToAnime(ctx *gin.Context) {
 	ctx.HTML(http.StatusOK, "anime.html", nil)
 }
+
+// 存储
+func ToStroage(ctx *gin.Context) {
+	ctx.HTML(http.StatusOK, "stroage.html", nil)
+}

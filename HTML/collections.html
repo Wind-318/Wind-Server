@@ -15,7 +15,7 @@
             success: function(data) {
                 if (data["msg"] == "fail") {
                     location.href = "/";
-                    alert("非公开信息，权限不足！");
+                    alert("非公开信息，需要一级以上准入权限");
                 }
             },
             fail: function() {}

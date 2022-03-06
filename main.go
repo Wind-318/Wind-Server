@@ -155,6 +155,12 @@ func main() {
 		animes.POST("/searchByYear", anime.SearchByYear)
 	}
 
+	// 存储路由
+	stroages := router.Group("/stroage")
+	{
+		stroages.GET("/", gofiles.ToStroage)
+	}
+
 	// 监听 http
 	go router.Run(":80")
 	// 监听 https，自行选择 SSL 证书

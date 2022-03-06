@@ -180,7 +180,7 @@ func yhdmCatch() {
 			}
 
 			res.Body.Close()
-			time.Sleep(5000 * time.Millisecond)
+			time.Sleep(30 * time.Second)
 		}
 	}
 }
@@ -268,6 +268,6 @@ func ysjdmCatch() {
 		}
 
 		res.Body.Close()
-		time.Sleep(5000 * time.Millisecond)
+		time.Sleep(30 * time.Second)
 	}
 }
