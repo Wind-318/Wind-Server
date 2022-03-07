@@ -23,6 +23,9 @@
     </script>
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <script src="../js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../css/fileinput.css">
+    <script src="../js/fileinput.min.js"></script>
+    <script src="../js/zh.js"></script>
 </head>
 
 <body class="bg-dark" id="darkBody">
@@ -46,14 +49,25 @@
                     <a href="/anime" class="nav-link p-3 h4 text-white" data-bs-toggle="pill" id="toAnime">新番导航</a>
                 </li>
                 <li class="nav-item">
-                    <a href="/stroage" class="nav-link active p-3 h4 text-white" data-bs-toggle="pill">存储</a>
+                    <a href="/storage" class="nav-link active p-3 h4 text-white" data-bs-toggle="pill">存储</a>
                 </li>
             </ul>
         </div>
     </div>
 
-    <div class="container bg-dark border p-3 my-5">
+    <div class="container bg-dark border my-5" id="root">
+        <ul class="nav nav-pills my-3 p-3" role="tablist" id="users">
+            <li class="nav-item">
+                <a class="nav-link h4 active" data-bs-toggle="pill" href="#uploadFile" id="upload">上传</a>
+            </li>
+        </ul>
 
+
+        <div class="tab-content my-3" id="tabContent">
+            <div class="container tab-pane active" id="uploadFile">
+                <input type="file" name="file" id="file" multiple class="file">
+            </div>
+        </div>
     </div>
 
 
@@ -82,7 +96,20 @@
                 document.body.setAttribute("style", "");
             }
         }
+
+        $('#file').fileinput({
+            language: 'zh', //语言
+            dropZoneEnabled: true, //是否显示拖拽区域
+            dropZoneTitle: "拖放图片到此处", // 显示的文字
+            uploadUrl: '/storage/stroageImg', // 路径
+            allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg', 'bmp', 'webp'], // 接受格式
+            uploadAsync: true, // 异步上传
+            maxFileSize: 0, // 限制文件大小
+            maxFileCount: 0 // 限制同时上传文件个数
+        }).on("fileuploaded", function(event, data) {});
     </script>
+
+    <script src="../js/stroage.js"></script>
 </body>
 
 </html>

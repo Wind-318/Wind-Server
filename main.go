@@ -7,10 +7,10 @@ import (
 	"Project/gofiles/collectionfunc"
 	"Project/gofiles/initCode"
 	"Project/gofiles/spider/sina"
+	"Project/gofiles/storage"
 	"Project/gofiles/user"
 	"fmt"
 	"io"
-	"net/http"
 	"os"
 	"time"
 
@@ -57,14 +57,15 @@ func main() {
 
 	// 加载静态资源
 	router.LoadHTMLGlob("HTML/*")
-	router.StaticFS("/blog", http.Dir("./blog"))
-	router.StaticFS("/css", http.Dir("./css"))
-	router.StaticFS("/files", http.Dir("./files"))
+	router.Static("/blog", "./blog")
+	router.Static("/css", "./css")
+	router.Static("/files", "./files")
 	router.StaticFile("/favicon.ico", "./favicon.ico")
-	router.StaticFS("/js", http.Dir("./js"))
-	router.StaticFS("/music", http.Dir("./music"))
-	router.StaticFS("/picture", http.Dir("./picture"))
+	router.Static("/js", "./js")
+	router.Static("/music", "./music")
+	router.Static("/picture", "./picture")
 	router.StaticFile("/robots.txt", "./robots.txt")
+	router.Static("/userFile", "./userFile")
 
 	// 设置 404 界面
 	router.NoRoute(gofiles.ToNotFound)
@@ -118,6 +119,7 @@ func main() {
 		users.GET("/ToLogin", gofiles.ToLogin)
 		users.GET("/TochangePassword", gofiles.ToChangePassword)
 		users.GET("/signAddScore", user.SignAddScore)
+		users.GET("/getUsersName", user.GetUsersName)
 
 		users.POST("/changePassword", user.ChangePassWord)
 		users.POST("/login", user.Login)
@@ -156,9 +158,13 @@ func main() {
 	}
 
 	// 存储路由
-	stroages := router.Group("/stroage")
+	storages := router.Group("/storage")
 	{
-		stroages.GET("/", gofiles.ToStroage)
+		storages.GET("/", gofiles.ToStorage)
+
+		storages.POST("/getUserStoragePicturePage", storage.GetUserStoragePicturePage)
+		storages.POST("/getUserStoragePicture", storage.GetUserStoragePicture)
+		storages.POST("/stroageImg", storage.StorageFiles)
 	}
 
 	// 监听 http

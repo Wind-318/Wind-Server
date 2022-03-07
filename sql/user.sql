@@ -7,6 +7,7 @@ CREATE TABLE `user` (
   `authority` int NOT NULL DEFAULT '0' COMMENT '权限',
   `pic` varchar(255) NOT NULL COMMENT '头像',
   `score` int DEFAULT '0' COMMENT '积分',
-  `capacity` int DEFAULT '0' COMMENT '存储容量',
+  `capacity` bigint DEFAULT '0' COMMENT '存储容量',
+  `usedCapacity` bigint DEFAULT '0' COMMENT '已用存储',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci

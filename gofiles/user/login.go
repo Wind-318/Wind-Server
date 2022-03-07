@@ -11,16 +11,20 @@ import (
 
 // 登录
 func Login(ctx *gin.Context) {
+	result := map[string]interface{}{
+		"msg": "success",
+	}
+	if IsExist(ctx) {
+		result["msg"] = "已登录"
+		ctx.JSON(http.StatusOK, result)
+		return
+	}
 	userEmail := ctx.PostForm("userEmail")
 	passWord := ctx.PostForm("userPassword")
 
 	userInfo := &User{
 		Account:  userEmail,
 		Password: passWord,
-	}
-
-	result := map[string]interface{}{
-		"msg": "success",
 	}
 
 	if userEmail == "" || passWord == "" {

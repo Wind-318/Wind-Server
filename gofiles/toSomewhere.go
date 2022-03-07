@@ -77,6 +77,6 @@ func ToAnime(ctx *gin.Context) {
 }
 
 // 存储
-func ToStroage(ctx *gin.Context) {
-	ctx.HTML(http.StatusOK, "stroage.html", nil)
+func ToStorage(ctx *gin.Context) {
+	ctx.HTML(http.StatusOK, "storage.html", nil)
 }

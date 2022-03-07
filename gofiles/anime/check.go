@@ -15,12 +15,16 @@ func CheckPermission(ctx *gin.Context) {
 	cookies, err := ctx.Cookie("cookie")
 	if err != nil {
 		result["msg"] = "fail"
+		ctx.JSON(http.StatusOK, result)
+		return
 	}
 	redisconn, _ := redis.Dial("tcp", "localhost:6379")
 	defer redisconn.Close()
 	isExist, err := redis.Bool(redisconn.Do("HEXISTS", cookies, "email"))
 	if !isExist || err != nil {
 		result["msg"] = "fail"
+		ctx.JSON(http.StatusOK, result)
+		return
 	} else {
 		ctx.SetCookie("cookie", cookies, 86400, "/", "localhost/", false, true)
 		redisconn.Do("EXPIRE", cookies, 86400)

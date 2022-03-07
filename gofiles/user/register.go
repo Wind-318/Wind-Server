@@ -24,6 +24,17 @@ func Register(ctx *gin.Context) {
 		"msg": "注册成功",
 	}
 
+	words := "~`!@#$%^&*()_+-=[]\\{}|'\";:,./<>?"
+	for i := range userName {
+		for j := range words {
+			if userName[i] == words[j] {
+				result["msg"] = "名称不能含有特殊字符"
+				ctx.JSON(http.StatusOK, result)
+				return
+			}
+		}
+	}
+
 	if userEmail != config.SystemUserAccount {
 		result["msg"] = "暂不开放注册"
 		ctx.JSON(http.StatusOK, result)
