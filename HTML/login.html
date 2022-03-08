@@ -119,6 +119,8 @@
                 success: function(data) {
                     if (data["msg"] == "success") {
                         location.href = "/blogs";
+                    } else if (data["msg"] == "已登录") {
+                        location.href = "/";
                     } else {
                         alert(data["msg"]);
                     }

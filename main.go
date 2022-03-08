@@ -56,7 +56,7 @@ func main() {
 	go initCode.SendEveryUser()
 
 	// 加载静态资源
-	router.LoadHTMLGlob("HTML/*")
+	router.LoadHTMLGlob("html/*")
 	router.Static("/blog", "./blog")
 	router.Static("/css", "./css")
 	router.Static("/files", "./files")

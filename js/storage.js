@@ -51,6 +51,7 @@ window.onload = function() {
                 $.ajax({
                     url: "/storage/getUserStoragePicturePage",
                     type: "POST",
+                    async: false,
                     data: {
                         "name": names,
                         "pageNum": 50
@@ -122,7 +123,7 @@ function loadFirst(names, page) {
                 root.appendChild(aNode);
                 var imgNode = document.createElement("img");
                 imgNode.setAttribute("src", data["smallPicPath"][i]);
-                imgNode.setAttribute("style", "max-width: 600px;");
+                imgNode.setAttribute("style", "width: 400px;");
                 imgNode.setAttribute("class", "p-2");
                 aNode.appendChild(imgNode);
             }

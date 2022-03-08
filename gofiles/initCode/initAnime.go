@@ -118,10 +118,10 @@ func InitAnime() {
 
 // 更新策略：若当前时间为 1 月、4 月、7 月和 10 月，则每三天进行一次追踪更新，其余月份则每七天进行一次追踪更新
 func ContinueGetNewAnime() {
-	everyUpdateDays := 7
-	if nowMonth := time.Now().Month(); nowMonth == 1 || nowMonth == 4 || nowMonth == 7 || nowMonth == 10 {
-		everyUpdateDays = 1
-	}
+	//everyUpdateDays := 7
+	//if nowMonth := time.Now().Month(); nowMonth == 1 || nowMonth == 4 || nowMonth == 7 || nowMonth == 10 {
+	//	everyUpdateDays = 1
+	//}
 
 }
 

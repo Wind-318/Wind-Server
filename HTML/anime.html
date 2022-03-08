@@ -46,6 +46,9 @@
                 <li class="nav-item">
                     <a href="/anime" class="nav-link active p-3 h4 text-white" data-bs-toggle="pill">新番导航</a>
                 </li>
+                <li class="nav-item">
+                    <a href="/anime" class="nav-link p-3 h4 text-white" data-bs-toggle="pill" id="toStorage">存储</a>
+                </li>
             </ul>
         </div>
     </div>
@@ -104,6 +107,9 @@
         }
         document.getElementById("toCollections").onclick = function() {
             location.href = "/collections";
+        }
+        document.getElementById("toStorage").onclick = function() {
+            location.href = "/storage";
         }
 
         var nowMonth = new Date().getMonth + 1;
