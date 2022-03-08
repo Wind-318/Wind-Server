@@ -2,6 +2,7 @@ package collectionfunc
 
 import (
 	"Project/gofiles/config"
+	"Project/gofiles/user"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -73,6 +74,9 @@ func IsSystems(ctx *gin.Context) {
 
 // 获取网站链接
 func GetWebs(ctx *gin.Context) {
+	if !user.IsExist(ctx) {
+		return
+	}
 	result := map[string]interface{}{
 		"ids":      0,
 		"urls":     0,

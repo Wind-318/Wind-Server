@@ -18,7 +18,9 @@
                     alert("非公开信息，需要一级以上准入权限");
                 }
             },
-            fail: function() {}
+            fail: function() {
+                location.href = "/";
+            }
         })
     </script>
     <link rel="stylesheet" href="../css/bootstrap.min.css">
@@ -29,6 +31,7 @@
 </head>
 
 <body class="bg-dark" id="darkBody">
+    <div style="display: none;" id="uploadfilename"></div>
     <button class="btn btn-primary position-fixed" style="width: 7%;" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">导航</button>
 
     <div class="offcanvas offcanvas-start" style="width: 25%;" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
@@ -55,21 +58,70 @@
         </div>
     </div>
 
-    <div class="container bg-dark border my-5" id="root">
-        <ul class="nav nav-pills my-3 p-3" role="tablist" id="users">
-            <li class="nav-item">
-                <a class="nav-link h4 active" data-bs-toggle="pill" href="#uploadFile" id="upload">上传</a>
-            </li>
-        </ul>
 
 
-        <div class="tab-content my-3" id="tabContent">
-            <div class="container tab-pane active" id="uploadFile">
-                <input type="file" name="file" id="file" multiple class="file">
+    <div class="container start-0">
+        <div class="container flex-row">
+            <!-- 上传图片 -->
+            <div class="container mt-3">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
+              上传图片
+            </button>
+            </div>
+            <div class="modal" id="myModal">
+                <div class="modal-dialog modal-dialog-centered modal-xl">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <h4 class="modal-title">上传图片</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+
+                        <div class="modal-body">
+                            <input type="file" name="file" id="file" multiple class="file">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 新建文件夹 -->
+            <div class="container mt-3">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#mkdir">
+            新建文件夹
+        </button>
+            </div>
+
+            <div class="modal" id="mkdir">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">输入文件夹名</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body row">
+                            <input type="text" class="form-control my-3" id="directoryname">
+                            <button type="button" class="btn btn-primary my-3" id="makedirectory">
+                        确认
+                    </button>
+                        </div>
+
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
+
+
+    <div class="container bg-dark border my-5" id="root">
+        <ul class="nav nav-pills my-3 p-3" role="tablist" id="users">
+        </ul>
+
+
+        <div class="tab-content my-3" id="tabContent">
+
+        </div>
+    </div>
 
     <button type="button" class="btn btn-info text-center fixed-top container bg-dark text-white" style="width: 30%;" id="switch">白天/夜间切换</button>
 
@@ -97,6 +149,21 @@
             }
         }
 
+        // 新建文件夹
+        document.getElementById("makedirectory").onclick = function() {
+            var texts = document.getElementById("directoryname").value;
+            $.ajax({
+                url: "/storage/makeDirectory",
+                type: "POST",
+                data: {
+                    "path": texts
+                },
+                success: function() {
+                    location.reload();
+                }
+            })
+        }
+
         $('#file').fileinput({
             language: 'zh', //语言
             dropZoneEnabled: true, //是否显示拖拽区域
@@ -105,8 +172,15 @@
             allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg', 'bmp', 'webp'], // 接受格式
             uploadAsync: true, // 异步上传
             maxFileSize: 0, // 限制文件大小
-            maxFileCount: 0 // 限制同时上传文件个数
-        }).on("fileuploaded", function(event, data) {});
+            maxFileCount: 0, // 限制同时上传文件个数
+            enctype: 'multipart/form-data',
+            uploadExtraData: function() {
+                var data = {
+                    filename: document.getElementById("uploadfilename").innerHTML
+                };
+                return data;
+            },
+        });
     </script>
 
     <script src="../js/storage.js"></script>

@@ -3,6 +3,7 @@ package anime
 import (
 	"Project/gofiles/algorithm"
 	"Project/gofiles/config"
+	"Project/gofiles/user"
 	"net/http"
 	"strconv"
 
@@ -31,6 +32,9 @@ type AnimeInfo struct {
 
 // 搜索动漫
 func Search(ctx *gin.Context) {
+	if !user.IsExist(ctx) {
+		return
+	}
 	text := ctx.PostForm("text")
 	result := map[string]interface{}{}
 
@@ -82,6 +86,9 @@ func Search(ctx *gin.Context) {
 
 // 选出新番
 func SearchNewAnime(ctx *gin.Context) {
+	if !user.IsExist(ctx) {
+		return
+	}
 	result := map[string]interface{}{}
 	// 连接数据库
 	conn := sqlx.MustConnect("mysql", config.MySQLInfo)
@@ -107,6 +114,9 @@ func SearchNewAnime(ctx *gin.Context) {
 
 // 选出指定年份番剧
 func SearchByYear(ctx *gin.Context) {
+	if !user.IsExist(ctx) {
+		return
+	}
 	result := map[string]interface{}{}
 	year := ctx.PostForm("year")
 	// 连接数据库

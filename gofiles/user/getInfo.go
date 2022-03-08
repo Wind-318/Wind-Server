@@ -2,6 +2,7 @@ package user
 
 import (
 	"Project/gofiles/config"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -16,7 +17,11 @@ func IsExist(ctx *gin.Context) bool {
 	if err != nil {
 		return false
 	}
-	redisconn, _ := redis.Dial("tcp", "localhost:6379")
+	redisconn, err := redis.Dial("tcp", "localhost:6379")
+	if err != nil {
+		fmt.Println(err)
+		return false
+	}
 	defer redisconn.Close()
 	isExist, err := redis.Bool(redisconn.Do("HEXISTS", cookies, "email"))
 	if !isExist || err != nil {

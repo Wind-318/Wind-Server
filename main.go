@@ -162,6 +162,8 @@ func main() {
 	{
 		storages.GET("/", gofiles.ToStorage)
 
+		storages.POST("/makeDirectory", storage.MakeDirectory)
+		storages.POST("/getUserFileNums", storage.GetUserFileNums)
 		storages.POST("/getUserStoragePicturePage", storage.GetUserStoragePicturePage)
 		storages.POST("/getUserStoragePicture", storage.GetUserStoragePicture)
 		storages.POST("/stroageImg", storage.StorageFiles)

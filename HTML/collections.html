@@ -18,7 +18,9 @@
                     alert("非公开信息，需要一级以上准入权限");
                 }
             },
-            fail: function() {}
+            fail: function() {
+                location.href = "/";
+            }
         })
     </script>
     <script src="../js/sakura.js"></script>

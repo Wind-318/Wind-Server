@@ -17,6 +17,11 @@ func SignAddScore(ctx *gin.Context) {
 	result := map[string]interface{}{
 		"msg": "签到成功，获得 5 积分",
 	}
+	if !IsExist(ctx) {
+		result["msg"] = "尚未登陆"
+		ctx.JSON(http.StatusOK, result)
+		return
+	}
 	// 检查登录状态
 	cookies, err := ctx.Cookie("cookie")
 	if err != nil {
@@ -26,7 +31,12 @@ func SignAddScore(ctx *gin.Context) {
 	}
 	redisconn, _ := redis.Dial("tcp", "localhost:6379")
 	defer redisconn.Close()
-	cookie, _ := redis.String(redisconn.Do("HGET", cookies, "email"))
+	cookie, err := redis.String(redisconn.Do("HGET", cookies, "email"))
+	if err != nil {
+		result["msg"] = "尚未登陆"
+		ctx.JSON(http.StatusOK, result)
+		return
+	}
 	// 连接数据库
 	conn := sqlx.MustConnect("mysql", config.MySQLInfo)
 	defer conn.Close()

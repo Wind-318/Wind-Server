@@ -44,10 +44,18 @@ func StorageFiles(ctx *gin.Context) {
 	redisconn.Do("EXPIRE", cookies, 86400)
 	// 获取账号
 	email, _ := redis.String(redisconn.Do("HGET", cookies, "email"))
+	// 获取文件夹名称
+	filename := ctx.PostForm("filename")
+	if filename == "" {
+		fmt.Println("文件夹名称不能为空!")
+		result["msg"] = "文件夹名称不能为空!"
+		ctx.JSON(http.StatusOK, result)
+		return
+	}
 	// 存储路径
-	userPath := "./userFile/" + email + "/img1/"
+	userPath := "./userFile/" + email + "/" + filename + "/"
 	// 渲染路径
-	userPaths := "../userFile/" + email + "/img1/"
+	userPaths := "../userFile/" + email + "/" + filename + "/"
 	// 创建文件夹
 	os.MkdirAll(userPath, 0644)
 	// 存储
@@ -63,6 +71,8 @@ func StorageFiles(ctx *gin.Context) {
 	conn, err := sqlx.Connect("mysql", config.MySQLInfo)
 	if err != nil {
 		fmt.Println(err)
+		result["msg"] = "上传失败"
+		ctx.JSON(http.StatusOK, result)
 		return
 	}
 	defer conn.Close()
@@ -74,11 +84,15 @@ func StorageFiles(ctx *gin.Context) {
 	err = conn.Get(&usedCapacity, "SELECT usedCapacity FROM user WHERE account = ?", email)
 	if err != nil {
 		fmt.Println(err)
+		result["msg"] = "上传失败"
+		ctx.JSON(http.StatusOK, result)
 		return
 	}
 	err = conn.Get(&capacity, "SELECT capacity FROM user WHERE account = ?", email)
 	if err != nil {
 		fmt.Println(err)
+		result["msg"] = "上传失败"
+		ctx.JSON(http.StatusOK, result)
 		return
 	}
 
@@ -86,6 +100,8 @@ func StorageFiles(ctx *gin.Context) {
 		// 检查存储是否满
 		if usedCapacity+file.Size/1024 > capacity {
 			fmt.Println(usedCapacity+file.Size/1024, capacity, "存储已满")
+			result["msg"] = "上传失败"
+			ctx.JSON(http.StatusOK, result)
 			return
 		}
 
@@ -96,27 +112,35 @@ func StorageFiles(ctx *gin.Context) {
 		// 随机起名
 		randName := strconv.Itoa(int(time.Now().UnixNano()))
 		if picType == "jpg" || picType == "png" || picType == "gif" || picType == "bmp" {
-			_, err = conn.Exec("INSERT INTO storage VALUES(?, ?, ?, ?, ?, ?)", 0, email, picType, userPaths+randName+"."+picType, file.Size/1024, userPaths+randName+"."+picType)
+			_, err = conn.Exec("INSERT INTO storage VALUES(?, ?, ?, ?, ?, ?, ?, ?)", 0, email, file.Size/1024, filename, randName, picType, userPaths+randName+"."+picType, userPaths+randName+"."+picType)
 			if err != nil {
 				fmt.Println(err)
+				result["msg"] = "上传失败"
+				ctx.JSON(http.StatusOK, result)
 				return
 			} else {
 				_, err = conn.Exec("UPDATE user SET usedCapacity = ? WHERE account = ?", usedCapacity+file.Size/1024, email)
 				if err != nil {
 					fmt.Println(err)
+					result["msg"] = "上传失败"
+					ctx.JSON(http.StatusOK, result)
 					return
 				}
 			}
 		} else {
 			picType = file.Filename[length-4:]
-			_, err = conn.Exec("INSERT INTO storage VALUES(?, ?, ?, ?, ?, ?)", 0, email, picType, userPaths+randName+"."+picType, file.Size/1024, userPaths+randName+"."+picType)
+			_, err = conn.Exec("INSERT INTO storage VALUES(?, ?, ?, ?, ?, ?, ?, ?)", 0, email, file.Size/1024, filename, randName, picType, userPaths+randName+"."+picType, userPaths+randName+"."+picType)
 			if err != nil {
 				fmt.Println(err)
+				result["msg"] = "上传失败"
+				ctx.JSON(http.StatusOK, result)
 				return
 			} else {
 				_, err = conn.Exec("UPDATE user SET usedCapacity = ? WHERE account = ?", usedCapacity+file.Size/1024, email)
 				if err != nil {
 					fmt.Println(err)
+					result["msg"] = "上传失败"
+					ctx.JSON(http.StatusOK, result)
 					return
 				}
 			}
@@ -125,6 +149,8 @@ func StorageFiles(ctx *gin.Context) {
 		conn, err := sqlx.Connect("mysql", config.MySQLInfo)
 		if err != nil {
 			fmt.Println(err)
+			result["msg"] = "上传失败"
+			ctx.JSON(http.StatusOK, result)
 			return
 		}
 		defer conn.Close()
@@ -132,6 +158,8 @@ func StorageFiles(ctx *gin.Context) {
 		err = ctx.SaveUploadedFile(file, userPath+randName+"."+picType)
 		if err != nil {
 			fmt.Println(err)
+			result["msg"] = "上传失败"
+			ctx.JSON(http.StatusOK, result)
 			return
 		}
 	}
@@ -148,18 +176,20 @@ func updatePicture() {
 	defer func() {
 		<-ch
 	}()
-	// 随机数种子
-	rand.Seed(time.Now().UnixNano())
+	// 连接数据库
 	conn, err := sqlx.Connect("mysql", config.MySQLInfo)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
+	// 延时关闭
 	defer conn.Close()
 	picPath := []string{}
 	smallPicPath := []string{}
 	types := []string{}
 	accounts := []string{}
+	filenames := []string{}
+	names := []string{}
 	// 选取数据
 	err = conn.Select(&types, "SELECT type FROM storage")
 	if err != nil {
@@ -171,7 +201,7 @@ func updatePicture() {
 		fmt.Println(err)
 		return
 	}
-	err = conn.Select(&smallPicPath, "SELECT smallpic FROM storage")
+	err = conn.Select(&smallPicPath, "SELECT smallpath FROM storage")
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -181,16 +211,25 @@ func updatePicture() {
 		fmt.Println(err)
 		return
 	}
-	fmt.Println(len(types))
+	err = conn.Select(&filenames, "SELECT filepath FROM storage")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	err = conn.Select(&names, "SELECT name FROM storage")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 	// 循环
 	for i := range types {
-		userPath := "./userFile/" + accounts[i] + "/img1/"
-		userPaths := "../userFile/" + accounts[i] + "/img1/"
+		userPath := "./userFile/" + accounts[i] + "/" + filenames[i] + "/"
+		userPaths := "../userFile/" + accounts[i] + "/" + filenames[i] + "/"
 		if picPath[i] != smallPicPath[i] {
 			continue
 		}
 		// 随机起名
-		randName := strconv.Itoa(int(time.Now().UnixNano()))
+		randName := names[i]
 
 		// 创建缩略图
 		imgData, err := ioutil.ReadFile(picPath[i][1:])
@@ -213,7 +252,7 @@ func updatePicture() {
 			return
 		}
 		// 更新缩略图
-		_, err = conn.Exec("UPDATE storage SET smallpic = ? WHERE path = ?", userPaths+randName+"small."+types[i], picPath[i])
+		_, err = conn.Exec("UPDATE storage SET smallpath = ? WHERE path = ?", userPaths+randName+"small."+types[i], picPath[i])
 		if err != nil {
 			fmt.Println(err)
 			continue

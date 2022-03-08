@@ -1,6 +1,7 @@
 package anime
 
 import (
+	"Project/gofiles/user"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -11,6 +12,12 @@ import (
 func CheckPermission(ctx *gin.Context) {
 	result := map[string]interface{}{
 		"msg": "success",
+	}
+	// 检验合法性
+	if !user.IsExist(ctx) {
+		result["msg"] = "fail"
+		ctx.JSON(http.StatusOK, result)
+		return
 	}
 	cookies, err := ctx.Cookie("cookie")
 	if err != nil {
