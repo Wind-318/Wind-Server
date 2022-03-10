@@ -165,7 +165,7 @@ func StorageFiles(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, result)
 
-	updatePicture()
+	go updatePicture()
 }
 
 var ch chan int = make(chan int, 1)
@@ -235,13 +235,13 @@ func updatePicture() {
 		imgData, err := ioutil.ReadFile(picPath[i][1:])
 		if err != nil {
 			fmt.Println(err)
-			return
+			continue
 		}
 		buf := bytes.NewBuffer(imgData)
 		image, err := imaging.Decode(buf)
 		if err != nil {
 			fmt.Println(err)
-			return
+			continue
 		}
 		// 图片缩略
 		image = imaging.Resize(image, 0, 400, imaging.Lanczos)
@@ -249,7 +249,7 @@ func updatePicture() {
 		err = imaging.Save(image, userPath+randName+"small."+types[i])
 		if err != nil {
 			fmt.Println(err)
-			return
+			continue
 		}
 		// 更新缩略图
 		_, err = conn.Exec("UPDATE storage SET smallpath = ? WHERE path = ?", userPaths+randName+"small."+types[i], picPath[i])

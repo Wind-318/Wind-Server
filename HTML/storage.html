@@ -113,13 +113,12 @@
 
 
 
-    <div class="container bg-dark border my-5" id="root">
+    <div class="container bg-dark border my-5 text-white" id="root">
         <ul class="nav nav-pills my-3 p-3" role="tablist" id="users">
         </ul>
 
 
         <div class="tab-content my-3" id="tabContent">
-
         </div>
     </div>
 
@@ -142,9 +141,9 @@
         document.getElementById("switch").onclick = function() {
             if (document.body.id == "darkBody") {
                 document.body.id = "lightBody";
-                document.body.setAttribute("style", "display: flex; background-image: url( '../picture/anime/3.jpg'); background-repeat: no-repeat; background-size: cover; background-attachment: fixed; opacity: 0.8;");
+                document.body.setAttribute("style", "background-image: url( '../picture/anime/3.jpg'); background-repeat: no-repeat; background-size: cover; background-attachment: fixed; opacity: 0.95;");
             } else {
-                document.body.id = "darkBody"
+                document.body.id = "darkBody";
                 document.body.setAttribute("style", "");
             }
         }

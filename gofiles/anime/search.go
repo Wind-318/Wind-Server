@@ -3,6 +3,7 @@ package anime
 import (
 	"Project/gofiles/algorithm"
 	"Project/gofiles/config"
+	"Project/gofiles/info"
 	"Project/gofiles/user"
 	"net/http"
 	"strconv"
@@ -11,24 +12,6 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
 )
-
-// 动漫属性
-type AnimeInfo struct {
-	// 名称
-	Name string `db:"name"`
-	// bangumi 链接
-	Url string `db:"url"`
-	// 年份
-	Year int `db:"year"`
-	// 简介
-	Description string `db:"description"`
-	// 播放来源
-	Source []string `db:"source"`
-	// 播放地址
-	Urls []string `db:"urls"`
-	// 封面地址
-	Picurl string `db:"picurl"`
-}
 
 // 搜索动漫
 func Search(ctx *gin.Context) {
@@ -65,7 +48,7 @@ func Search(ctx *gin.Context) {
 	for index, name := range names {
 		// 进行匹配
 		if algorithm.Match(name, text) == 1 {
-			tempInfo := AnimeInfo{}
+			tempInfo := info.AnimeInfo{}
 			conn.Get(&tempInfo, "SELECT name, url, year, description, picurl FROM bangumi WHERE name = ?", name)
 			conn.Select(&tempInfo.Source, "SELECT source FROM animesource WHERE anime = ?", name)
 			conn.Select(&tempInfo.Urls, "SELECT urls FROM animesource WHERE anime = ?", name)
@@ -99,7 +82,7 @@ func SearchNewAnime(ctx *gin.Context) {
 	idNums := []string{}
 	conn.Select(&names, "SELECT name FROM bangumi WHERE isNew = 1")
 	for index, name := range names {
-		tempInfo := AnimeInfo{}
+		tempInfo := info.AnimeInfo{}
 		conn.Get(&tempInfo, "SELECT name, url, year, description, picurl FROM bangumi WHERE name = ?", name)
 		conn.Select(&tempInfo.Source, "SELECT source FROM animesource WHERE anime = ?", name)
 		conn.Select(&tempInfo.Urls, "SELECT urls FROM animesource WHERE anime = ?", name)
@@ -132,7 +115,7 @@ func SearchByYear(ctx *gin.Context) {
 		conn.Select(&names, "SELECT name FROM bangumi WHERE year <= ?", year)
 	}
 	for index, name := range names {
-		tempInfo := AnimeInfo{}
+		tempInfo := info.AnimeInfo{}
 		conn.Get(&tempInfo, "SELECT name, url, year, description, picurl FROM bangumi WHERE name = ?", name)
 		conn.Select(&tempInfo.Source, "SELECT source FROM animesource WHERE anime = ?", name)
 		conn.Select(&tempInfo.Urls, "SELECT urls FROM animesource WHERE anime = ?", name)

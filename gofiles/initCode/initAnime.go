@@ -112,21 +112,12 @@ func InitAnime() {
 		time.Sleep(30 * time.Second)
 	}
 
-	ysjdmCatch()
-	yhdmCatch()
-}
-
-// 更新策略：若当前时间为 1 月、4 月、7 月和 10 月，则每三天进行一次追踪更新，其余月份则每七天进行一次追踪更新
-func ContinueGetNewAnime() {
-	//everyUpdateDays := 7
-	//if nowMonth := time.Now().Month(); nowMonth == 1 || nowMonth == 4 || nowMonth == 7 || nowMonth == 10 {
-	//	everyUpdateDays = 1
-	//}
-
+	YsjdmCatch()
 }
 
 // 樱花动漫片源地址
-func yhdmCatch() {
+func YhdmCatch() {
+	// 连接数据库
 	conn := sqlx.MustConnect("mysql", config.MySQLInfo)
 	defer conn.Close()
 
@@ -159,7 +150,7 @@ func yhdmCatch() {
 					data[2] = "http:" + data[2]
 				}
 				// 休息数秒
-				time.Sleep(5 * time.Second)
+				time.Sleep(10 * time.Second)
 				picFile, _ := http.Get(data[2])
 				picByte, err := ioutil.ReadAll(picFile.Body)
 				picName := strconv.Itoa(int(time.Now().UnixNano()))
@@ -180,13 +171,13 @@ func yhdmCatch() {
 			}
 
 			res.Body.Close()
-			time.Sleep(30 * time.Second)
+			time.Sleep(45 * time.Second)
 		}
 	}
 }
 
 // 异世界动漫片源地址
-func ysjdmCatch() {
+func YsjdmCatch() {
 	conn := sqlx.MustConnect("mysql", config.MySQLInfo)
 	defer conn.Close()
 	ysjdmAnime := "http://121.4.190.96:9991/getsortdata_all_z.php?action=acg&page="
@@ -213,7 +204,7 @@ func ysjdmCatch() {
 				continue
 			}
 
-			time.Sleep(time.Millisecond * 5000)
+			time.Sleep(time.Millisecond * 10000)
 
 			// 检查是否有简介可更新
 			tempRes, err := http.Get("http://ysjdm8.com" + data[1])
@@ -232,7 +223,7 @@ func ysjdmCatch() {
 
 			// 保存图片
 			// 休息数秒
-			time.Sleep(5 * time.Second)
+			time.Sleep(10 * time.Second)
 			picFile, _ := http.Get(data[3])
 			picByte, err := ioutil.ReadAll(picFile.Body)
 			picName := strconv.Itoa(int(time.Now().UnixNano()))
@@ -268,6 +259,6 @@ func ysjdmCatch() {
 		}
 
 		res.Body.Close()
-		time.Sleep(30 * time.Second)
+		time.Sleep(45 * time.Second)
 	}
 }

@@ -67,20 +67,23 @@ function loadFilePages(names) {
                 div1_1Node.appendChild(picNode);
                 // 添加文件名
                 var pNode = document.createElement("p");
-                pNode.setAttribute("class", "h4 text-center");
+                pNode.setAttribute("class", "h4 text-center text-white");
                 pNode.innerHTML = data["files"][i];
                 div1_1Node.appendChild(pNode);
+
                 // 添加监听脚本，文件夹被点击时刷新
                 var ListenScript = document.createElement("script");
                 ListenScript.innerHTML = `document.getElementById("` + names + data["files"][i] + `"` + `).onclick = function() { loadFileFirst("` + names + `", "` + data["files"][i] + `"); }`;
                 document.body.appendChild(ListenScript);
             }
+
+            // 无文件夹的显示
+            if (div1Node.children.length == 0) {
+                div1Node.innerHTML = "无文件夹";
+            }
         },
         fail: function() {}
     })
-    if (div1Node.children == 0) {
-        div1Node.innerHTML = "没有文件夹";
-    }
 }
 
 // 加载分类第 n 页
@@ -112,6 +115,10 @@ function loadFirst(names, page, file) {
                 imgNode.setAttribute("style", "width: 300px;");
                 imgNode.setAttribute("class", "p-2");
                 aNode.appendChild(imgNode);
+            }
+            // 无图片的显示
+            if (root.children.length == 0) {
+                root.innerHTML = "没有图片";
             }
         },
         fail: function() {}
