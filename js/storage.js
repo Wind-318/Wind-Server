@@ -95,6 +95,9 @@ function loadFirst(names, page, file) {
     root.innerHTML = "";
     // 每页加载数量
     var pageNum = 50;
+    if (names == "每日更新") {
+        pageNum = 20;
+    }
     // 偏移量
     var moveNum = pageNum * (page - 1);
     $.ajax({
@@ -131,6 +134,11 @@ function loadFirst(names, page, file) {
 // 点击文件夹进行初始化
 function loadFileFirst(names, file) {
     var divNode = document.getElementById(names);
+    // 每页加载数量
+    var pageNum = 50;
+    if (names == "每日更新") {
+        pageNum = 20;
+    }
     // 清空原内容
     divNode.innerHTML = "";
     // 加入文件夹名
@@ -161,7 +169,7 @@ function loadFileFirst(names, file) {
         data: {
             "name": names,
             "file": file,
-            "pageNum": 50
+            "pageNum": pageNum
         },
         success: function(data) {
             for (var i = 1; i <= data["page"]; i++) {
