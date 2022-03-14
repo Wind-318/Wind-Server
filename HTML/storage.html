@@ -181,14 +181,12 @@
                     "texts": texts
                 },
                 success: function(data) {
-                    for (var i = 0; i < data["urls"].length; i++) {
-                        var temp = document.createElement("a");
-                        temp.setAttribute("href", data["urls"][i]);
-                        temp.setAttribute("target", "_blank");
-                        temp.setAttribute("download", data["names"][i] + "." + data["types"][i]);
-                        temp.click();
-                        temp.remove();
-                    }
+                    var temp = document.createElement("a");
+                    temp.setAttribute("href", data["url"]);
+                    temp.setAttribute("target", "_blank");
+                    temp.setAttribute("download", data["name"]);
+                    temp.click();
+                    temp.remove();
                 }
             })
         }

@@ -1,6 +1,7 @@
 package storage
 
 import (
+	"Project/gofiles/algorithm"
 	"Project/gofiles/config"
 	"Project/gofiles/user"
 	"fmt"
@@ -13,7 +14,7 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-// 获取某文件夹内容
+// 批量下载
 func DownloadFiles(ctx *gin.Context) {
 	// 返回值
 	result := map[string]interface{}{}
@@ -31,15 +32,11 @@ func DownloadFiles(ctx *gin.Context) {
 	conn.Get(&email, "SELECT account FROM user WHERE username = ?", name)
 	// 获取文件夹名称
 	fileName := ctx.PostForm("texts")
-	urls := []string{}
-	names := []string{}
-	types := []string{}
-	conn.Select(&urls, "SELECT path FROM storage WHERE filepath = ? AND account = ?", fileName, email)
-	conn.Select(&names, "SELECT name FROM storage WHERE filepath = ? AND account = ?", fileName, email)
-	conn.Select(&types, "SELECT type FROM storage WHERE filepath = ? AND account = ?", fileName, email)
-	result["urls"] = urls
-	result["names"] = names
-	result["types"] = types
+
+	algorithm.Zip("./userFile/"+email+"/"+fileName, "./userFile/"+email+"/"+fileName+".zip")
+
+	result["url"] = "../userFile/" + email + "/" + fileName + ".zip"
+	result["name"] = fileName + ".zip"
 	ctx.JSON(http.StatusOK, result)
 }
 

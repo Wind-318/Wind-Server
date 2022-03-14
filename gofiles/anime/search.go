@@ -113,6 +113,7 @@ func SearchByYear(ctx *gin.Context) {
 	result := map[string]interface{}{}
 	// 非登录直接返回空
 	if !user.IsExist(ctx) {
+		ctx.JSON(http.StatusOK, result)
 		return
 	}
 	// 选取的年份
@@ -131,7 +132,7 @@ func SearchByYear(ctx *gin.Context) {
 		conn.Select(&names, "SELECT name FROM bangumi WHERE year <= ?", year)
 	}
 	// 逻辑同上
-	for index := len(names); index >= 0; index-- {
+	for index := len(names) - 1; index >= 0; index-- {
 		tempInfo := info.AnimeInfo{}
 		conn.Get(&tempInfo, "SELECT name, url, year, description, picurl FROM bangumi WHERE name = ?", names[index])
 		conn.Select(&tempInfo.Source, "SELECT source FROM animesource WHERE anime = ?", names[index])
