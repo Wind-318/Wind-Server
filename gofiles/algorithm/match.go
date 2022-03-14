@@ -2,9 +2,11 @@ package algorithm
 
 import "strings"
 
-// 滑动窗口精确匹配, target 为待查询字符串
+// 滑动窗口模糊匹配, target 为待查询字符串
 func Match(str, target string) int {
+	// 要匹配字符串
 	targetLength := len(target)
+	// 被匹配字符串
 	strLength := len(str)
 	// 不分大小写搜索
 	target = strings.ToLower(target)

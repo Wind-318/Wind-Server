@@ -64,7 +64,7 @@ func main() {
 	router.Static("/blog", "./blog")
 	// css 文件
 	router.Static("/css", "./css")
-	// 网站图标（默认泉此方）
+	// 网站图标（默认为泉此方）
 	router.StaticFile("/favicon.ico", "./favicon.ico")
 	// js 文件
 	router.Static("/js", "./js")
@@ -195,6 +195,8 @@ func main() {
 		storages.POST("/getUserStoragePicture", storage.GetUserStoragePicture)
 		// 上传图片
 		storages.POST("/stroageImg", storage.StorageFiles)
+		// 批量下载
+		storages.POST("/downloadFiles", storage.DownloadFiles)
 	}
 
 	// 监听 http

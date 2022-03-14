@@ -13,13 +13,16 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-// 搜索动漫
+// 搜索功能
 func Search(ctx *gin.Context) {
+	result := map[string]interface{}{}
+	// 检查权限，非登录状态直接返回空
 	if !user.IsExist(ctx) {
+		ctx.JSON(http.StatusOK, result)
 		return
 	}
+	// 用户输入字段
 	text := ctx.PostForm("text")
-	result := map[string]interface{}{}
 
 	// 若搜索内容全为空格，直接返回空
 	isEmpty := true
@@ -45,15 +48,19 @@ func Search(ctx *gin.Context) {
 	idNums := []string{}
 	conn.Select(&names, "SELECT name FROM bangumi")
 
-	for index, name := range names {
+	// 轮询数据库查询
+	for index := len(names) - 1; index >= 0; index-- {
 		// 进行匹配
-		if algorithm.Match(name, text) == 1 {
+		if algorithm.Match(names[index], text) == 1 {
+			// 选出数据
 			tempInfo := info.AnimeInfo{}
-			conn.Get(&tempInfo, "SELECT name, url, year, description, picurl FROM bangumi WHERE name = ?", name)
-			conn.Select(&tempInfo.Source, "SELECT source FROM animesource WHERE anime = ?", name)
-			conn.Select(&tempInfo.Urls, "SELECT urls FROM animesource WHERE anime = ?", name)
+			conn.Get(&tempInfo, "SELECT name, url, year, description, picurl FROM bangumi WHERE name = ?", names[index])
+			conn.Select(&tempInfo.Source, "SELECT source FROM animesource WHERE anime = ?", names[index])
+			conn.Select(&tempInfo.Urls, "SELECT urls FROM animesource WHERE anime = ?", names[index])
 
 			result[strconv.Itoa(index)] = tempInfo
+
+			// 数量 + 1
 			idNums = append(idNums, strconv.Itoa(index))
 			// 超过 1000 时自动停止搜索
 			if len(idNums) >= 1000 {
@@ -64,15 +71,18 @@ func Search(ctx *gin.Context) {
 	// 得到数量
 	result["count"] = idNums
 
+	// 返回数据
 	ctx.JSON(http.StatusOK, result)
 }
 
 // 选出新番
 func SearchNewAnime(ctx *gin.Context) {
+	result := map[string]interface{}{}
+	// 非登录状态直接返回空数据
 	if !user.IsExist(ctx) {
+		ctx.JSON(http.StatusOK, result)
 		return
 	}
-	result := map[string]interface{}{}
 	// 连接数据库
 	conn := sqlx.MustConnect("mysql", config.MySQLInfo)
 	defer conn.Close()
@@ -80,27 +90,32 @@ func SearchNewAnime(ctx *gin.Context) {
 	names := make([]string, 0)
 	// 计数
 	idNums := []string{}
+	// isNew 为 1 则为当季动漫
 	conn.Select(&names, "SELECT name FROM bangumi WHERE isNew = 1")
-	for index, name := range names {
+	// 逻辑同上
+	for index := len(names) - 1; index >= 0; index-- {
 		tempInfo := info.AnimeInfo{}
-		conn.Get(&tempInfo, "SELECT name, url, year, description, picurl FROM bangumi WHERE name = ?", name)
-		conn.Select(&tempInfo.Source, "SELECT source FROM animesource WHERE anime = ?", name)
-		conn.Select(&tempInfo.Urls, "SELECT urls FROM animesource WHERE anime = ?", name)
+		conn.Get(&tempInfo, "SELECT name, url, year, description, picurl FROM bangumi WHERE name = ?", names[index])
+		conn.Select(&tempInfo.Source, "SELECT source FROM animesource WHERE anime = ?", names[index])
+		conn.Select(&tempInfo.Urls, "SELECT urls FROM animesource WHERE anime = ?", names[index])
 
 		result[strconv.Itoa(index)] = tempInfo
 		idNums = append(idNums, strconv.Itoa(index))
 	}
 	result["count"] = idNums
 
+	// 返回数据
 	ctx.JSON(http.StatusOK, result)
 }
 
 // 选出指定年份番剧
 func SearchByYear(ctx *gin.Context) {
+	result := map[string]interface{}{}
+	// 非登录直接返回空
 	if !user.IsExist(ctx) {
 		return
 	}
-	result := map[string]interface{}{}
+	// 选取的年份
 	year := ctx.PostForm("year")
 	// 连接数据库
 	conn := sqlx.MustConnect("mysql", config.MySQLInfo)
@@ -109,16 +124,18 @@ func SearchByYear(ctx *gin.Context) {
 	names := make([]string, 0)
 	// 计数
 	idNums := []string{}
+	// 看年份大于 2000 还是小于等于 2000
 	if y, _ := strconv.Atoi(year); y > 2000 {
 		conn.Select(&names, "SELECT name FROM bangumi WHERE year = ?", year)
 	} else {
 		conn.Select(&names, "SELECT name FROM bangumi WHERE year <= ?", year)
 	}
-	for index, name := range names {
+	// 逻辑同上
+	for index := len(names); index >= 0; index-- {
 		tempInfo := info.AnimeInfo{}
-		conn.Get(&tempInfo, "SELECT name, url, year, description, picurl FROM bangumi WHERE name = ?", name)
-		conn.Select(&tempInfo.Source, "SELECT source FROM animesource WHERE anime = ?", name)
-		conn.Select(&tempInfo.Urls, "SELECT urls FROM animesource WHERE anime = ?", name)
+		conn.Get(&tempInfo, "SELECT name, url, year, description, picurl FROM bangumi WHERE name = ?", names[index])
+		conn.Select(&tempInfo.Source, "SELECT source FROM animesource WHERE anime = ?", names[index])
+		conn.Select(&tempInfo.Urls, "SELECT urls FROM animesource WHERE anime = ?", names[index])
 
 		result[strconv.Itoa(index)] = tempInfo
 		idNums = append(idNums, strconv.Itoa(index))

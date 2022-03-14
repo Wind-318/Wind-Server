@@ -32,6 +32,7 @@
 
 <body class="bg-dark" id="darkBody">
     <div style="display: none;" id="uploadfilename"></div>
+    <div style="display: none;" id="userName"></div>
     <button class="btn btn-primary position-fixed" style="width: 7%;" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">导航</button>
 
     <div class="offcanvas offcanvas-start" style="width: 25%;" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
@@ -111,6 +112,8 @@
         </div>
     </div>
 
+    <button class="btn btn-primary text-white" id="downloadAll">批量下载</button>
+
 
 
     <div class="container bg-dark border my-5 text-white" id="root">
@@ -159,6 +162,33 @@
                 },
                 success: function() {
                     location.reload();
+                }
+            })
+        }
+
+        // 批量下载
+        document.getElementById("downloadAll").onclick = function() {
+            var texts = document.getElementById("uploadfilename").innerHTML;
+            var names = document.getElementById("userName").innerHTML;
+            if (texts == "") {
+                return;
+            }
+            $.ajax({
+                url: "/storage/downloadFiles",
+                type: "POST",
+                data: {
+                    "name": names,
+                    "texts": texts
+                },
+                success: function(data) {
+                    for (var i = 0; i < data["urls"].length; i++) {
+                        var temp = document.createElement("a");
+                        temp.setAttribute("href", data["urls"][i]);
+                        temp.setAttribute("target", "_blank");
+                        temp.setAttribute("download", data["names"][i] + "." + data["types"][i]);
+                        temp.click();
+                        temp.remove();
+                    }
                 }
             })
         }

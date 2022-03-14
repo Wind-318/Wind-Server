@@ -15,13 +15,16 @@ window.onload = function() {
                 // 添加子节点
                 var aNode = document.createElement("a");
                 aNode.setAttribute("class", "nav-link h4");
+                if (i == data["names"].length - 1) {
+                    aNode.setAttribute("class", "nav-link h4 active");
+                    // 添加文件夹
+                    loadFilePages(names);
+                }
                 aNode.setAttribute("data-bs-toggle", "pill");
                 aNode.setAttribute("href", "#" + names);
                 aNode.setAttribute("id", "user" + names);
                 aNode.innerHTML = names;
                 liNode.appendChild(aNode);
-                // 添加文件夹
-                loadFilePages(names);
                 // 添加脚本
                 var ListenScript = document.createElement("script");
                 ListenScript.innerHTML = `document.getElementById("user` + names + `").onclick = function() { loadFilePages("` + names + `"); }`;
@@ -132,6 +135,7 @@ function loadFileFirst(names, file) {
     divNode.innerHTML = "";
     // 加入文件夹名
     document.getElementById("uploadfilename").innerHTML = file;
+    document.getElementById("userName").innerHTML = names;
     // 框架子节点
     var div1Node = document.createElement("div");
     div1Node.setAttribute("class", "container border");

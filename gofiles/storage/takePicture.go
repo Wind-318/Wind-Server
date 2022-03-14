@@ -13,6 +13,36 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
+// 获取某文件夹内容
+func DownloadFiles(ctx *gin.Context) {
+	// 返回值
+	result := map[string]interface{}{}
+	// 检验合法性
+	if !user.IsExist(ctx) {
+		ctx.JSON(http.StatusOK, result)
+		return
+	}
+	// 连接数据库
+	conn := sqlx.MustConnect("mysql", config.MySQLInfo)
+	defer conn.Close()
+	// 获取邮箱
+	name := ctx.PostForm("name")
+	email := ""
+	conn.Get(&email, "SELECT account FROM user WHERE username = ?", name)
+	// 获取文件夹名称
+	fileName := ctx.PostForm("texts")
+	urls := []string{}
+	names := []string{}
+	types := []string{}
+	conn.Select(&urls, "SELECT path FROM storage WHERE filepath = ? AND account = ?", fileName, email)
+	conn.Select(&names, "SELECT name FROM storage WHERE filepath = ? AND account = ?", fileName, email)
+	conn.Select(&types, "SELECT type FROM storage WHERE filepath = ? AND account = ?", fileName, email)
+	result["urls"] = urls
+	result["names"] = names
+	result["types"] = types
+	ctx.JSON(http.StatusOK, result)
+}
+
 // 获取指定用户上传的图片
 func GetUserStoragePicture(ctx *gin.Context) {
 	// 返回值
