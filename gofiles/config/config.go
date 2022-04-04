@@ -23,23 +23,11 @@ var userAgents []string = []string{
 // 连接 mysql
 var MySQLInfo string = ""
 
-// 连接游戏数据库
-var MySQLgame string = ""
-
 // 管理员邮箱
 var SystemUserAccount = ""
 
 // 域名
 var Addr = "https://127.0.0.1/"
-
-// 图片数量
-var PicMaxNum = 248
-
-// 图片文件夹路径
-var PicDir = "picture/"
-
-// 图片后缀
-var PicFormat = ".jpg"
 
 // 发送方邮箱
 var SenderAccount = ""
