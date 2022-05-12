@@ -1,0 +1,244 @@
+body {
+    display: flex;
+    background-image: url('../picture/1.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.search {
+    z-index: 10;
+    width: 40%;
+    height: 60px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    display: flex;
+    position: fixed;
+    margin-left: 30%;
+    background-color: rgba(99, 99, 99, 0.8);
+    ;
+}
+
+.search img {
+    margin-left: 0;
+    height: 100%;
+    width: auto;
+}
+
+.search input {
+    height: 100%;
+    width: 100%;
+    border-radius: 50px;
+    border: 0;
+    outline: none;
+    background-color: rgba(255, 255, 255, 0.8);
+    font-size: 20px;
+}
+
+.container {
+    flex-direction: column;
+}
+
+.containerss {
+    margin-top: 70px;
+}
+
+.showcase {
+    flex-grow: 1;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 0px;
+}
+
+.showcase a {
+    position: relative;
+    width: auto;
+    height: 400px;
+    background-color: rgba(255, 255, 255, 0.5);
+    margin: 20px;
+    transition: all .3s;
+}
+
+.showcase a:hover {
+    cursor: pointer;
+    transform: translate(-8px);
+    box-shadow: 0 10px 20px rgba(255, 255, 255, 0.3);
+}
+
+.showcase a img {
+    opacity: 0.6;
+    width: auto;
+    height: 400px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+.showcase a img:hover {
+    opacity: 1;
+}
+
+.showcase a span {
+    position: absolute;
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+    display: inline-block;
+    text-align: center;
+    justify-content: center;
+    left: 0;
+    top: 20%;
+    word-break: break-all;
+}
+
+.showcase a .Spans {
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+    display: inline-block;
+    position: absolute;
+    bottom: 0;
+    text-align: center;
+    justify-content: center;
+    left: 0;
+    margin: auto;
+}
+
+.showcase a .Spanss {
+    font-size: 20px;
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    text-align: center;
+    justify-content: center;
+    left: 5%;
+    margin: auto;
+}
+
+.showcase a .deletebtn {
+    opacity: 0.6;
+    z-index: 100;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.showcase .box {
+    height: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.showcase .line {
+    height: 1px;
+    flex-grow: 1;
+    background-color: #eaeaea;
+}
+
+.showcase .text {
+    color: #989898;
+    font-size: 14px;
+    margin: 0 8px;
+}
+
+.navbar {
+    z-index: 20;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0.7;
+    position: fixed;
+    padding: 20px;
+    border-radius: 70px;
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+.navbar:hover {
+    opacity: 1;
+    background-image: url('../picture/25.jpg');
+    background-size: cover;
+}
+
+.navbar input {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    opacity: 0;
+}
+
+
+/* 拉伸后长度 */
+
+.navbar input:checked~ul {
+    width: 0;
+}
+
+.navbar span {
+    opacity: 1;
+    position: absolute;
+    left: 17.5px;
+    top: calc(50% - 10px);
+    width: 30px;
+    height: 4px;
+    border-radius: 15px;
+    background-color: #999;
+    pointer-events: none;
+    transition: transform 0.3s ease-in-out, top 0.3s ease-in-out 0.3s;
+}
+
+.navbar span:nth-child(3) {
+    top: calc(50% + 6px);
+}
+
+.navbar ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 700px;
+    overflow: hidden;
+    white-space: nowrap;
+    transition: all 0.5s;
+}
+
+.navbar ul li {
+    list-style: none;
+    /* 元素间距 */
+    margin: 0 auto;
+}
+
+.navbar ul li a {
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: 700;
+    color: rgb(0, 0, 0);
+}
+
+.navbar ul li a:hover {
+    color: #ffffff;
+}
+
+.navbar input:checked~span:nth-child(2) {
+    top: calc(50% - 2px);
+    transform: rotate(-45deg);
+    background-color: #fb7299;
+    transition: top 0.3s ease-in-out, transform 0.3s ease-in-out 0.3s;
+}
+
+.navbar input:checked~span:nth-child(3) {
+    top: calc(50% - 2px);
+    transform: rotate(45deg);
+    background-color: #fb7299;
+    transition: top 0.3s ease-in-out, transform 0.3s ease-in-out 0.3s;
+}

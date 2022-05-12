@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>收藏</title>
+    <script src="../js/jquery.min.js"></script>
+    <script>
+        $.ajax({
+            url: "/user/checkPermission",
+            async: false,
+            type: "GET",
+            success: function(data) {
+                if (data["msg"] != undefined) {
+                    location.href = "/";
+                    alert("非公开信息，需要一级以上准入权限");
+                }
+            },
+            fail: function() {
+                location.href = "/";
+            }
+        })
+    </script>
+    <script src="../js/sakura.js"></script>
+    <script src="../js/collectionsJs.js"></script>
+    <link rel="stylesheet" href="../css/collections.css">
+</head>
+
+<body>
+    <div class="navbar">
+        <input type="checkbox" />
+        <span></span>
+        <span></span>
+        <ul id="ulcontainer">
+            <li><a href="/">Home</a></li>
+            <li><a href="/bbs">博客首页</a></li>
+            <li><a href="/resources">资源</a></li>
+            <li><a href="/anime">动漫</a></li>
+            <li><a href="/storage">存储</a></li>
+        </ul>
+    </div>
+    <div class="container">
+        <ul id="webs">
+        </ul>
+    </div>
+</body>
+
+</html>

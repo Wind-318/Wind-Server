@@ -1,0 +1,74 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+img {
+    max-width: 100%;
+}
+
+.divcontainer {
+    display: flex;
+    margin-top: 0;
+    position: relative;
+    width: auto;
+    height: auto;
+}
+
+.divcontainer .comments {
+    display: flex;
+}
+
+.root .tempr {
+    flex-direction: row;
+    display: flex;
+}
+
+.root .tempr .temp {
+    flex-direction: column;
+    display: flex;
+    margin-left: 100px;
+    width: 200px;
+    flex-direction: column;
+    background-color: rgba(122, 122, 122, 0.6);
+}
+
+.root .tempr .tempcon {
+    display: flex;
+    margin-top: 0;
+    position: relative;
+    width: auto;
+    height: auto;
+}
+
+.root .tempr .temptitle {
+    display: flex;
+    flex-direction: row;
+}
+
+.root .tempsr {
+    flex-direction: row;
+    display: flex;
+}
+
+.root .tempsr .temps {
+    flex-direction: column;
+    display: flex;
+    margin-left: 100px;
+    width: 200px;
+    flex-direction: column;
+    background-color: rgba(122, 122, 122, 0.6);
+}
+
+.root .tempsr .tempscon {
+    display: flex;
+    margin-top: 0;
+    position: relative;
+    width: auto;
+    height: auto;
+}
+
+.root .tempsr .tempstitle {
+    display: flex;
+    flex-direction: row;
+}
