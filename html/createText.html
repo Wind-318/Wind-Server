@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新建文章</title>
+    <script src="../js/jquery.min.js"></script>
+    <link rel="stylesheet" href="../css/creatText.css">
+    <script src="../js/marked.min.js"></script>
+    <script>
+        $.ajax({
+            url: "/user/checkPermission",
+            async: false,
+            type: "GET",
+            success: function(data) {
+                if (data["msg"] != undefined) {
+                    location.href = "/";
+                    alert("非公开信息，需要一级以上准入权限");
+                }
+            },
+            fail: function() {
+                location.href = "/";
+            }
+        })
+    </script>
+    <link rel="stylesheet" href="../css/markdowncss.css">
+</head>
+
+<body>
+    <div style="position: relative; flex-direction: row; display: flex;">
+        <input id="backgroundPic" style="position: absolute; top: 0; bottom: 0; left: 0;right: 0; opacity: 0; width: 138px;" type="file" accept="image/*" />
+        <div style="text-align: top">
+            <span style="font-size: 12px;">上传文章背景：</span>
+            <img id="upload" src="../picture/profile.jpg" style="margin-left: 10px; width: 40px; height: 40px; vertical-align: middle;" />
+        </div>
+
+        <input id="attFiles" style="position: absolute; top: 0; bottom: 0; left: 138px;right: 0; opacity: 0; width: 222px;" multiple="multiple" type="file" />
+        <div style="text-align: top">
+            <span style="font-size: 12px;">上传附件：</span>
+            <img id="uploads" src="../picture/profile.jpg" style="margin-left: 10px; width: 40px; height: 40px; vertical-align: middle;" />
+        </div>
+    </div>
+    <div class="container">
+        <div class="div1">
+            <input type="text" class="input" id="titles" placeholder="标题" maxlength="100">
+            <input type="text" class="input" id="types" placeholder="分类" maxlength="100">
+            <textarea name="" id="description" placeholder="简介" maxlength="250" class="textarea1" style="resize: none; "></textarea>
+            <textarea class="textarea2" name="" id="texts" onkeyup=mdSwitch() maxlength="500000" placeholder="正文（支持 markdown 格式）" style="resize: none;"></textarea>
+        </div>
+        <div class="empty"></div>
+        <div id="show-area" class="div2"></div>
+    </div>
+
+    <input type="button" class="btn" id="btn" value="新建文章">
+
+    <script>
+        function mdSwitch() {
+            var mdValue = document.getElementById("texts").value;
+            var html = marked(mdValue);
+            document.getElementById("show-area").innerHTML = html;
+        }
+    </script>
+
+    <script>
+        var btn = document.getElementById("btn");
+        btn.onclick = function(ev) {
+            var texts = document.getElementById("texts").value;
+            var titles = document.getElementById("titles").value;
+            var description = document.getElementById("description").value;
+            var types = document.getElementById("types").value;
+            var pic = document.getElementById('backgroundPic');
+            var attFile = document.getElementById("attFiles");
+
+            if (pic.files[0] == undefined) {
+                alert('背景图不能为空！');
+                return;
+            } else if (pic.files[0].size > 5120000) {
+                alert('文件大小最大为 5 MB');
+                return;
+            }
+
+            var formData = new FormData();
+            formData.append("texts", texts);
+            formData.append("titles", titles);
+            formData.append("types", types);
+            formData.append("description", description);
+            formData.append("authority", 0);
+            formData.append("pic", pic.files[0]);
+            var pictypes = pic.files[0].type;
+            var index = pictypes.lastIndexOf("/");
+            formData.append("picType", pictypes.substr(index + 1));
+
+            if (attFile.files[0] != undefined) {
+                for (var i = 0; i < attFile.files.length; i++) {
+                    formData.append("attFiles", attFile.files[i]);
+                }
+            }
+
+            $.ajax({
+                url: "/bbs/CreateTexts",
+                type: "POST",
+                data: formData,
+                cache: false,
+                processData: false,
+                contentType: false,
+                success: function(data) {
+                    if (data["msg"] != "success") {
+                        alert(data["msg"]);
+                        return;
+                    }
+                    location.href = "/bbs";
+                }
+            })
+        }
+    </script>
+</body>
+
+</html>

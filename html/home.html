@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wind's Server</title>
+    <script src="../js/sakura.js"></script>
+    <script src="../js/fontawesome.js"></script>
+    <script src="../js/jquery.min.js"></script>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="icon" href="../favicon.ico">
+</head>
+
+<body>
+    <div class="navbar">
+        <input type="checkbox" />
+        <span></span>
+        <span></span>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/bbs">论坛</a></li>
+            <li><a href="/collections">收藏</a></li>
+            <li><a href="/anime">动漫</a></li>
+            <li><a href="/storage">存储</a></li>
+            <li><a href="/user/ToLogin">登录</a></li>
+            <li><a href="javascript:void(0)" id="signAddScore">签到</a></li>
+        </ul>
+    </div>
+    <script>
+        document.getElementById("signAddScore").onclick = function() {
+            $.ajax({
+                url: "/user/signAddScore",
+                type: "GET",
+                success: function(data) {
+                    alert(data["msg"]);
+                },
+                fail: function() {}
+            })
+        }
+    </script>
+    <div class="box ">
+        <img src="../picture/profile.jpg " alt="" class="box-img">
+        <h1>
+            Wind
+        </h1>
+        <h5>
+            Wind's Server
+        </h5>
+        <p>
+        </p>
+        <p>
+        </p>
+        <ul>
+            <li>
+                <a href="https://github.com/Wind-318" target="_blank "><img src="../picture/github-icon/GitHub-large.png" style="max-width: 50px; max-height: 50px;" alt=""></a>
+                <p>Github</p>
+            </li>
+        </ul>
+    </div>
+</body>
+
+</html>

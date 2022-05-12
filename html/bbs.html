@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>论坛首页</title>
+    <script src="../js/jquery.min.js"></script>
+    <link rel="stylesheet" href="../css/blogStyle.css">
+    <script src="../js/sakura.js"></script>
+    <script src="../js/blogJs1.js"></script>
+    <script src="../js/blogJs2.js"></script>
+</head>
+
+<body>
+    <div class="navbar">
+        <input type="checkbox" />
+        <span></span>
+        <span></span>
+        <ul id="ulcontainer">
+            <li><a href="/">Home</a></li>
+            <li><a href="/bbs">论坛</a></li>
+            <li><a href="/collections">收藏</a></li>
+            <li><a href="/anime">动漫</a></li>
+            <li><a href="/storage">存储</a></li>
+            <li><a href="/user/ToLogin" id="userStatus">注册/登录</a></li>
+        </ul>
+    </div>
+
+    <div class="search">
+        <img src="https://windserver.top/picture/search.png" alt="">
+        <input type="text" placeholder="请输入关键字" id="keyword" onkeyup=search() maxlength="100">
+    </div>
+    <div class="containerss">
+        <div class="showcase" id="container">
+        </div>
+    </div>
+</body>
+
+</html>
