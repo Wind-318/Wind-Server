@@ -17,15 +17,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// 并发控制，最大量为 50
-var chanInt50 chan int = make(chan int, 50)
-
 // 存储文件
 func StorageFiles(ctx *gin.Context) {
-	chanInt50 <- 1
-	defer func() {
-		<-chanInt50
-	}()
 	// 返回数据
 	result := map[string]interface{}{}
 	if ok, err := callUser.CallUserIsLogin(ctx); err != nil || !ok {
