@@ -29,7 +29,7 @@ func main() {
 	if config.AllowSpider {
 		go func() {
 			// 初始化片源地址
-			//initCode.InitAnime()
+			initCode.InitAnime()
 			// 持续追踪更新
 			go anime.ContinueGetNewAnime()
 			// 抓取新闻
