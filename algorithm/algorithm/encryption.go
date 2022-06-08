@@ -3,15 +3,12 @@ package algorithm
 import (
 	"crypto/sha512"
 	"encoding/hex"
-	"math/rand"
-	"time"
 )
 
 // 加密方式
 func Encryption(password string) string {
 	// 随机字符
 	words := "qwersd,yuio.tpa;vbnm6789QW~1234'=HJKL[zxc5`!@ERTYU]?fghFG&*-ZNM#ASD%^$jklIOP_XCVB+"
-	rand.Seed(time.Now().UnixNano())
 	tempStr := ""
 	// 加盐
 	for i := range password {

@@ -40,7 +40,7 @@ func JudgePasswordIllegal(password string) error {
 		}
 	}
 
-	// 字母及特殊字符数量至少为总长度一半
+	// 字母及特殊字符数量至少为总长度 1/3
 	if digitNum+alphaNum != length {
 		return errors.New("密码格式错误，只能存在数字字符、字母或特殊字符！")
 	} else if length < passedLength {
