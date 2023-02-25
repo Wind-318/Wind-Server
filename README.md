@@ -1,3 +1,4 @@
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/c4d3853c8acb4f65b27ecbe73fafa239)](https://www.codacy.com/gh/Wind-318/Wind-Server/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Wind-318/Wind-Server&amp;utm_campaign=Badge_Grade)
 # 访问地址：https://windserver.top
 # 服务端架设流程
 - 需要自行安装并启动 MySQL 和 Redis（版本 5.0 以上） 服务端，需要配置 golang 环境（1.15.6 以上版本）
